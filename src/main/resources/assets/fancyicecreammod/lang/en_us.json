@@ -1,6 +1,6 @@
 {
   "itemGroup.fancyicecreammod_tab": "Fancy Ice Cream",
-  "item.fancyicecreammod.vanillaicecream": "Vanilla Ice Cream",
-  "item.fancyicecreammod.chocochipicecream": "Choco Chip Ice Cream",
-  "item.fancyicecreammod.chocolateicecream": "Chocolate Ice Cream"
+  "item.fancyicecreammod.vanilla_ice_cream": "Vanilla Ice Cream",
+  "item.fancyicecreammod.choco_chip_ice_cream": "Choco Chip Ice Cream",
+  "item.fancyicecreammod.chocolate_ice_cream": "Chocolate Ice Cream"
 }

@@ -1,6 +1,6 @@
 {
   "itemGroup.fancyicecreammod_tab": "ファンシーアイスクリーム",
-  "item.fancyicecreammod.vanillaicecream": "バニラアイスクリーム",
-  "item.fancyicecreammod.chocochipicecream": "チョコチップアイスクリーム",
-  "item.fancyicecreammod.chocolateicecream": "チョコレートアイスクリーム"
+  "item.fancyicecreammod.vanilla_ice_cream": "バニラアイスクリーム",
+  "item.fancyicecreammod.choco_chip_ice_cream": "チョコチップアイスクリーム",
+  "item.fancyicecreammod.chocolate_ice_cream": "チョコレートアイスクリーム"
 }

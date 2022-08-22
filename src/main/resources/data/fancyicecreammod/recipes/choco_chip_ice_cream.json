@@ -9,11 +9,11 @@
       "item": "minecraft:cocoa_beans"
     },
     "B": {
-      "item": "fancyicecreammod:vanillaicecream"
+      "item": "fancyicecreammod:vanilla_ice_cream"
     }
   },
   "result": {
-    "item": "fancyicecreammod:chocochipicecream",
+    "item": "fancyicecreammod:choco_chip_ice_cream",
     "count": 1
   }
 }

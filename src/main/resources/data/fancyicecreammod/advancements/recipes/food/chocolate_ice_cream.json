@@ -2,7 +2,7 @@
   "parent": "minecraft:recipes/root",
   "rewards": {
     "recipes": [
-      "fancyicecreammod:chocochipicecream"
+      "fancyicecreammod:chocolate_ice_cream"
     ]
   },
   "criteria": {

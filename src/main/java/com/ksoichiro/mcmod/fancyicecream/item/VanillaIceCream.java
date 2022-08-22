@@ -11,6 +11,6 @@ public class VanillaIceCream extends Item {
                         .nutrition(4)
                         .saturationMod(0.3F)
                         .build()));
-        this.setRegistryName("vanillaicecream");
+        this.setRegistryName("vanilla_ice_cream");
     }
 }

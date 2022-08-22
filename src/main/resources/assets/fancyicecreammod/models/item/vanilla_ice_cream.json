@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "fancyicecreammod:item/chocolateicecream"
+    "layer0": "fancyicecreammod:item/vanilla_ice_cream"
   }
 }
