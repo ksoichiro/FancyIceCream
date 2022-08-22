@@ -1,6 +1,7 @@
 package com.ksoichiro.mcmod.fancyicecream.registry;
 
 import com.ksoichiro.mcmod.fancyicecream.item.ChocoChipIceCream;
+import com.ksoichiro.mcmod.fancyicecream.item.ChocolateIceCream;
 import com.ksoichiro.mcmod.fancyicecream.item.VanillaIceCream;
 import com.ksoichiro.mcmod.fancyicecream.main.FancyIceCreamMod;
 import net.minecraft.world.item.Item;
@@ -13,12 +14,16 @@ import net.minecraftforge.registries.ObjectHolder;
 public class FancyIceCreamModItems {
     public static final VanillaIceCream VANILLA_ICE_CREAM = new VanillaIceCream();
     public static final ChocoChipIceCream CHOCO_CHIP_ICE_CREAM = new ChocoChipIceCream();
+    public static final ChocolateIceCream CHOCOLATE_ICE_CREAM = new ChocolateIceCream();
 
     @Mod.EventBusSubscriber(modid = FancyIceCreamMod.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
     public static class Registerer {
         @SubscribeEvent
         public static void registerItem(final RegistryEvent.Register<Item> event) {
-            event.getRegistry().registerAll(VANILLA_ICE_CREAM, CHOCO_CHIP_ICE_CREAM);
+            event.getRegistry().registerAll(
+                    VANILLA_ICE_CREAM,
+                    CHOCO_CHIP_ICE_CREAM,
+                    CHOCOLATE_ICE_CREAM);
         }
     }
 }
