@@ -47,8 +47,6 @@ public class StandRenderer extends EntityRenderer<Stand> {
         Vec3 vec3 = this.getRenderOffset(stand, p_115078_);
         poseStack.translate(-vec3.x(), -vec3.y(), -vec3.z());
         poseStack.translate((double)direction.getStepX() * 0.46875D, (double)direction.getStepY() * 0.46875D, (double)direction.getStepZ() * 0.46875D);
-        poseStack.mulPose(Vector3f.XP.rotationDegrees(stand.getXRot()));
-        poseStack.mulPose(Vector3f.YP.rotationDegrees(180.0F - stand.getYRot()));
         ItemStack itemstack = stand.getItem();
 
         BlockRenderDispatcher blockrenderdispatcher = this.minecraft.getBlockRenderer();
@@ -59,8 +57,7 @@ public class StandRenderer extends EntityRenderer<Stand> {
         poseStack.popPose();
 
         if (!itemstack.isEmpty()) {
-            poseStack.translate(0.0D, 0.0D, 0.1D);
-            poseStack.mulPose(Vector3f.XP.rotationDegrees(-70.0F));
+            poseStack.mulPose(Vector3f.XP.rotationDegrees(-20.0F));
             poseStack.mulPose(Vector3f.ZP.rotationDegrees(-45.0F));
             poseStack.scale(0.5F, 0.5F, 0.5F);
             this.itemRenderer.renderStatic(itemstack, ItemTransforms.TransformType.FIXED, p_115081_, OverlayTexture.NO_OVERLAY, poseStack, p_115080_, stand.getId());

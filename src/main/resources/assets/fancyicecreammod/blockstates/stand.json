@@ -1,6 +1,0 @@
-{
-  "variants": {
-    "map=false": { "model": "fancyicecreammod:block/stand" },
-    "map=true": { "model": "fancyicecreammod:block/stand" }
-  }
-}
