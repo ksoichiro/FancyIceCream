@@ -12,15 +12,10 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.gameevent.GameEvent;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 public class Stand extends HangingEntityItem {
-    private static final Logger LOGGER = LogManager.getLogger();
-
     public Stand() {
         super(FancyIceCreamModEntityType.STAND, new Properties().tab(FancyIceCreamMod.FANCY_ICE_CREAM_MOD_TAB));
-//        super(EntityType.ITEM_FRAME, new Properties().tab(FancyIceCreamMod.FANCY_ICE_CREAM_MOD_TAB));
         this.setRegistryName("stand");
     }
 
@@ -34,12 +29,10 @@ public class Stand extends HangingEntityItem {
         if (player != null && !this.mayPlace(player, direction, itemstack, blockpos1)) {
             return InteractionResult.FAIL;
         }
-        LOGGER.info("StandItem::useOn() -> getItemInHand(): {}", itemstack.getItem().getRegistryName());
         Level level = context.getLevel();
         HangingEntity hangingentity = new com.ksoichiro.mcmod.fancyicecream.entity.decoration.Stand(level, blockpos1, direction);
         if (hangingentity.survives()) {
             if (!level.isClientSide) {
-                LOGGER.info("StandItem::useOn() -> addFreshEntity()");
                 hangingentity.playPlacementSound();
                 level.gameEvent(player, GameEvent.ENTITY_PLACE, blockpos);
                 level.addFreshEntity(hangingentity);
