@@ -47,4 +47,10 @@ public class Stand extends HangingEntityItem {
         }
         return InteractionResult.sidedSuccess(level.isClientSide);
     }
+
+    protected boolean mayPlace(Player player, Direction clickedFaceDirection, ItemStack itemStack, BlockPos blockPos) {
+        return clickedFaceDirection == Direction.UP
+                && !player.level.isOutsideBuildHeight(blockPos)
+                && player.mayUseItemAt(blockPos, clickedFaceDirection, itemStack);
+    }
 }
