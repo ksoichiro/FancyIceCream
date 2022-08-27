@@ -57,10 +57,10 @@ public class StandRenderer extends EntityRenderer<Stand> {
         poseStack.popPose();
 
         if (!itemstack.isEmpty()) {
+            poseStack.scale(0.5F, 0.5F, 0.5F);
+            poseStack.translate(0.0D, 0.1D, -0.0D);
             poseStack.mulPose(Vector3f.XP.rotationDegrees(-20.0F));
             poseStack.mulPose(Vector3f.ZP.rotationDegrees(-45.0F));
-            poseStack.scale(0.5F, 0.5F, 0.5F);
-            poseStack.translate(0.0D, 0.0D, -0.1D);
             this.itemRenderer.renderStatic(itemstack, ItemTransforms.TransformType.FIXED, p_115081_, OverlayTexture.NO_OVERLAY, poseStack, p_115080_, stand.getId());
         }
 
