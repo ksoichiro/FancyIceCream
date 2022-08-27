@@ -4,7 +4,9 @@ import com.ksoichiro.mcmod.fancyicecream.entity.FancyIceCreamModEntityType;
 import com.ksoichiro.mcmod.fancyicecream.main.FancyIceCreamMod;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.decoration.HangingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.HangingEntityItem;
@@ -31,6 +33,12 @@ public class Stand extends HangingEntityItem {
         }
         Level level = context.getLevel();
         HangingEntity hangingentity = new com.ksoichiro.mcmod.fancyicecream.entity.decoration.Stand(level, blockpos1, direction);
+
+        CompoundTag compoundtag = itemstack.getTag();
+        if (compoundtag != null) {
+            EntityType.updateCustomEntityTag(level, player, hangingentity, compoundtag);
+        }
+
         if (hangingentity.survives()) {
             if (!level.isClientSide) {
                 hangingentity.playPlacementSound();
