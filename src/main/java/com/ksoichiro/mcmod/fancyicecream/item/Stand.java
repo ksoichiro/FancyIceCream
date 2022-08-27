@@ -37,8 +37,10 @@ public class Stand extends HangingEntityItem {
                 level.gameEvent(player, GameEvent.ENTITY_PLACE, blockpos);
                 level.addFreshEntity(hangingentity);
             }
+            itemstack.shrink(1);
+            return InteractionResult.sidedSuccess(level.isClientSide);
         }
-        return InteractionResult.sidedSuccess(level.isClientSide);
+        return InteractionResult.CONSUME;
     }
 
     protected boolean mayPlace(Player player, Direction clickedFaceDirection, ItemStack itemStack, BlockPos blockPos) {
