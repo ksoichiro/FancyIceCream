@@ -3,7 +3,7 @@ package com.ksoichiro.mcmod.fancyicecream.registry;
 import com.ksoichiro.mcmod.fancyicecream.entity.decoration.StandRenderer;
 import com.ksoichiro.mcmod.fancyicecream.item.ChocoChipIceCream;
 import com.ksoichiro.mcmod.fancyicecream.item.ChocolateIceCream;
-import com.ksoichiro.mcmod.fancyicecream.item.Stand;
+import com.ksoichiro.mcmod.fancyicecream.item.StandItem;
 import com.ksoichiro.mcmod.fancyicecream.item.VanillaIceCream;
 import com.ksoichiro.mcmod.fancyicecream.main.FancyIceCreamMod;
 import net.minecraft.world.item.Item;
@@ -12,14 +12,16 @@ import net.minecraftforge.client.model.ForgeModelBakery;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.registries.ObjectHolder;
 
-@ObjectHolder(FancyIceCreamMod.MOD_ID)
 public class FancyIceCreamModItems {
-    public static final VanillaIceCream VANILLA_ICE_CREAM = new VanillaIceCream();
-    public static final ChocoChipIceCream CHOCO_CHIP_ICE_CREAM = new ChocoChipIceCream();
-    public static final ChocolateIceCream CHOCOLATE_ICE_CREAM = new ChocolateIceCream();
-    public static final Stand STAND = new Stand();
+    public static final Item VANILLA_ICE_CREAM = registerItem("vanilla_ice_cream", new VanillaIceCream());
+    public static final Item CHOCO_CHIP_ICE_CREAM = registerItem("choco_chip_ice_cream", new ChocoChipIceCream());
+    public static final Item CHOCOLATE_ICE_CREAM = registerItem("chocolate_ice_cream", new ChocolateIceCream());
+    public static final Item STAND = registerItem("stand", new StandItem());
+
+    private static Item registerItem(String name, Item item) {
+        return item.setRegistryName(name);
+    }
 
     @Mod.EventBusSubscriber(modid = FancyIceCreamMod.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
     public static class Registerer {

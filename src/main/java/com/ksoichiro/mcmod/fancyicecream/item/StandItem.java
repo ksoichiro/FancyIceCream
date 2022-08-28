@@ -15,10 +15,9 @@ import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.gameevent.GameEvent;
 
-public class Stand extends HangingEntityItem {
-    public Stand() {
+public class StandItem extends HangingEntityItem {
+    public StandItem() {
         super(FancyIceCreamModEntityType.STAND, new Properties().tab(FancyIceCreamMod.FANCY_ICE_CREAM_MOD_TAB));
-        this.setRegistryName("stand");
     }
 
     @Override

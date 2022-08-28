@@ -11,6 +11,5 @@ public class ChocoChipIceCream extends Item {
                         .nutrition(4)
                         .saturationMod(0.3F)
                         .build()));
-        this.setRegistryName("choco_chip_ice_cream");
     }
 }
