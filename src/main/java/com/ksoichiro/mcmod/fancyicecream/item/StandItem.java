@@ -1,7 +1,9 @@
 package com.ksoichiro.mcmod.fancyicecream.item;
 
 import com.ksoichiro.mcmod.fancyicecream.entity.FancyIceCreamModEntityType;
+import com.ksoichiro.mcmod.fancyicecream.entity.decoration.Stand;
 import com.ksoichiro.mcmod.fancyicecream.main.FancyIceCreamMod;
+import com.mojang.logging.LogUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -14,8 +16,11 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.gameevent.GameEvent;
+import org.slf4j.Logger;
 
 public class StandItem extends HangingEntityItem {
+    private static final Logger LOGGER = LogUtils.getLogger();
+
     public StandItem() {
         super(FancyIceCreamModEntityType.STAND, new Properties().tab(FancyIceCreamMod.FANCY_ICE_CREAM_MOD_TAB));
     }
@@ -31,7 +36,22 @@ public class StandItem extends HangingEntityItem {
             return InteractionResult.FAIL;
         }
         Level level = context.getLevel();
-        HangingEntity hangingentity = new com.ksoichiro.mcmod.fancyicecream.entity.decoration.Stand(level, blockpos1, direction);
+        LOGGER.info("StandItem: player.getDirection: {}", player.getDirection());
+        HangingEntity hangingentity = new Stand(level, blockpos1, direction, player.getDirection());
+        String rot;
+        if (0 < context.getRotation() && context.getRotation() <= 90) {
+            rot = "A";
+        }
+        else if (90 < context.getRotation() && context.getRotation() <= 180) {
+            rot = "B";
+        }
+        else if (180 < context.getRotation() && context.getRotation() <= 270) {
+            rot = "C";
+        }
+        else {
+            rot = "D";
+        }
+//        LOGGER.info("StandItem: itemInHand: {}, rotation: {} {} {} {}", itemstack.getItem().getRegistryName(), context.getRotation(), rot, player.getYRot(), player.getDirection());
 
         CompoundTag compoundtag = itemstack.getTag();
         if (compoundtag != null) {

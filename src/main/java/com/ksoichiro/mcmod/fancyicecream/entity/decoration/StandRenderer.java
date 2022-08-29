@@ -2,6 +2,7 @@ package com.ksoichiro.mcmod.fancyicecream.entity.decoration;
 
 import com.ksoichiro.mcmod.fancyicecream.main.FancyIceCreamMod;
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.logging.LogUtils;
 import com.mojang.math.Vector3f;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -18,6 +19,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
+import org.slf4j.Logger;
 
 public class StandRenderer extends EntityRenderer<Stand> {
     public static final ResourceLocation STAND_LOCATION = new ResourceLocation(FancyIceCreamMod.MOD_ID, "block/stand");
@@ -33,6 +35,7 @@ public class StandRenderer extends EntityRenderer<Stand> {
     public ResourceLocation getTextureLocation(Stand stand) {
         return STAND_LOCATION;
     }
+    private static final Logger LOGGER = LogUtils.getLogger();
 
     @Override
     public void render(Stand stand, float p_115077_, float p_115078_, PoseStack poseStack, MultiBufferSource p_115080_, int p_115081_) {
@@ -47,6 +50,15 @@ public class StandRenderer extends EntityRenderer<Stand> {
         Vec3 vec3 = this.getRenderOffset(stand, p_115078_);
         poseStack.translate(-vec3.x(), -vec3.y(), -vec3.z());
         poseStack.translate((double)direction.getStepX() * 0.46875D, (double)direction.getStepY() * 0.46875D, (double)direction.getStepZ() * 0.46875D);
+
+        float degree = switch (stand.getPlacedDirection()) {
+            case SOUTH -> 180F;
+            case WEST -> 90F;
+            case EAST -> 270F;
+            default -> 0F;
+        };
+        poseStack.mulPose(Vector3f.YP.rotationDegrees(degree));
+//        LOGGER.info("StandRenderer: direction: {} {}, stand[{}]: placedDirection: {}", direction, direction.toYRot(), stand.hashCode(), stand.getPlacedDirection());
         ItemStack itemstack = stand.getItem();
 
         BlockRenderDispatcher blockrenderdispatcher = this.minecraft.getBlockRenderer();
