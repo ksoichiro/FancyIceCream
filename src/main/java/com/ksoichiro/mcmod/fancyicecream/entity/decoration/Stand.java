@@ -49,15 +49,11 @@ public class Stand extends ItemFrame {
         boolean hasItemInHand = !itemstack.isEmpty();
         // TODO fixed in ItemFrame is ignored
         if (!this.level.isClientSide) {
-            if (isStandEmpty) {
-                if (hasItemInHand && !this.isRemoved()) {
-                    boolean isIceCream = ForgeRegistries.ITEMS.tags().getTag(ICE_CREAM_TAG).contains(itemstack.getItem());
-                    if (isIceCream) {
-                        this.setItem(itemstack);
-                        if (!player.getAbilities().instabuild) {
-                            itemstack.shrink(1);
-                        }
-                    }
+            boolean isIceCream = ForgeRegistries.ITEMS.tags().getTag(ICE_CREAM_TAG).contains(itemstack.getItem());
+            if (isStandEmpty && hasItemInHand && !this.isRemoved() && isIceCream) {
+                this.setItem(itemstack);
+                if (!player.getAbilities().instabuild) {
+                    itemstack.shrink(1);
                 }
             } else {
                 this.playSound(this.getRotateItemSound(), 1.0F, 1.0F);

@@ -55,6 +55,7 @@ public class StandRenderer extends EntityRenderer<Stand> {
             default -> 0F;
         };
         poseStack.mulPose(Vector3f.YP.rotationDegrees(degree));
+        poseStack.mulPose(Vector3f.YP.rotationDegrees((float) stand.getRotation() * 360.0F / 8.0F));
 
         ItemStack itemstack = stand.getItem();
 
