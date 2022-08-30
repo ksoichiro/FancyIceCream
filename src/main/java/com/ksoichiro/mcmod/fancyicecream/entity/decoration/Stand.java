@@ -1,8 +1,8 @@
 package com.ksoichiro.mcmod.fancyicecream.entity.decoration;
 
 import com.ksoichiro.mcmod.fancyicecream.entity.FancyIceCreamModEntityType;
+import com.ksoichiro.mcmod.fancyicecream.main.FancyIceCreamMod;
 import com.ksoichiro.mcmod.fancyicecream.registry.FancyIceCreamModItems;
-import com.mojang.logging.LogUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -17,31 +17,28 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.decoration.ItemFrame;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.entity.vehicle.Boat;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.registries.ForgeRegistries;
 import org.apache.commons.lang3.Validate;
-import org.slf4j.Logger;
 
 public class Stand extends ItemFrame {
-    private static final Logger LOGGER = LogUtils.getLogger();
-    public static final TagKey<Item> ICE_CREAM_TAG = ItemTags.create(new ResourceLocation("fancyicecreammod", "ice_cream"));
+    public static final TagKey<Item> ICE_CREAM_TAG = ItemTags.create(new ResourceLocation(FancyIceCreamMod.MOD_ID, "ice_cream"));
 
+    private static final String TAG_NAME_PLACED_DIRECTION = "PlacedDirection";
+
+    // Synchronize entity data from server to client using data parameters.
+    // https://docs.minecraftforge.net/en/latest/networking/entities/#data-parameters
     private static final EntityDataAccessor<Integer> DATA_PLACED_DIRECTION = SynchedEntityData.defineId(Stand.class, EntityDataSerializers.INT);
-
-    private Direction placedDirection;
 
     public Stand(EntityType<Stand> standEntityType, Level level) {
         super(FancyIceCreamModEntityType.STAND, level);
-        LOGGER.info("Stand[{}]: non direction", this.hashCode());
     }
 
     public Stand(Level level, BlockPos pos, Direction direction, Direction placedDirection) {
         super(FancyIceCreamModEntityType.STAND, level, pos, direction);
         this.setPlacedDirection(placedDirection);
-        LOGGER.info("Stand[{}]: setPlacedDirection: {}", this.hashCode(), this.getPlacedDirection());
     }
 
     @Override
@@ -79,12 +76,10 @@ public class Stand extends ItemFrame {
 
     public Direction getPlacedDirection() {
         return Direction.from3DDataValue(this.getEntityData().get(DATA_PLACED_DIRECTION));
-//        return this.placedDirection;
     }
 
     public void setPlacedDirection(Direction direction) {
         this.getEntityData().set(DATA_PLACED_DIRECTION, direction.get3DDataValue());
-//        this.placedDirection = direction;
 
         this.setXRot(0.0F);
         this.setYRot((float)(this.direction.get2DDataValue() * 90));
@@ -94,24 +89,22 @@ public class Stand extends ItemFrame {
         this.recalculateBoundingBox();
     }
 
+    @Override
     public void addAdditionalSaveData(CompoundTag compoundTag) {
         super.addAdditionalSaveData(compoundTag);
 
-        // もうある
-        // compoundTag.putByte("Facing", (byte) this.direction.get3DDataValue());
-        // 保存したいのはdirectionではなくてplacedDirection
-        compoundTag.putByte("PlacedDirection", (byte) this.getPlacedDirection().get3DDataValue());
-        LOGGER.info("Stand[{}]: addAdditionalSaveData: {}", this.hashCode(), placedDirection);
+        compoundTag.putByte(TAG_NAME_PLACED_DIRECTION, (byte) this.getPlacedDirection().get3DDataValue());
     }
 
+    @Override
     public void readAdditionalSaveData(CompoundTag compoundTag) {
         super.readAdditionalSaveData(compoundTag);
 
         Validate.notNull(compoundTag);
-        this.setPlacedDirection(Direction.from3DDataValue(compoundTag.getByte("PlacedDirection")));
-        LOGGER.info("Stand[{}]: readAdditionalSaveData: {}", this.hashCode(), placedDirection);
+        this.setPlacedDirection(Direction.from3DDataValue(compoundTag.getByte(TAG_NAME_PLACED_DIRECTION)));
     }
 
+    @Override
     protected void defineSynchedData() {
         super.defineSynchedData();
         this.getEntityData().define(DATA_PLACED_DIRECTION, 0);
