@@ -81,13 +81,6 @@ public class Stand extends ItemFrame {
 
     public void setPlacedDirection(Direction direction) {
         this.getEntityData().set(DATA_PLACED_DIRECTION, direction.get3DDataValue());
-
-        this.setXRot(0.0F);
-        this.setYRot((float)(this.direction.get2DDataValue() * 90));
-
-        this.xRotO = this.getXRot();
-        this.yRotO = this.getYRot();
-        this.recalculateBoundingBox();
     }
 
     @Override
