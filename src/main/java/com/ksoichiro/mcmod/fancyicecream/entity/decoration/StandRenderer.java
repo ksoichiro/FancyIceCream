@@ -48,13 +48,6 @@ public class StandRenderer extends EntityRenderer<Stand> {
         poseStack.translate(-vec3.x(), -vec3.y(), -vec3.z());
         poseStack.translate((double)direction.getStepX() * 0.46875D, (double)direction.getStepY() * 0.46875D, (double)direction.getStepZ() * 0.46875D);
 
-        float degree = switch (stand.getPlacedDirection()) {
-            case SOUTH -> 180F;
-            case WEST -> 90F;
-            case EAST -> 270F;
-            default -> 0F;
-        };
-        poseStack.mulPose(Vector3f.YP.rotationDegrees(degree));
         poseStack.mulPose(Vector3f.YP.rotationDegrees((float) stand.getRotation() * 360.0F / 8.0F));
 
         ItemStack itemstack = stand.getItem();
