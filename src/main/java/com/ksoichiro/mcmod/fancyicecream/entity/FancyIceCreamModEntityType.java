@@ -9,10 +9,7 @@ import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.registries.ObjectHolder;
 
-
-@ObjectHolder(FancyIceCreamMod.MOD_ID)
 public class FancyIceCreamModEntityType {
     public static final EntityType<Stand> STAND = EntityType.Builder
         .<Stand>of(Stand::new, MobCategory.MISC)
