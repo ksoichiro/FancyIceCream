@@ -43,7 +43,6 @@ public class Stand extends ItemFrame {
         ItemStack itemstack = player.getItemInHand(hand);
         boolean isStandEmpty = this.getItem().isEmpty();
         boolean hasItemInHand = !itemstack.isEmpty();
-        // TODO fixed in ItemFrame is ignored
         if (!this.level.isClientSide) {
             boolean isIceCream = ForgeRegistries.ITEMS.tags().getTag(ICE_CREAM_TAG).contains(itemstack.getItem());
             if (isStandEmpty && hasItemInHand && !this.isRemoved() && isIceCream) {
