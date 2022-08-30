@@ -26,6 +26,7 @@ import org.apache.commons.lang3.Validate;
 public class Stand extends ItemFrame {
     public static final TagKey<Item> ICE_CREAM_TAG = ItemTags.create(new ResourceLocation(FancyIceCreamMod.MOD_ID, "ice_cream"));
 
+    // Entity data should also be saved and restored as CompoundTag.
     private static final String TAG_NAME_PLACED_DIRECTION = "PlacedDirection";
 
     // Synchronize entity data from server to client using data parameters.
