@@ -62,6 +62,16 @@ public class Stand extends ItemFrame {
     }
 
     @Override
+    public int getWidth() {
+        return 6;
+    }
+
+    @Override
+    public int getHeight() {
+        return 6;
+    }
+
+    @Override
     public ItemStack getFrameItemStack() {
         return new ItemStack(FancyIceCreamModItems.STAND);
     }
