@@ -5,6 +5,10 @@ import com.ksoichiro.mcmod.fancyicecream.main.FancyIceCreamMod;
 import com.ksoichiro.mcmod.fancyicecream.registry.FancyIceCreamModItems;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagKey;
@@ -20,6 +24,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 
 public class Stand extends ItemFrame {
     public static final TagKey<Item> ICE_CREAM_TAG = ItemTags.create(new ResourceLocation(FancyIceCreamMod.MOD_ID, "ice_cream"));
+    private static final EntityDataAccessor<Integer> DATA_ROTATION = SynchedEntityData.defineId(Stand.class, EntityDataSerializers.INT);
 
     public Stand(EntityType<Stand> standEntityType, Level level) {
         super(FancyIceCreamModEntityType.STAND, level);
@@ -36,6 +41,40 @@ public class Stand extends ItemFrame {
             default -> 0;
         };
         this.setRotation(rotation);
+    }
+
+    @Override
+    protected void defineSynchedData() {
+        super.defineSynchedData();
+        this.getEntityData().define(DATA_ROTATION, 0);
+    }
+
+    @Override
+    public int getRotation() {
+        return this.getEntityData().get(DATA_ROTATION);
+    }
+
+    @Override
+    public void setRotation(int rotation) {
+        this.getEntityData().set(DATA_ROTATION, rotation % 8);
+    }
+
+    @Override
+    public void addAdditionalSaveData(CompoundTag compoundTag) {
+        super.addAdditionalSaveData(compoundTag);
+        // Do not support
+        compoundTag.remove("ItemDropChance");
+        compoundTag.remove("Invisible");
+        compoundTag.remove("Fixed");
+        // Always use
+        compoundTag.putByte("ItemRotation", (byte)this.getRotation());
+    }
+
+    @Override
+    public void readAdditionalSaveData(CompoundTag compoundTag) {
+        super.readAdditionalSaveData(compoundTag);
+        // Always use
+        this.setRotation(compoundTag.getByte("ItemRotation"));
     }
 
     @Override
