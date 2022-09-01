@@ -2,7 +2,7 @@
   "parent": "minecraft:recipes/root",
   "rewards": {
     "recipes": [
-      "fancyicecreammod:stand"
+      "fancyicecreammod:ice_cream_stand"
     ]
   },
   "criteria": {

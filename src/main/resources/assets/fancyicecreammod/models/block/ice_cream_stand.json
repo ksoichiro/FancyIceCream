@@ -1,8 +1,8 @@
 {
   "parent": "block/block",
   "textures": {
-    "particle": "fancyicecreammod:item/stand",
-    "all": "fancyicecreammod:item/stand"
+    "particle": "fancyicecreammod:item/ice_cream_stand",
+    "all": "fancyicecreammod:item/ice_cream_stand"
   },
   "elements": [
     {

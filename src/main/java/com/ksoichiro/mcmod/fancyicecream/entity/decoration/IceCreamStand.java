@@ -22,16 +22,16 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.registries.ForgeRegistries;
 
-public class Stand extends ItemFrame {
+public class IceCreamStand extends ItemFrame {
     public static final TagKey<Item> ICE_CREAM_TAG = ItemTags.create(new ResourceLocation(FancyIceCreamMod.MOD_ID, "ice_cream"));
-    private static final EntityDataAccessor<Integer> DATA_ROTATION = SynchedEntityData.defineId(Stand.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Integer> DATA_ROTATION = SynchedEntityData.defineId(IceCreamStand.class, EntityDataSerializers.INT);
 
-    public Stand(EntityType<Stand> standEntityType, Level level) {
-        super(FancyIceCreamModEntityType.STAND, level);
+    public IceCreamStand(EntityType<IceCreamStand> standEntityType, Level level) {
+        super(FancyIceCreamModEntityType.ICE_CREAM_STAND, level);
     }
 
-    public Stand(Level level, BlockPos pos, Direction direction, Direction placedDirection) {
-        super(FancyIceCreamModEntityType.STAND, level, pos, direction);
+    public IceCreamStand(Level level, BlockPos pos, Direction direction, Direction placedDirection) {
+        super(FancyIceCreamModEntityType.ICE_CREAM_STAND, level, pos, direction);
 
         // Set base rotation from direction
         int rotation = switch (placedDirection) {
@@ -112,6 +112,6 @@ public class Stand extends ItemFrame {
 
     @Override
     public ItemStack getFrameItemStack() {
-        return new ItemStack(FancyIceCreamModItems.STAND);
+        return new ItemStack(FancyIceCreamModItems.ICE_CREAM_STAND);
     }
 }

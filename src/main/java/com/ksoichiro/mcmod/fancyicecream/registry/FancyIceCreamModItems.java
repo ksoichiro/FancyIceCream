@@ -1,9 +1,9 @@
 package com.ksoichiro.mcmod.fancyicecream.registry;
 
-import com.ksoichiro.mcmod.fancyicecream.entity.decoration.StandRenderer;
+import com.ksoichiro.mcmod.fancyicecream.entity.decoration.IceCreamStandRenderer;
 import com.ksoichiro.mcmod.fancyicecream.item.ChocoChipIceCream;
 import com.ksoichiro.mcmod.fancyicecream.item.ChocolateIceCream;
-import com.ksoichiro.mcmod.fancyicecream.item.StandItem;
+import com.ksoichiro.mcmod.fancyicecream.item.IceCreamStandItem;
 import com.ksoichiro.mcmod.fancyicecream.item.VanillaIceCream;
 import com.ksoichiro.mcmod.fancyicecream.main.FancyIceCreamMod;
 import net.minecraft.world.item.Item;
@@ -17,7 +17,7 @@ public class FancyIceCreamModItems {
     public static final Item VANILLA_ICE_CREAM = registerItem("vanilla_ice_cream", new VanillaIceCream());
     public static final Item CHOCO_CHIP_ICE_CREAM = registerItem("choco_chip_ice_cream", new ChocoChipIceCream());
     public static final Item CHOCOLATE_ICE_CREAM = registerItem("chocolate_ice_cream", new ChocolateIceCream());
-    public static final Item STAND = registerItem("stand", new StandItem());
+    public static final Item ICE_CREAM_STAND = registerItem("ice_cream_stand", new IceCreamStandItem());
 
     private static Item registerItem(String name, Item item) {
         return item.setRegistryName(name);
@@ -31,12 +31,12 @@ public class FancyIceCreamModItems {
                     VANILLA_ICE_CREAM,
                     CHOCO_CHIP_ICE_CREAM,
                     CHOCOLATE_ICE_CREAM,
-                    STAND);
+                    ICE_CREAM_STAND);
         }
 
         @SubscribeEvent
         public static void registerModels(final ModelRegistryEvent event) {
-            ForgeModelBakery.addSpecialModel(StandRenderer.STAND_LOCATION);
+            ForgeModelBakery.addSpecialModel(IceCreamStandRenderer.STAND_LOCATION);
         }
     }
 }

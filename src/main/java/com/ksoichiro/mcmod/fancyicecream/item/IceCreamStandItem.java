@@ -1,7 +1,7 @@
 package com.ksoichiro.mcmod.fancyicecream.item;
 
 import com.ksoichiro.mcmod.fancyicecream.entity.FancyIceCreamModEntityType;
-import com.ksoichiro.mcmod.fancyicecream.entity.decoration.Stand;
+import com.ksoichiro.mcmod.fancyicecream.entity.decoration.IceCreamStand;
 import com.ksoichiro.mcmod.fancyicecream.main.FancyIceCreamMod;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -16,9 +16,9 @@ import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.gameevent.GameEvent;
 
-public class StandItem extends HangingEntityItem {
-    public StandItem() {
-        super(FancyIceCreamModEntityType.STAND, new Properties().tab(FancyIceCreamMod.FANCY_ICE_CREAM_MOD_TAB));
+public class IceCreamStandItem extends HangingEntityItem {
+    public IceCreamStandItem() {
+        super(FancyIceCreamModEntityType.ICE_CREAM_STAND, new Properties().tab(FancyIceCreamMod.FANCY_ICE_CREAM_MOD_TAB));
     }
 
     @Override
@@ -32,7 +32,7 @@ public class StandItem extends HangingEntityItem {
             return InteractionResult.FAIL;
         }
         Level level = context.getLevel();
-        HangingEntity hangingentity = new Stand(level, blockpos1, direction, player.getDirection());
+        HangingEntity hangingentity = new IceCreamStand(level, blockpos1, direction, player.getDirection());
 
         CompoundTag compoundtag = itemstack.getTag();
         if (compoundtag != null) {

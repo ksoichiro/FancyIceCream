@@ -19,38 +19,38 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 
-public class StandRenderer extends EntityRenderer<Stand> {
-    public static final ResourceLocation STAND_LOCATION = new ResourceLocation(FancyIceCreamMod.MOD_ID, "block/stand");
+public class IceCreamStandRenderer extends EntityRenderer<IceCreamStand> {
+    public static final ResourceLocation STAND_LOCATION = new ResourceLocation(FancyIceCreamMod.MOD_ID, "block/ice_cream_stand");
     private final Minecraft minecraft = Minecraft.getInstance();
     private final ItemRenderer itemRenderer;
 
-    public StandRenderer(EntityRendererProvider.Context context) {
+    public IceCreamStandRenderer(EntityRendererProvider.Context context) {
         super(context);
         this.itemRenderer = context.getItemRenderer();
     }
 
     @Override
-    public ResourceLocation getTextureLocation(Stand stand) {
+    public ResourceLocation getTextureLocation(IceCreamStand iceCreamStand) {
         return STAND_LOCATION;
     }
 
     @Override
-    public void render(Stand stand, float p_115077_, float p_115078_, PoseStack poseStack, MultiBufferSource p_115080_, int p_115081_) {
-        net.minecraftforge.client.event.RenderNameplateEvent renderNameplateEvent = new net.minecraftforge.client.event.RenderNameplateEvent(stand, stand.getDisplayName(), this, poseStack, p_115080_, p_115081_, p_115078_);
+    public void render(IceCreamStand iceCreamStand, float p_115077_, float p_115078_, PoseStack poseStack, MultiBufferSource p_115080_, int p_115081_) {
+        net.minecraftforge.client.event.RenderNameplateEvent renderNameplateEvent = new net.minecraftforge.client.event.RenderNameplateEvent(iceCreamStand, iceCreamStand.getDisplayName(), this, poseStack, p_115080_, p_115081_, p_115078_);
         net.minecraftforge.common.MinecraftForge.EVENT_BUS.post(renderNameplateEvent);
-        if (renderNameplateEvent.getResult() != net.minecraftforge.eventbus.api.Event.Result.DENY && (renderNameplateEvent.getResult() == net.minecraftforge.eventbus.api.Event.Result.ALLOW || this.shouldShowName(stand))) {
-            this.renderNameTag(stand, renderNameplateEvent.getContent(), poseStack, p_115080_, p_115081_);
+        if (renderNameplateEvent.getResult() != net.minecraftforge.eventbus.api.Event.Result.DENY && (renderNameplateEvent.getResult() == net.minecraftforge.eventbus.api.Event.Result.ALLOW || this.shouldShowName(iceCreamStand))) {
+            this.renderNameTag(iceCreamStand, renderNameplateEvent.getContent(), poseStack, p_115080_, p_115081_);
         }
 
         poseStack.pushPose();
-        Direction direction = stand.getDirection();
-        Vec3 vec3 = this.getRenderOffset(stand, p_115078_);
+        Direction direction = iceCreamStand.getDirection();
+        Vec3 vec3 = this.getRenderOffset(iceCreamStand, p_115078_);
         poseStack.translate(-vec3.x(), -vec3.y(), -vec3.z());
         poseStack.translate((double)direction.getStepX() * 0.46875D, (double)direction.getStepY() * 0.46875D, (double)direction.getStepZ() * 0.46875D);
 
-        poseStack.mulPose(Vector3f.YP.rotationDegrees((float) stand.getRotation() * 360.0F / 8.0F));
+        poseStack.mulPose(Vector3f.YP.rotationDegrees((float) iceCreamStand.getRotation() * 360.0F / 8.0F));
 
-        ItemStack itemstack = stand.getItem();
+        ItemStack itemstack = iceCreamStand.getItem();
 
         BlockRenderDispatcher blockrenderdispatcher = this.minecraft.getBlockRenderer();
         ModelManager modelmanager = blockrenderdispatcher.getBlockModelShaper().getModelManager();
@@ -64,7 +64,7 @@ public class StandRenderer extends EntityRenderer<Stand> {
             poseStack.translate(0.0D, 0.1D, -0.0D);
             poseStack.mulPose(Vector3f.XP.rotationDegrees(-20.0F));
             poseStack.mulPose(Vector3f.ZP.rotationDegrees(-45.0F));
-            this.itemRenderer.renderStatic(itemstack, ItemTransforms.TransformType.FIXED, p_115081_, OverlayTexture.NO_OVERLAY, poseStack, p_115080_, stand.getId());
+            this.itemRenderer.renderStatic(itemstack, ItemTransforms.TransformType.FIXED, p_115081_, OverlayTexture.NO_OVERLAY, poseStack, p_115080_, iceCreamStand.getId());
         }
 
         poseStack.popPose();
