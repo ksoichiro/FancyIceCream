@@ -62,7 +62,8 @@ public class IceCreamStandRenderer extends EntityRenderer<IceCreamStand> {
         if (!itemstack.isEmpty()) {
             poseStack.scale(0.5F, 0.5F, 0.5F);
             poseStack.translate(0.0D, 0.1D, -0.0D);
-            poseStack.mulPose(Vector3f.XP.rotationDegrees(-20.0F));
+            poseStack.mulPose(Vector3f.YP.rotationDegrees(180.0F));
+            poseStack.mulPose(Vector3f.XP.rotationDegrees(20.0F));
             poseStack.mulPose(Vector3f.ZP.rotationDegrees(-45.0F));
             this.itemRenderer.renderStatic(itemstack, ItemTransforms.TransformType.FIXED, p_115081_, OverlayTexture.NO_OVERLAY, poseStack, p_115080_, iceCreamStand.getId());
         }
