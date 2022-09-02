@@ -15,6 +15,7 @@ public class FancyIceCreamModItems {
     public static final Item APPLE_ICE_CREAM = registerItem("apple_ice_cream", new AppleIceCream());
     public static final Item CHOCO_CHIP_ICE_CREAM = registerItem("choco_chip_ice_cream", new ChocoChipIceCream());
     public static final Item CHOCOLATE_ICE_CREAM = registerItem("chocolate_ice_cream", new ChocolateIceCream());
+    public static final Item GLOW_BERRY_ICE_CREAM = registerItem("glow_berry_ice_cream", new GlowBerryIceCream());
     public static final Item ICE_CREAM_STAND = registerItem("ice_cream_stand", new IceCreamStandItem());
 
     private static Item registerItem(String name, Item item) {
@@ -30,6 +31,7 @@ public class FancyIceCreamModItems {
                     APPLE_ICE_CREAM,
                     CHOCO_CHIP_ICE_CREAM,
                     CHOCOLATE_ICE_CREAM,
+                    GLOW_BERRY_ICE_CREAM,
                     ICE_CREAM_STAND);
         }
 
