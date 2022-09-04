@@ -19,7 +19,7 @@ build
 
 # other
 eclipse
-versions/fancyicecream-1.18.2-forge/run
+versions/fancyicecream-*-forge/run
 
 # Files from Forge MDK
 forge*changelog.txt
