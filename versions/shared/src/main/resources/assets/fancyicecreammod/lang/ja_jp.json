@@ -1,10 +1,11 @@
 {
   "itemGroup.fancyicecreammod_tab": "ファンシーアイスクリーム",
   "item.fancyicecreammod.vanilla_ice_cream": "バニラアイスクリーム",
-  "item.fancyicecreammod.apple_ice_cream": "アップルアイスクリーム",
+  "item.fancyicecreammod.apple_ice_cream": "リンゴアイスクリーム",
   "item.fancyicecreammod.choco_chip_ice_cream": "チョコチップアイスクリーム",
   "item.fancyicecreammod.chocolate_ice_cream": "チョコレートアイスクリーム",
   "item.fancyicecreammod.glow_berry_ice_cream": "グローベリーアイスクリーム",
+  "item.fancyicecreammod.golden_apple_ice_cream": "金のリンゴアイスクリーム",
   "item.fancyicecreammod.honey_ice_cream": "ハチミツアイスクリーム",
   "item.fancyicecreammod.ice_cream_stand": "アイスクリームスタンド"
 }
