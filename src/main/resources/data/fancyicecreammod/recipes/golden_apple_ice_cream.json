@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "A",
+    "B"
+  ],
+  "key": {
+    "A": {
+      "item": "minecraft:golden_apple"
+    },
+    "B": {
+      "item": "fancyicecreammod:vanilla_ice_cream"
+    }
+  },
+  "result": {
+    "item": "fancyicecreammod:golden_apple_ice_cream",
+    "count": 1
+  }
+}
