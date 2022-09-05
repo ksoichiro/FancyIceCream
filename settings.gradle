@@ -1,0 +1,3 @@
+apply from: "./gradle/props.gradle"
+
+rootProject.name = "${modId}-${minecraftVersion}"
