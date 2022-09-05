@@ -6,9 +6,10 @@ import com.ksoichiro.mcmod.fancyicecream.main.FancyIceCreamMod;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraftforge.client.event.EntityRenderersEvent;
-import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraftforge.registries.RegisterEvent;
 
 public class FancyIceCreamModEntityType {
     public static final EntityType<IceCreamStand> ICE_CREAM_STAND = EntityType.Builder
@@ -21,10 +22,9 @@ public class FancyIceCreamModEntityType {
     @Mod.EventBusSubscriber(modid = FancyIceCreamMod.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
     public static class Registerer {
         @SubscribeEvent
-        public static void registerEntityType(final RegistryEvent.Register<EntityType<?>> event) {
-            ICE_CREAM_STAND.setRegistryName("ice_cream_stand");
-
-            event.getRegistry().registerAll(ICE_CREAM_STAND);
+        public static void registerEntityType(final RegisterEvent event) {
+            event.register(ForgeRegistries.Keys.ENTITY_TYPES,
+                    helper -> helper.register("ice_cream_stand", ICE_CREAM_STAND));
         }
         @SubscribeEvent
         public static void registerRenderer(final EntityRenderersEvent.RegisterRenderers event) {

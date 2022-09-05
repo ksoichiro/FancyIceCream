@@ -21,9 +21,12 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraftforge.registries.RegistryObject;
 
 public class IceCreamStand extends ItemFrame {
     public static final TagKey<Item> ICE_CREAM_TAG = ItemTags.create(new ResourceLocation(FancyIceCreamMod.MOD_ID, "ice_cream"));
+    public static final RegistryObject<Item> ICE_CREAM_STAND = RegistryObject.create(new ResourceLocation("fancyicecreammod:ice_cream_stand"), ForgeRegistries.ITEMS);
+
     private static final EntityDataAccessor<Integer> DATA_ROTATION = SynchedEntityData.defineId(IceCreamStand.class, EntityDataSerializers.INT);
 
     public IceCreamStand(EntityType<IceCreamStand> standEntityType, Level level) {
@@ -112,6 +115,6 @@ public class IceCreamStand extends ItemFrame {
 
     @Override
     public ItemStack getFrameItemStack() {
-        return new ItemStack(FancyIceCreamModItems.ICE_CREAM_STAND);
+        return new ItemStack(ICE_CREAM_STAND.get());
     }
 }
