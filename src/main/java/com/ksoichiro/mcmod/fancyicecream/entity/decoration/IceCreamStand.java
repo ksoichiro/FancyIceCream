@@ -27,11 +27,11 @@ public class IceCreamStand extends ItemFrame {
     private static final EntityDataAccessor<Integer> DATA_ROTATION = SynchedEntityData.defineId(IceCreamStand.class, EntityDataSerializers.INT);
 
     public IceCreamStand(EntityType<IceCreamStand> standEntityType, Level level) {
-        super(FancyIceCreamModEntityType.ICE_CREAM_STAND, level);
+        super(FancyIceCreamModEntityType.ICE_CREAM_STAND.get(), level);
     }
 
     public IceCreamStand(Level level, BlockPos pos, Direction direction, Direction placedDirection) {
-        super(FancyIceCreamModEntityType.ICE_CREAM_STAND, level, pos, direction);
+        super(FancyIceCreamModEntityType.ICE_CREAM_STAND.get(), level, pos, direction);
 
         // Set base rotation from direction
         int rotation = switch (placedDirection) {
@@ -112,6 +112,6 @@ public class IceCreamStand extends ItemFrame {
 
     @Override
     public ItemStack getFrameItemStack() {
-        return new ItemStack(FancyIceCreamModItems.ICE_CREAM_STAND);
+        return new ItemStack(FancyIceCreamModItems.ICE_CREAM_STAND.get());
     }
 }

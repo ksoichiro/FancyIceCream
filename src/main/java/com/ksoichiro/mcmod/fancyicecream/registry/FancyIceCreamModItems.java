@@ -1,47 +1,32 @@
 package com.ksoichiro.mcmod.fancyicecream.registry;
 
-import com.ksoichiro.mcmod.fancyicecream.entity.decoration.IceCreamStandRenderer;
 import com.ksoichiro.mcmod.fancyicecream.item.*;
 import com.ksoichiro.mcmod.fancyicecream.main.FancyIceCreamMod;
 import net.minecraft.world.item.Item;
-import net.minecraftforge.client.event.ModelRegistryEvent;
-import net.minecraftforge.client.model.ForgeModelBakery;
-import net.minecraftforge.event.RegistryEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.eventbus.api.IEventBus;
+import net.minecraftforge.registries.DeferredRegister;
+import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraftforge.registries.RegistryObject;
+
+import java.util.function.Supplier;
 
 public class FancyIceCreamModItems {
-    public static final Item VANILLA_ICE_CREAM = registerItem("vanilla_ice_cream", new VanillaIceCream());
-    public static final Item APPLE_ICE_CREAM = registerItem("apple_ice_cream", new AppleIceCream());
-    public static final Item CHOCO_CHIP_ICE_CREAM = registerItem("choco_chip_ice_cream", new ChocoChipIceCream());
-    public static final Item CHOCOLATE_ICE_CREAM = registerItem("chocolate_ice_cream", new ChocolateIceCream());
-    public static final Item GLOW_BERRY_ICE_CREAM = registerItem("glow_berry_ice_cream", new GlowBerryIceCream());
-    public static final Item GOLDEN_APPLE_ICE_CREAM = registerItem("golden_apple_ice_cream", new GoldenAppleIceCream());
-    public static final Item HONEY_ICE_CREAM = registerItem("honey_ice_cream", new HoneyIceCream());
-    public static final Item ICE_CREAM_STAND = registerItem("ice_cream_stand", new IceCreamStandItem());
+    private static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, FancyIceCreamMod.MOD_ID);
 
-    private static Item registerItem(String name, Item item) {
-        return item.setRegistryName(name);
+    public static final RegistryObject<Item> VANILLA_ICE_CREAM = registerItem("vanilla_ice_cream", VanillaIceCream::new);
+    public static final RegistryObject<Item> APPLE_ICE_CREAM = registerItem("apple_ice_cream", AppleIceCream::new);
+    public static final RegistryObject<Item> CHOCO_CHIP_ICE_CREAM = registerItem("choco_chip_ice_cream", ChocoChipIceCream::new);
+    public static final RegistryObject<Item> CHOCOLATE_ICE_CREAM = registerItem("chocolate_ice_cream", ChocolateIceCream::new);
+    public static final RegistryObject<Item> GLOW_BERRY_ICE_CREAM = registerItem("glow_berry_ice_cream", GlowBerryIceCream::new);
+    public static final RegistryObject<Item> GOLDEN_APPLE_ICE_CREAM = registerItem("golden_apple_ice_cream", GoldenAppleIceCream::new);
+    public static final RegistryObject<Item> HONEY_ICE_CREAM = registerItem("honey_ice_cream", HoneyIceCream::new);
+    public static final RegistryObject<Item> ICE_CREAM_STAND = registerItem("ice_cream_stand", IceCreamStandItem::new);
+
+    public static void register(IEventBus eventBus) {
+        ITEMS.register(eventBus);
     }
 
-    @Mod.EventBusSubscriber(modid = FancyIceCreamMod.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
-    public static class Registerer {
-        @SubscribeEvent
-        public static void registerItem(final RegistryEvent.Register<Item> event) {
-            event.getRegistry().registerAll(
-                    VANILLA_ICE_CREAM,
-                    APPLE_ICE_CREAM,
-                    CHOCO_CHIP_ICE_CREAM,
-                    CHOCOLATE_ICE_CREAM,
-                    GLOW_BERRY_ICE_CREAM,
-                    GOLDEN_APPLE_ICE_CREAM,
-                    HONEY_ICE_CREAM,
-                    ICE_CREAM_STAND);
-        }
-
-        @SubscribeEvent
-        public static void registerModels(final ModelRegistryEvent event) {
-            ForgeModelBakery.addSpecialModel(IceCreamStandRenderer.STAND_LOCATION);
-        }
+    private static RegistryObject<Item> registerItem(String name, Supplier<Item> item) {
+        return ITEMS.register(name, item);
     }
 }

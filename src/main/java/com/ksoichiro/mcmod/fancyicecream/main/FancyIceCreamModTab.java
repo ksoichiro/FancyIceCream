@@ -11,6 +11,6 @@ public class FancyIceCreamModTab extends CreativeModeTab {
 
     @Override
     public ItemStack makeIcon() {
-        return new ItemStack(FancyIceCreamModItems.VANILLA_ICE_CREAM);
+        return new ItemStack(FancyIceCreamModItems.VANILLA_ICE_CREAM.get());
     }
 }
