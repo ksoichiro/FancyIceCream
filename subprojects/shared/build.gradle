@@ -1,10 +1,53 @@
+buildscript {
+    repositories {
+        // These repositories are only for Gradle plugins, put any other repositories in the repository block further below
+        maven { url = 'https://maven.minecraftforge.net' }
+        mavenCentral()
+    }
+    dependencies {
+        classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '5.1.+', changing: true
+    }
+}
 // Only edit below this line, the above code adds and enables the necessary things for Forge to be setup.
 plugins {
     id 'java'
     id 'eclipse'
     id 'maven-publish'
 }
+apply plugin: 'net.minecraftforge.gradle'
+apply from: "${rootProject.projectDir}/gradle/props.gradle"
+
+java.toolchain.languageVersion = JavaLanguageVersion.of(17)
+minecraft {
+    mappings channel: 'official', version: minecraftVersion
+    runs {
+        client {
+            mods {
+                "${modId}" {
+                    source sourceSets.main
+                }
+            }
+        }
+        server {
+            mods {
+                "${modId}" {
+                    source sourceSets.main
+                }
+            }
+        }
+    }
+}
 
 tasks.withType(JavaCompile).configureEach {
     options.encoding = 'UTF-8' // Use the UTF-8 charset for Java compilation
+}
+
+//repositories {
+//    // These repositories are only for Gradle plugins, put any other repositories in the repository block further below
+//    maven { url = 'https://maven.minecraftforge.net' }
+//    mavenCentral()
+//}
+
+dependencies {
+    minecraft "net.minecraftforge:forge:${minecraftVersion}-${forgeVersion}"
 }
