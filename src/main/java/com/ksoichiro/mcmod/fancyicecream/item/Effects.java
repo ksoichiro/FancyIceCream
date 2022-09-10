@@ -1,19 +1,18 @@
 package com.ksoichiro.mcmod.fancyicecream.item;
 
-import net.minecraft.world.effect.MobEffect;
-import net.minecraft.world.effect.MobEffects;
+import net.minecraft.potion.Effect;
 
 public enum Effects {
-    REGENERATION(MobEffects.REGENERATION),
-    ABSORPTION(MobEffects.ABSORPTION);
+    REGENERATION(net.minecraft.potion.Effects.REGENERATION),
+    ABSORPTION(net.minecraft.potion.Effects.ABSORPTION);
 
-    private MobEffect effect;
+    private Effect effect;
 
-    Effects(MobEffect effect) {
+    Effects(Effect effect) {
         this.effect = effect;
     }
 
-    public MobEffect getMobEffect() {
+    public Effect getMobEffect() {
         return this.effect;
     }
 }

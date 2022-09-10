@@ -1,10 +1,10 @@
 package com.ksoichiro.mcmod.fancyicecream.main;
 
 import com.ksoichiro.mcmod.fancyicecream.registry.FancyIceCreamModItems;
-import net.minecraft.world.item.CreativeModeTab;
-import net.minecraft.world.item.ItemStack;
+import net.minecraft.item.ItemGroup;
+import net.minecraft.item.ItemStack;
 
-public class FancyIceCreamModTab extends CreativeModeTab {
+public class FancyIceCreamModTab extends ItemGroup {
     public FancyIceCreamModTab() {
         super("fancyicecreammod_tab");
     }

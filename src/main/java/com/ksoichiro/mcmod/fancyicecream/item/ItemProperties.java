@@ -1,7 +1,7 @@
 package com.ksoichiro.mcmod.fancyicecream.item;
 
 import com.ksoichiro.mcmod.fancyicecream.main.FancyIceCreamMod;
-import net.minecraft.world.item.Item;
+import net.minecraft.item.Item;
 
 public class ItemProperties extends Item.Properties {
     public ItemProperties() {

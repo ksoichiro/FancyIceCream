@@ -1,13 +1,13 @@
 package com.ksoichiro.mcmod.fancyicecream.item;
 
-import net.minecraft.world.effect.MobEffectInstance;
-import net.minecraft.world.food.FoodProperties;
+import net.minecraft.item.Food;
+import net.minecraft.potion.EffectInstance;
 
 public class FoodBuilder {
-    private final FoodProperties.Builder builder;
+    private final Food.Builder builder;
 
     public FoodBuilder() {
-        this.builder = new FoodProperties.Builder();
+        this.builder = new Food.Builder();
     }
 
     public FoodBuilder nutrition(int nutrition) {
@@ -22,7 +22,7 @@ public class FoodBuilder {
 
     public FoodBuilder effect(Effects effect, int duration, int amplifier, float probability) {
         this.builder.effect(
-                () -> new MobEffectInstance(effect.getMobEffect(), duration, amplifier),
+                () -> new EffectInstance(effect.getMobEffect(), duration, amplifier),
                 probability);
         return this;
     }
@@ -32,7 +32,7 @@ public class FoodBuilder {
         return this;
     }
 
-    public FoodProperties build() {
+    public Food build() {
         return this.builder.build();
     }
 }
