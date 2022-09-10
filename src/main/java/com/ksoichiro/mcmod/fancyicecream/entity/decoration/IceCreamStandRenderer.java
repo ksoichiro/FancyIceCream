@@ -36,10 +36,10 @@ public class IceCreamStandRenderer extends EntityRenderer<IceCreamStand> {
 
     @Override
     public void render(IceCreamStand iceCreamStand, float p_115077_, float p_115078_, PoseStack poseStack, MultiBufferSource p_115080_, int p_115081_) {
-        net.minecraftforge.client.event.RenderNameplateEvent renderNameplateEvent = new net.minecraftforge.client.event.RenderNameplateEvent(iceCreamStand, iceCreamStand.getDisplayName(), this, poseStack, p_115080_, p_115081_, p_115078_);
-        net.minecraftforge.common.MinecraftForge.EVENT_BUS.post(renderNameplateEvent);
-        if (renderNameplateEvent.getResult() != net.minecraftforge.eventbus.api.Event.Result.DENY && (renderNameplateEvent.getResult() == net.minecraftforge.eventbus.api.Event.Result.ALLOW || this.shouldShowName(iceCreamStand))) {
-            this.renderNameTag(iceCreamStand, renderNameplateEvent.getContent(), poseStack, p_115080_, p_115081_);
+        var renderNameTagEvent = new net.minecraftforge.client.event.RenderNameTagEvent(iceCreamStand, iceCreamStand.getDisplayName(), this, poseStack, p_115080_, p_115081_, p_115078_);
+        net.minecraftforge.common.MinecraftForge.EVENT_BUS.post(renderNameTagEvent);
+        if (renderNameTagEvent.getResult() != net.minecraftforge.eventbus.api.Event.Result.DENY && (renderNameTagEvent.getResult() == net.minecraftforge.eventbus.api.Event.Result.ALLOW || this.shouldShowName(iceCreamStand))) {
+            this.renderNameTag(iceCreamStand, renderNameTagEvent.getContent(), poseStack, p_115080_, p_115081_);
         }
 
         poseStack.pushPose();

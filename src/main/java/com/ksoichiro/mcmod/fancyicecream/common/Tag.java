@@ -7,10 +7,9 @@ import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.IForgeRegistry;
-import net.minecraftforge.registries.IForgeRegistryEntry;
 import net.minecraftforge.registries.tags.ITagManager;
 
-public class Tag<T extends IForgeRegistryEntry<T>> {
+public class Tag<T> {
     private TagKey<T> tag;
     private IForgeRegistry<T> registry;
 
