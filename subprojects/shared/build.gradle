@@ -1,0 +1,10 @@
+// Only edit below this line, the above code adds and enables the necessary things for Forge to be setup.
+plugins {
+    id 'java'
+    id 'eclipse'
+    id 'maven-publish'
+}
+
+tasks.withType(JavaCompile).configureEach {
+    options.encoding = 'UTF-8' // Use the UTF-8 charset for Java compilation
+}
