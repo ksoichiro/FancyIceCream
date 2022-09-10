@@ -14,7 +14,7 @@ plugins {
     id 'maven-publish'
 }
 apply plugin: 'net.minecraftforge.gradle'
-apply from: "${project.projectDir}/gradle/props.gradle"
+apply from: "${rootProject.projectDir}/gradle/props.gradle"
 
 version = '0.0.1'
 group = 'com.ksoichiro.mcmod.fancyicecream' // http://maven.apache.org/guides/mini/guide-naming-conventions.html
@@ -46,7 +46,7 @@ minecraft {
     // These can be tweaked, removed, or duplicated as needed.
     runs {
         client {
-            workingDirectory project.file("run/${minecraftVersion}")
+            workingDirectory rootProject.file("run/${minecraftVersion}")
 
             // Recommended logging data for a userdev environment
             // The markers can be added/remove as needed separated by commas.
@@ -71,7 +71,7 @@ minecraft {
         }
 
         server {
-            workingDirectory project.file('run')
+            workingDirectory rootProject.file('run')
 
             property 'forge.logging.markers', 'REGISTRIES'
 
@@ -91,7 +91,7 @@ minecraft {
         // By default, the server will crash when no gametests are provided.
         // The gametest system is also enabled by default for other run configs under the /test command.
         gameTestServer {
-            workingDirectory project.file('run')
+            workingDirectory rootProject.file('run')
 
             // Recommended logging data for a userdev environment
             // The markers can be added/remove as needed separated by commas.
@@ -116,7 +116,7 @@ minecraft {
         }
 
         data {
-            workingDirectory project.file('run')
+            workingDirectory rootProject.file('run')
 
             property 'forge.logging.markers', 'REGISTRIES'
 
@@ -195,7 +195,7 @@ publishing {
     }
     repositories {
         maven {
-            url "file://${project.projectDir}/mcmodsrepo"
+            url "file://${rootProject.projectDir}/mcmodsrepo"
         }
     }
 }
