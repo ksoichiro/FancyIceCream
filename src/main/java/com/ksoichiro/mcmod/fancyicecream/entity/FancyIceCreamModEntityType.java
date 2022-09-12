@@ -21,10 +21,10 @@ public class FancyIceCreamModEntityType {
 
     public static final RegistryObject<EntityType<IceCreamStand>> ICE_CREAM_STAND = ENTITY_TYPE.register("ice_cream_stand", () ->
         EntityType.Builder
-            .<IceCreamStand>of(IceCreamStand::new, EntityClassification.MISC)
-            .sized(0.5F, 0.5F)
-            .clientTrackingRange(10)
-            .updateInterval(Integer.MAX_VALUE)
+            .<IceCreamStand>create(IceCreamStand::new, EntityClassification.MISC)
+            .size(0.5F, 0.5F)
+            .setTrackingRange(10)
+            .setUpdateInterval(Integer.MAX_VALUE)
             .build("ice_cream_stand"));
 
     public static void register(IEventBus eventBus) {

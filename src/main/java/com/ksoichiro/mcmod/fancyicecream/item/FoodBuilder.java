@@ -11,12 +11,12 @@ public class FoodBuilder {
     }
 
     public FoodBuilder nutrition(int nutrition) {
-        this.builder.nutrition(nutrition);
+        this.builder.hunger(nutrition);
         return this;
     }
 
     public FoodBuilder saturationMod(float saturationMod) {
-        this.builder.saturationMod(saturationMod);
+        this.builder.saturation(saturationMod);
         return this;
     }
 
@@ -28,7 +28,7 @@ public class FoodBuilder {
     }
 
     public FoodBuilder alwaysEat() {
-        this.builder.alwaysEat();
+        this.builder.setAlwaysEdible();
         return this;
     }
 

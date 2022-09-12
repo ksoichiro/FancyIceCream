@@ -16,34 +16,34 @@ import net.minecraft.world.World;
 
 public class IceCreamStandItem extends HangingEntityItem {
     public IceCreamStandItem() {
-        super(null, new Properties().tab(FancyIceCreamMod.FANCY_ICE_CREAM_MOD_TAB));
+        super(null, new Properties().group(FancyIceCreamMod.FANCY_ICE_CREAM_MOD_TAB));
     }
 
     @Override
-    public ActionResultType useOn(ItemUseContext context) {
-        BlockPos blockpos = context.getClickedPos();
-        Direction direction = context.getClickedFace();
-        BlockPos blockpos1 = blockpos.relative(direction);
+    public ActionResultType onItemUse(ItemUseContext context) {
+        BlockPos blockpos = context.getPos();
+        Direction direction = context.getFace();
+        BlockPos blockpos1 = blockpos.offset(direction);
         PlayerEntity player = context.getPlayer();
-        ItemStack itemstack = context.getItemInHand();
+        ItemStack itemstack = context.getItem();
         if (player != null && !this.mayPlace(player, direction, itemstack, blockpos1)) {
             return ActionResultType.FAIL;
         }
-        World level = context.getLevel();
-        HangingEntity hangingentity = new IceCreamStand(level, blockpos1, direction, player.getDirection());
+        World level = context.getWorld();
+        HangingEntity hangingentity = new IceCreamStand(level, blockpos1, direction, player.getHorizontalFacing());
 
         CompoundNBT compoundtag = itemstack.getTag();
         if (compoundtag != null) {
-            EntityType.updateCustomEntityTag(level, player, hangingentity, compoundtag);
+            EntityType.applyItemNBT(level, player, hangingentity, compoundtag);
         }
 
-        if (hangingentity.survives()) {
-            if (!level.isClientSide) {
-                hangingentity.playPlacementSound();
-                level.addFreshEntity(hangingentity);
+        if (hangingentity.onValidSurface()) {
+            if (!level.isRemote) {
+                hangingentity.playPlaceSound();
+                level.addEntity(hangingentity);
             }
             itemstack.shrink(1);
-            return ActionResultType.sidedSuccess(level.isClientSide);
+            return ActionResultType.func_233537_a_(level.isRemote);
         }
         return ActionResultType.CONSUME;
     }
@@ -51,6 +51,6 @@ public class IceCreamStandItem extends HangingEntityItem {
     protected boolean mayPlace(PlayerEntity player, Direction clickedFaceDirection, ItemStack itemStack, BlockPos blockPos) {
         return clickedFaceDirection == Direction.UP
                 && !World.isOutsideBuildHeight(blockPos)
-                && player.mayUseItemAt(blockPos, clickedFaceDirection, itemStack);
+                && player.canPlayerEdit(blockPos, clickedFaceDirection, itemStack);
     }
 }

@@ -5,6 +5,6 @@ import net.minecraft.item.Item;
 
 public class ItemProperties extends Item.Properties {
     public ItemProperties() {
-        this.tab(FancyIceCreamMod.FANCY_ICE_CREAM_MOD_TAB);
+        this.group(FancyIceCreamMod.FANCY_ICE_CREAM_MOD_TAB);
     }
 }

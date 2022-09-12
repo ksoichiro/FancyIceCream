@@ -29,44 +29,44 @@ public class IceCreamStandRenderer extends EntityRenderer<IceCreamStand> {
     }
 
     @Override
-    public ResourceLocation getTextureLocation(IceCreamStand iceCreamStand) {
+    public ResourceLocation getEntityTexture(IceCreamStand iceCreamStand) {
         return STAND_LOCATION;
     }
 
     @Override
-    public void render(IceCreamStand iceCreamStand, float p_115077_, float p_115078_, MatrixStack poseStack, IRenderTypeBuffer p_115080_, int p_115081_) {
-        net.minecraftforge.client.event.RenderNameplateEvent renderNameplateEvent = new net.minecraftforge.client.event.RenderNameplateEvent(iceCreamStand, iceCreamStand.getDisplayName(), this, poseStack, p_115080_, p_115081_, p_115078_);
+    public void render(IceCreamStand iceCreamStand, float entityYaw, float partialTicks, MatrixStack poseStack, IRenderTypeBuffer bufferIn, int packedLightIn) {
+        net.minecraftforge.client.event.RenderNameplateEvent renderNameplateEvent = new net.minecraftforge.client.event.RenderNameplateEvent(iceCreamStand, iceCreamStand.getDisplayName(), this, poseStack, bufferIn, packedLightIn);
         net.minecraftforge.common.MinecraftForge.EVENT_BUS.post(renderNameplateEvent);
-        if (renderNameplateEvent.getResult() != net.minecraftforge.eventbus.api.Event.Result.DENY && (renderNameplateEvent.getResult() == net.minecraftforge.eventbus.api.Event.Result.ALLOW || this.shouldShowName(iceCreamStand))) {
-            this.renderNameTag(iceCreamStand, renderNameplateEvent.getContent(), poseStack, p_115080_, p_115081_);
+        if (renderNameplateEvent.getResult() != net.minecraftforge.eventbus.api.Event.Result.DENY && (renderNameplateEvent.getResult() == net.minecraftforge.eventbus.api.Event.Result.ALLOW || this.canRenderName(iceCreamStand))) {
+            this.renderName(iceCreamStand, renderNameplateEvent.getContent(), poseStack, bufferIn, packedLightIn);
         }
 
-        poseStack.pushPose();
-        Direction direction = iceCreamStand.getDirection();
-        Vector3d vec3 = this.getRenderOffset(iceCreamStand, p_115078_);
-        poseStack.translate(-vec3.x(), -vec3.y(), -vec3.z());
-        poseStack.translate((double)direction.getStepX() * 0.46875D, (double)direction.getStepY() * 0.46875D, (double)direction.getStepZ() * 0.46875D);
+        poseStack.push();
+        Direction direction = iceCreamStand.getHorizontalFacing();
+        Vector3d vec3 = this.getRenderOffset(iceCreamStand, partialTicks);
+        poseStack.translate(-vec3.getX(), -vec3.getY(), -vec3.getZ());
+        poseStack.translate((double)direction.getXOffset() * 0.46875D, (double)direction.getYOffset() * 0.46875D, (double)direction.getZOffset() * 0.46875D);
 
-        poseStack.mulPose(Vector3f.YP.rotationDegrees((float) iceCreamStand.getRotation() * 360.0F / 8.0F));
+        poseStack.rotate(Vector3f.YP.rotationDegrees((float) iceCreamStand.getRotation() * 360.0F / 8.0F));
 
-        ItemStack itemstack = iceCreamStand.getItem();
+        ItemStack itemstack = iceCreamStand.getDisplayedItem();
 
-        BlockRendererDispatcher blockrenderdispatcher = this.minecraft.getBlockRenderer();
-        ModelManager modelmanager = blockrenderdispatcher.getBlockModelShaper().getModelManager();
-        poseStack.pushPose();
+        BlockRendererDispatcher blockrenderdispatcher = this.minecraft.getBlockRendererDispatcher();
+        ModelManager modelmanager = blockrenderdispatcher.getBlockModelShapes().getModelManager();
+        poseStack.push();
         poseStack.translate(-0.5D, -0.5D, -0.5D);
-        blockrenderdispatcher.getModelRenderer().renderModel(poseStack.last(), p_115080_.getBuffer(Atlases.solidBlockSheet()), (BlockState)null, modelmanager.getModel(STAND_LOCATION), 1.0F, 1.0F, 1.0F, p_115081_, OverlayTexture.NO_OVERLAY);
-        poseStack.popPose();
+        blockrenderdispatcher.getBlockModelRenderer().renderModelBrightnessColor(poseStack.getLast(), bufferIn.getBuffer(Atlases.getSolidBlockType()), (BlockState)null, modelmanager.getModel(STAND_LOCATION), 1.0F, 1.0F, 1.0F, packedLightIn, OverlayTexture.NO_OVERLAY);
+        poseStack.pop();
 
         if (!itemstack.isEmpty()) {
             poseStack.scale(0.5F, 0.5F, 0.5F);
             poseStack.translate(0.0D, 0.1D, -0.0D);
-            poseStack.mulPose(Vector3f.YP.rotationDegrees(180.0F));
-            poseStack.mulPose(Vector3f.XP.rotationDegrees(20.0F));
-            poseStack.mulPose(Vector3f.ZP.rotationDegrees(-45.0F));
-            this.itemRenderer.renderStatic(itemstack, ItemCameraTransforms.TransformType.FIXED, p_115081_, OverlayTexture.NO_OVERLAY, poseStack, p_115080_);
+            poseStack.rotate(Vector3f.YP.rotationDegrees(180.0F));
+            poseStack.rotate(Vector3f.XP.rotationDegrees(20.0F));
+            poseStack.rotate(Vector3f.ZP.rotationDegrees(-45.0F));
+            this.itemRenderer.renderItem(itemstack, ItemCameraTransforms.TransformType.FIXED, packedLightIn, OverlayTexture.NO_OVERLAY, poseStack, bufferIn);
         }
 
-        poseStack.popPose();
+        poseStack.pop();
     }
 }

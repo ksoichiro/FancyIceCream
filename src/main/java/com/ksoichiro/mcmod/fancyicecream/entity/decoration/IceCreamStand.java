@@ -16,12 +16,10 @@ import net.minecraft.network.PacketBuffer;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
-import net.minecraft.tags.ItemTags;
 import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.GameRules;
 import net.minecraft.world.World;
-import net.minecraftforge.common.Tags;
 import net.minecraftforge.fml.common.registry.IEntityAdditionalSpawnData;
 import net.minecraftforge.fml.network.NetworkHooks;
 
@@ -29,7 +27,7 @@ import javax.annotation.Nullable;
 
 public class IceCreamStand extends ItemFrameEntity implements IEntityAdditionalSpawnData {
     public static final Tag<Item> ICE_CREAM_TAG = Tag.createItemTag("ice_cream");
-    private static final DataParameter<Integer> DATA_ROTATION = EntityDataManager.defineId(IceCreamStand.class, DataSerializers.INT);
+    private static final DataParameter<Integer> DATA_ROTATION = EntityDataManager.createKey(IceCreamStand.class, DataSerializers.VARINT);
 
     public IceCreamStand(EntityType<IceCreamStand> standEntityType, World level) {
         super(FancyIceCreamModEntityType.ICE_CREAM_STAND.get(), level);
@@ -37,8 +35,8 @@ public class IceCreamStand extends ItemFrameEntity implements IEntityAdditionalS
 
     public IceCreamStand(World level, BlockPos pos, Direction direction, Direction placedDirection) {
         super(FancyIceCreamModEntityType.ICE_CREAM_STAND.get(), level);
-        this.pos = pos;
-        this.setDirection(direction);
+        this.hangingPosition = pos;
+        this.updateFacingWithBoundingBox(direction);
 
         // Set base rotation from direction
         int rotation;
@@ -56,35 +54,35 @@ public class IceCreamStand extends ItemFrameEntity implements IEntityAdditionalS
                 rotation = 0;
                 break;
         };
-        this.setRotation(rotation);
+        this.setItemRotation(rotation);
     }
 
     @Override
-    protected void defineSynchedData() {
-        super.defineSynchedData();
-        this.getEntityData().define(DATA_ROTATION, 0);
+    protected void registerData() {
+        super.registerData();
+        this.getDataManager().register(DATA_ROTATION, 0);
     }
 
     @Override
     public int getRotation() {
-        return this.getEntityData().get(DATA_ROTATION);
+        return this.getDataManager().get(DATA_ROTATION);
     }
 
     @Override
-    public void setRotation(int rotation) {
+    public void setItemRotation(int rotation) {
         this.setRotation(rotation, true);
     }
 
     private void setRotation(int rotation, boolean p_174865_2_) {
-        this.getEntityData().set(DATA_ROTATION, rotation % 8);
-        if (p_174865_2_ && this.pos != null) {
-            this.level.updateNeighbourForOutputSignal(this.pos, Blocks.AIR);
+        this.getDataManager().set(DATA_ROTATION, rotation % 8);
+        if (p_174865_2_ && this.hangingPosition != null) {
+            this.world.updateComparatorOutputLevel(this.hangingPosition, Blocks.AIR);
         }
     }
 
     @Override
-    public void addAdditionalSaveData(CompoundNBT compoundTag) {
-        super.addAdditionalSaveData(compoundTag);
+    public void writeAdditional(CompoundNBT compoundTag) {
+        super.writeAdditional(compoundTag);
         // Do not support
         compoundTag.remove("ItemDropChance");
         compoundTag.remove("Invisible");
@@ -94,28 +92,28 @@ public class IceCreamStand extends ItemFrameEntity implements IEntityAdditionalS
     }
 
     @Override
-    public void readAdditionalSaveData(CompoundNBT compoundTag) {
-        super.readAdditionalSaveData(compoundTag);
+    public void readAdditional(CompoundNBT compoundTag) {
+        super.readAdditional(compoundTag);
         // Always use
         // Without 2nd parameter, this is going to be stuck.
         this.setRotation(compoundTag.getByte("ItemRotation"), false);
     }
 
     @Override
-    public ActionResultType interact(PlayerEntity player, Hand hand) {
-        ItemStack itemstack = player.getItemInHand(hand);
-        boolean isStandEmpty = this.getItem().isEmpty();
+    public ActionResultType processInitialInteract(PlayerEntity player, Hand hand) {
+        ItemStack itemstack = player.getHeldItem(hand);
+        boolean isStandEmpty = this.getDisplayedItem().isEmpty();
         boolean hasItemInHand = !itemstack.isEmpty();
-        if (!this.level.isClientSide) {
-            boolean isIceCream = ICE_CREAM_TAG.contains(itemstack.getItem());
+        if (!this.world.isRemote) {
+            boolean isIceCream = ICE_CREAM_TAG.contains(itemstack.getItem()); // TODO ???
             if (isStandEmpty && hasItemInHand && this.isAlive() && isIceCream) {
-                this.setItem(itemstack);
-                if (!player.abilities.instabuild) {
+                this.setDisplayedItem(itemstack);
+                if (!player.abilities.isCreativeMode) {
                     itemstack.shrink(1);
                 }
             } else {
-                this.playSound(SoundEvents.ITEM_FRAME_ROTATE_ITEM, 1.0F, 1.0F);
-                this.setRotation(this.getRotation() + 1);
+                this.playSound(SoundEvents.ENTITY_ITEM_FRAME_ROTATE_ITEM, 1.0F, 1.0F);
+                this.setItemRotation(this.getRotation() + 1);
             }
 
             return ActionResultType.CONSUME;
@@ -124,81 +122,81 @@ public class IceCreamStand extends ItemFrameEntity implements IEntityAdditionalS
         }
     }
 
-    public boolean hurt(DamageSource damageSource, float p_70097_2_) {
+    public boolean attackEntityFrom(DamageSource damageSource, float amount) {
         if (this.isInvulnerableTo(damageSource)) {
             return false;
-        } else if (!damageSource.isExplosion() && !this.getItem().isEmpty()) {
-            if (!this.level.isClientSide) {
-                this.dropItem(damageSource.getEntity(), false);
-                this.playSound(SoundEvents.ITEM_FRAME_REMOVE_ITEM, 1.0F, 1.0F);
+        } else if (!damageSource.isExplosion() && !this.getDisplayedItem().isEmpty()) {
+            if (!this.world.isRemote) {
+                this.dropItemOrSelf(damageSource.getTrueSource(), false);
+                this.playSound(SoundEvents.ENTITY_ITEM_FRAME_REMOVE_ITEM, 1.0F, 1.0F);
             }
 
             return true;
         } else {
-            return super.hurt(damageSource, p_70097_2_);
+            return super.attackEntityFrom(damageSource, amount);
         }
     }
 
     @Override
-    public int getWidth() {
+    public int getWidthPixels() {
         return 6;
     }
 
     @Override
-    public int getHeight() {
+    public int getHeightPixels() {
         return 6;
     }
 
-    public void dropItem(@Nullable Entity entity) {
-        this.playSound(SoundEvents.ITEM_FRAME_BREAK, 1.0F, 1.0F);
-        this.dropItem(entity, true);
+    public void onBroken(@Nullable Entity entity) {
+        this.playSound(SoundEvents.ENTITY_ITEM_FRAME_BREAK, 1.0F, 1.0F);
+        this.dropItemOrSelf(entity, true);
     }
 
-    private void dropItem(@Nullable Entity entity, boolean p_146065_2_) {
-        ItemStack itemstack = this.getItem();
-        this.setItem(ItemStack.EMPTY);
-        if (!this.level.getGameRules().getBoolean(GameRules.RULE_DOENTITYDROPS)) {
+    private void dropItemOrSelf(@Nullable Entity entity, boolean p_146065_2_) {
+        ItemStack itemstack = this.getDisplayedItem();
+        this.setDisplayedItem(ItemStack.EMPTY);
+        if (!this.world.getGameRules().getBoolean(GameRules.DO_ENTITY_DROPS)) {
             if (entity == null) {
                 this.removeFramedMap(itemstack);
             }
         } else {
             if (entity instanceof PlayerEntity) {
                 PlayerEntity playerentity = (PlayerEntity)entity;
-                if (playerentity.abilities.instabuild) {
+                if (playerentity.abilities.isCreativeMode) {
                     this.removeFramedMap(itemstack);
                     return;
                 }
             }
 
             if (p_146065_2_) {
-                this.spawnAtLocation(new ItemStack(FancyIceCreamModItems.ICE_CREAM_STAND.get()));
+                this.entityDropItem(FancyIceCreamModItems.ICE_CREAM_STAND.get());
             }
 
             if (!itemstack.isEmpty()) {
                 itemstack = itemstack.copy();
                 this.removeFramedMap(itemstack);
-                this.spawnAtLocation(itemstack);
+                this.entityDropItem(itemstack);
             }
 
         }
     }
 
     private void removeFramedMap(ItemStack itemStack) {
-        itemStack.setEntityRepresentation((Entity)null);
+        itemStack.func_234695_a_((Entity)null);
     }
 
     @Override
-    public IPacket<?> getAddEntityPacket() {
+    public IPacket<?> createSpawnPacket() {
         return NetworkHooks.getEntitySpawningPacket(this);
     }
 
     @Override
     public void writeSpawnData(PacketBuffer buffer) {
-        buffer.writeInt(this.direction.get3DDataValue());
+        buffer.writeInt(this.facingDirection.getIndex());
     }
 
     @Override
     public void readSpawnData(PacketBuffer additionalData) {
-        this.setDirection(Direction.from3DDataValue(additionalData.readInt()));
+        this.updateFacingWithBoundingBox(Direction.byIndex(additionalData.readInt()));
     }
 }

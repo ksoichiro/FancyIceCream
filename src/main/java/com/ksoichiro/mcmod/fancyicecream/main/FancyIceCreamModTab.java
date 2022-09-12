@@ -10,7 +10,7 @@ public class FancyIceCreamModTab extends ItemGroup {
     }
 
     @Override
-    public ItemStack makeIcon() {
+    public ItemStack createIcon() {
         return new ItemStack(FancyIceCreamModItems.VANILLA_ICE_CREAM.get());
     }
 }
