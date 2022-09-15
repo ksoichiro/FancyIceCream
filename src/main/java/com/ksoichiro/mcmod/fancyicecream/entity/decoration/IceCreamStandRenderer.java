@@ -35,16 +35,16 @@ public class IceCreamStandRenderer extends EntityRenderer<IceCreamStand> {
     }
 
     @Override
-    public void render(IceCreamStand iceCreamStand, float p_115077_, float p_115078_, PoseStack poseStack, MultiBufferSource p_115080_, int p_115081_) {
-        var renderNameTagEvent = new net.minecraftforge.client.event.RenderNameTagEvent(iceCreamStand, iceCreamStand.getDisplayName(), this, poseStack, p_115080_, p_115081_, p_115078_);
+    public void render(IceCreamStand iceCreamStand, float entityYaw, float partialTicks, PoseStack poseStack, MultiBufferSource bufferIn, int packedLightIn) {
+        var renderNameTagEvent = new net.minecraftforge.client.event.RenderNameTagEvent(iceCreamStand, iceCreamStand.getDisplayName(), this, poseStack, bufferIn, packedLightIn, partialTicks);
         net.minecraftforge.common.MinecraftForge.EVENT_BUS.post(renderNameTagEvent);
         if (renderNameTagEvent.getResult() != net.minecraftforge.eventbus.api.Event.Result.DENY && (renderNameTagEvent.getResult() == net.minecraftforge.eventbus.api.Event.Result.ALLOW || this.shouldShowName(iceCreamStand))) {
-            this.renderNameTag(iceCreamStand, renderNameTagEvent.getContent(), poseStack, p_115080_, p_115081_);
+            this.renderNameTag(iceCreamStand, renderNameTagEvent.getContent(), poseStack, bufferIn, packedLightIn);
         }
 
         poseStack.pushPose();
         Direction direction = iceCreamStand.getDirection();
-        Vec3 vec3 = this.getRenderOffset(iceCreamStand, p_115078_);
+        Vec3 vec3 = this.getRenderOffset(iceCreamStand, partialTicks);
         poseStack.translate(-vec3.x(), -vec3.y(), -vec3.z());
         poseStack.translate((double)direction.getStepX() * 0.46875D, (double)direction.getStepY() * 0.46875D, (double)direction.getStepZ() * 0.46875D);
 
@@ -56,7 +56,7 @@ public class IceCreamStandRenderer extends EntityRenderer<IceCreamStand> {
         ModelManager modelmanager = blockrenderdispatcher.getBlockModelShaper().getModelManager();
         poseStack.pushPose();
         poseStack.translate(-0.5D, -0.5D, -0.5D);
-        blockrenderdispatcher.getModelRenderer().renderModel(poseStack.last(), p_115080_.getBuffer(Sheets.solidBlockSheet()), (BlockState)null, modelmanager.getModel(STAND_LOCATION), 1.0F, 1.0F, 1.0F, p_115081_, OverlayTexture.NO_OVERLAY);
+        blockrenderdispatcher.getModelRenderer().renderModel(poseStack.last(), bufferIn.getBuffer(Sheets.solidBlockSheet()), (BlockState)null, modelmanager.getModel(STAND_LOCATION), 1.0F, 1.0F, 1.0F, packedLightIn, OverlayTexture.NO_OVERLAY);
         poseStack.popPose();
 
         if (!itemstack.isEmpty()) {
@@ -65,7 +65,7 @@ public class IceCreamStandRenderer extends EntityRenderer<IceCreamStand> {
             poseStack.mulPose(Vector3f.YP.rotationDegrees(180.0F));
             poseStack.mulPose(Vector3f.XP.rotationDegrees(20.0F));
             poseStack.mulPose(Vector3f.ZP.rotationDegrees(-45.0F));
-            this.itemRenderer.renderStatic(itemstack, ItemTransforms.TransformType.FIXED, p_115081_, OverlayTexture.NO_OVERLAY, poseStack, p_115080_, iceCreamStand.getId());
+            this.itemRenderer.renderStatic(itemstack, ItemTransforms.TransformType.FIXED, packedLightIn, OverlayTexture.NO_OVERLAY, poseStack, bufferIn, iceCreamStand.getId());
         }
 
         poseStack.popPose();
