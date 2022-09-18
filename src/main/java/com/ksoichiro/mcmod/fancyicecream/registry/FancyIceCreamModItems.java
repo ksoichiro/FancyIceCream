@@ -40,6 +40,7 @@ public class FancyIceCreamModItems {
         @SubscribeEvent
         public static void registerModels(final ModelEvent.RegisterAdditional event) {
             event.register(new ResourceLocation(FancyIceCreamMod.MOD_ID, "block/vanilla_ice_cream"));
+            event.register(new ResourceLocation(FancyIceCreamMod.MOD_ID, "block/apple_ice_cream"));
             event.register(new ResourceLocation(FancyIceCreamMod.MOD_ID, "block/choco_chip_ice_cream"));
             event.register(new ResourceLocation(FancyIceCreamMod.MOD_ID, "block/chocolate_ice_cream"));
         }
