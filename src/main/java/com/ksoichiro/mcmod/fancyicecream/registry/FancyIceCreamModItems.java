@@ -43,6 +43,7 @@ public class FancyIceCreamModItems {
             event.register(new ResourceLocation(FancyIceCreamMod.MOD_ID, "block/apple_ice_cream"));
             event.register(new ResourceLocation(FancyIceCreamMod.MOD_ID, "block/choco_chip_ice_cream"));
             event.register(new ResourceLocation(FancyIceCreamMod.MOD_ID, "block/chocolate_ice_cream"));
+            event.register(new ResourceLocation(FancyIceCreamMod.MOD_ID, "block/glow_berry_ice_cream"));
             event.register(new ResourceLocation(FancyIceCreamMod.MOD_ID, "block/golden_apple_ice_cream"));
         }
     }
