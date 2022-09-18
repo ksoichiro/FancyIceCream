@@ -18,10 +18,10 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.util.math.vector.Vector3f;
 
-public class IceCreamStandRenderer extends EntityRenderer<IceCreamStand> {
+public class IceCreamStandRenderer<T extends IceCreamStand> extends EntityRenderer<T> {
     public static final ResourceLocation STAND_LOCATION = new ResourceLocation(FancyIceCreamMod.MOD_ID, "block/ice_cream_stand");
-    private final Minecraft minecraft = Minecraft.getInstance();
-    private final net.minecraft.client.renderer.ItemRenderer itemRenderer;
+    protected final Minecraft minecraft = Minecraft.getInstance();
+    protected final net.minecraft.client.renderer.ItemRenderer itemRenderer;
 
     public IceCreamStandRenderer(EntityRendererManager context) {
         super(context);
@@ -29,12 +29,12 @@ public class IceCreamStandRenderer extends EntityRenderer<IceCreamStand> {
     }
 
     @Override
-    public ResourceLocation getEntityTexture(IceCreamStand iceCreamStand) {
+    public ResourceLocation getEntityTexture(T iceCreamStand) {
         return STAND_LOCATION;
     }
 
     @Override
-    public void render(IceCreamStand iceCreamStand, float entityYaw, float partialTicks, MatrixStack poseStack, IRenderTypeBuffer bufferIn, int packedLightIn) {
+    public void render(T iceCreamStand, float entityYaw, float partialTicks, MatrixStack poseStack, IRenderTypeBuffer bufferIn, int packedLightIn) {
         net.minecraftforge.client.event.RenderNameplateEvent renderNameplateEvent = new net.minecraftforge.client.event.RenderNameplateEvent(iceCreamStand, iceCreamStand.getDisplayName(), this, poseStack, bufferIn, packedLightIn);
         net.minecraftforge.common.MinecraftForge.EVENT_BUS.post(renderNameplateEvent);
         if (renderNameplateEvent.getResult() != net.minecraftforge.eventbus.api.Event.Result.DENY && (renderNameplateEvent.getResult() == net.minecraftforge.eventbus.api.Event.Result.ALLOW || this.canRenderName(iceCreamStand))) {
@@ -49,15 +49,22 @@ public class IceCreamStandRenderer extends EntityRenderer<IceCreamStand> {
 
         poseStack.rotate(Vector3f.YP.rotationDegrees((float) iceCreamStand.getRotation() * 360.0F / 8.0F));
 
-        ItemStack itemstack = iceCreamStand.getDisplayedItem();
-
         BlockRendererDispatcher blockrenderdispatcher = this.minecraft.getBlockRendererDispatcher();
         ModelManager modelmanager = blockrenderdispatcher.getBlockModelShapes().getModelManager();
         poseStack.push();
         poseStack.translate(-0.5D, -0.5D, -0.5D);
-        blockrenderdispatcher.getBlockModelRenderer().renderModelBrightnessColor(poseStack.getLast(), bufferIn.getBuffer(Atlases.getSolidBlockType()), (BlockState)null, modelmanager.getModel(STAND_LOCATION), 1.0F, 1.0F, 1.0F, packedLightIn, OverlayTexture.NO_OVERLAY);
+        blockrenderdispatcher.getBlockModelRenderer().renderModelBrightnessColor(poseStack.getLast(), bufferIn.getBuffer(Atlases.getSolidBlockType()), (BlockState)null, modelmanager.getModel(getEntityTexture(iceCreamStand)), 1.0F, 1.0F, 1.0F, packedLightIn, OverlayTexture.NO_OVERLAY);
         poseStack.pop();
 
+        if (iceCreamStand.hasItems()) {
+            renderStandItems(iceCreamStand, poseStack, bufferIn, packedLightIn);
+        }
+
+        poseStack.pop();
+    }
+
+    protected void renderStandItems(T iceCreamStand, MatrixStack poseStack, IRenderTypeBuffer bufferIn, int packedLightIn) {
+        ItemStack itemstack = iceCreamStand.getItem(0);
         if (!itemstack.isEmpty()) {
             poseStack.scale(0.5F, 0.5F, 0.5F);
             poseStack.translate(0.0D, 0.1D, -0.0D);
@@ -66,7 +73,5 @@ public class IceCreamStandRenderer extends EntityRenderer<IceCreamStand> {
             poseStack.rotate(Vector3f.ZP.rotationDegrees(-45.0F));
             this.itemRenderer.renderItem(itemstack, ItemCameraTransforms.TransformType.FIXED, packedLightIn, OverlayTexture.NO_OVERLAY, poseStack, bufferIn);
         }
-
-        poseStack.pop();
     }
 }
