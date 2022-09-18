@@ -1,24 +1,18 @@
 package com.ksoichiro.mcmod.fancyicecream.entity.decoration;
 
 import com.ksoichiro.mcmod.fancyicecream.entity.FancyIceCreamModEntityType;
+import com.ksoichiro.mcmod.fancyicecream.registry.FancyIceCreamModItems;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.decoration.HangingEntity;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.registries.ForgeRegistries;
-import net.minecraftforge.registries.RegistryObject;
 
 public class TripleIceCreamStand extends IceCreamStand {
-    public static final RegistryObject<Item> TRIPLE_ICE_CREAM_STAND = RegistryObject.create(new ResourceLocation("fancyicecreammod:triple_ice_cream_stand"), ForgeRegistries.ITEMS);
-
-
     protected static final EntityDataAccessor<ItemStack> DATA_ITEM2 = SynchedEntityData.defineId(TripleIceCreamStand.class, EntityDataSerializers.ITEM_STACK);
     protected static final EntityDataAccessor<ItemStack> DATA_ITEM3 = SynchedEntityData.defineId(TripleIceCreamStand.class, EntityDataSerializers.ITEM_STACK);
 
@@ -45,6 +39,6 @@ public class TripleIceCreamStand extends IceCreamStand {
 
     @Override
     public ItemStack getFrameItemStack() {
-        return new ItemStack(TRIPLE_ICE_CREAM_STAND.get());
+        return new ItemStack(FancyIceCreamModItems.TRIPLE_ICE_CREAM_STAND.get());
     }
 }
