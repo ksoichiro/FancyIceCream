@@ -9,14 +9,19 @@ import net.minecraft.client.renderer.BlockRendererDispatcher;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererManager;
+import net.minecraft.client.renderer.model.IBakedModel;
 import net.minecraft.client.renderer.model.ItemCameraTransforms;
 import net.minecraft.client.renderer.model.ModelManager;
 import net.minecraft.client.renderer.texture.OverlayTexture;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Direction;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.util.math.vector.Vector3f;
+import net.minecraftforge.registries.ForgeRegistries;
+
+import java.util.List;
 
 public class IceCreamStandRenderer<T extends IceCreamStand> extends EntityRenderer<T> {
     public static final ResourceLocation STAND_LOCATION = new ResourceLocation(FancyIceCreamMod.MOD_ID, "block/ice_cream_stand");
@@ -64,14 +69,47 @@ public class IceCreamStandRenderer<T extends IceCreamStand> extends EntityRender
     }
 
     protected void renderStandItems(T iceCreamStand, MatrixStack poseStack, IRenderTypeBuffer bufferIn, int packedLightIn) {
-        ItemStack itemstack = iceCreamStand.getItem(0);
-        if (!itemstack.isEmpty()) {
-            poseStack.scale(0.5F, 0.5F, 0.5F);
-            poseStack.translate(0.0D, 0.1D, -0.0D);
-            poseStack.mulPose(Vector3f.YP.rotationDegrees(180.0F));
-            poseStack.mulPose(Vector3f.XP.rotationDegrees(20.0F));
-            poseStack.mulPose(Vector3f.ZP.rotationDegrees(-45.0F));
-            this.itemRenderer.renderStatic(itemstack, ItemCameraTransforms.TransformType.FIXED, packedLightIn, OverlayTexture.NO_OVERLAY, poseStack, bufferIn);
+        List<ItemStack> itemstacks = iceCreamStand.getItems();
+        double[][] translations = getTranslations();
+        for (int i = 0; i < itemstacks.size(); i++) {
+            ItemStack itemstack = itemstacks.get(i);
+            if (!itemstack.isEmpty()) {
+                poseStack.pushPose();
+                BlockRendererDispatcher blockrenderdispatcher = this.minecraft.getBlockRenderer();
+                ModelManager modelmanager = blockrenderdispatcher.getBlockModelShaper().getModelManager();
+                IBakedModel model = getBlockModel(modelmanager, itemstack);
+                if (model.equals(modelmanager.getMissingModel())) {
+                    poseStack.translate(translations[i][0] / 16.0D, translations[i][1] / 16.0D, translations[i][2] / 16.0D);
+                    poseStack.scale(0.5F, 0.5F, 0.5F);
+                    poseStack.mulPose(Vector3f.YP.rotationDegrees(180.0F));
+                    poseStack.mulPose(Vector3f.XP.rotationDegrees(20.0F));
+                    poseStack.mulPose(Vector3f.ZP.rotationDegrees(-45.0F));
+                    this.itemRenderer.renderStatic(itemstack, ItemCameraTransforms.TransformType.FIXED, packedLightIn, OverlayTexture.NO_OVERLAY, poseStack, bufferIn);
+                } else {
+                    poseStack.translate(translations[i][0] / 16.0D, translations[i][1] / 16.0D, translations[i][2] / 16.0D);
+                    poseStack.scale(0.8F, 0.8F, 0.8F);
+                    poseStack.translate(-0.5D, -0.5D, -0.5D);
+                    blockrenderdispatcher.getModelRenderer().renderModel(poseStack.last(), bufferIn.getBuffer(Atlases.solidBlockSheet()), (BlockState)null, model, 1.0F, 1.0F, 1.0F, packedLightIn, OverlayTexture.NO_OVERLAY);
+                }
+                poseStack.popPose();
+            }
         }
+    }
+
+    protected IBakedModel getBlockModel(ModelManager modelmanager, ItemStack itemStack) {
+        Item item = itemStack.getItem();
+        String namespace = "minecraft";
+        ResourceLocation itemResource = ForgeRegistries.ITEMS.getKey(item);
+        if (itemResource != null) {
+            namespace = itemResource.getNamespace();
+        }
+        ResourceLocation modelResource = new ResourceLocation(namespace, "block/" + item);
+        return modelmanager.getModel(modelResource);
+    }
+
+    protected double[][] getTranslations() {
+        return new double[][]{
+                {0.0D, 0.1D, 0.0D},
+        };
     }
 }
