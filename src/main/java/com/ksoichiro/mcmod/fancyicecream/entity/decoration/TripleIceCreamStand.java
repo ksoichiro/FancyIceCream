@@ -6,29 +6,41 @@ import com.mojang.logging.LogUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.protocol.Packet;
+import net.minecraft.network.protocol.game.ClientboundAddEntityPacket;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.decoration.ItemFrame;
+import net.minecraft.world.entity.SlotAccess;
+import net.minecraft.world.entity.decoration.HangingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.DiodeBlock;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.AABB;
+import net.minecraftforge.entity.IEntityAdditionalSpawnData;
+import net.minecraftforge.network.NetworkHooks;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
+import org.apache.commons.lang3.Validate;
 import org.slf4j.Logger;
 
 import javax.annotation.Nullable;
 
-public class TripleIceCreamStand extends ItemFrame {
+public class TripleIceCreamStand extends HangingEntity implements IEntityAdditionalSpawnData {
     private static final Logger LOGGER = LogUtils.getLogger();
     public static final Tag<Item> ICE_CREAM_TAG = Tag.createItemTag("ice_cream");
     public static final RegistryObject<Item> TRIPLE_ICE_CREAM_STAND = RegistryObject.create(new ResourceLocation("fancyicecreammod:triple_ice_cream_stand"), ForgeRegistries.ITEMS);
@@ -44,7 +56,8 @@ public class TripleIceCreamStand extends ItemFrame {
     }
 
     public TripleIceCreamStand(Level level, BlockPos pos, Direction direction, Direction placedDirection) {
-        super(FancyIceCreamModEntityType.TRIPLE_ICE_CREAM_STAND.get(), level, pos, direction);
+        super(FancyIceCreamModEntityType.TRIPLE_ICE_CREAM_STAND.get(), level, pos);
+        this.setDirection(direction);
 
         // Set base rotation from direction
         int rotation = switch (placedDirection) {
@@ -65,12 +78,68 @@ public class TripleIceCreamStand extends ItemFrame {
         this.getEntityData().define(DATA_ITEM3, ItemStack.EMPTY);
     }
 
-    @Override
+    protected void setDirection(Direction p_31793_) {
+        Validate.notNull(p_31793_);
+        this.direction = p_31793_;
+        if (p_31793_.getAxis().isHorizontal()) {
+            this.setXRot(0.0F);
+            this.setYRot((float)(this.direction.get2DDataValue() * 90));
+        } else {
+            this.setXRot((float)(-90 * p_31793_.getAxisDirection().getStep()));
+            this.setYRot(0.0F);
+        }
+
+        this.xRotO = this.getXRot();
+        this.yRotO = this.getYRot();
+        this.recalculateBoundingBox();
+    }
+
+    protected void recalculateBoundingBox() {
+        if (this.direction != null) {
+            double d0 = 0.46875D;
+            double d1 = (double)this.pos.getX() + 0.5D - (double)this.direction.getStepX() * 0.46875D;
+            double d2 = (double)this.pos.getY() + 0.5D - (double)this.direction.getStepY() * 0.46875D;
+            double d3 = (double)this.pos.getZ() + 0.5D - (double)this.direction.getStepZ() * 0.46875D;
+            this.setPosRaw(d1, d2, d3);
+            double d4 = (double)this.getWidth();
+            double d5 = (double)this.getHeight();
+            double d6 = (double)this.getWidth();
+            Direction.Axis direction$axis = this.direction.getAxis();
+            switch (direction$axis) {
+                case X:
+                    d4 = 1.0D;
+                    break;
+                case Y:
+                    d5 = 1.0D;
+                    break;
+                case Z:
+                    d6 = 1.0D;
+            }
+
+            d4 /= 32.0D;
+            d5 /= 32.0D;
+            d6 /= 32.0D;
+            this.setBoundingBox(new AABB(d1 - d4, d2 - d5, d3 - d6, d1 + d4, d2 + d5, d3 + d6));
+        }
+    }
+
+    public boolean survives() {
+        if (!this.level.noCollision(this)) {
+            return false;
+        } else {
+            BlockState blockstate = this.level.getBlockState(this.pos.relative(this.direction.getOpposite()));
+            return blockstate.getMaterial().isSolid() || this.direction.getAxis().isHorizontal() && DiodeBlock.isDiode(blockstate) ? this.level.getEntities(this, this.getBoundingBox(), HANGING_ENTITY).isEmpty() : false;
+        }
+    }
+
+    public float getPickRadius() {
+        return 0.0F;
+    }
+
     public int getRotation() {
         return this.getEntityData().get(DATA_ROTATION);
     }
 
-    @Override
     public void setRotation(int rotation) {
         this.getEntityData().set(DATA_ROTATION, rotation % 8);
     }
@@ -83,10 +152,7 @@ public class TripleIceCreamStand extends ItemFrame {
                 compoundTag.put("Item" + (i + 1), this.getItem(i).save(new CompoundTag()));
             }
         }
-        // Do not support
-        compoundTag.remove("ItemDropChance");
-        compoundTag.remove("Invisible");
-        compoundTag.remove("Fixed");
+        compoundTag.putByte("Facing", (byte)this.direction.get3DDataValue());
         // Always use
         compoundTag.putByte("ItemRotation", (byte)this.getRotation());
     }
@@ -104,6 +170,7 @@ public class TripleIceCreamStand extends ItemFrame {
                 this.setItem(itemstack, i, false);
             }
         }
+        this.setDirection(Direction.from3DDataValue(compoundTag.getByte("Facing")));
         // Always use
         this.setRotation(compoundTag.getByte("ItemRotation"));
     }
@@ -113,8 +180,20 @@ public class TripleIceCreamStand extends ItemFrame {
         this.dropItem(p_31779_, true, true);
     }
 
+    public SoundEvent getBreakSound() {
+        return SoundEvents.ITEM_FRAME_BREAK;
+    }
+
+    @Override
+    public void playPlacementSound() {
+        this.playSound(this.getPlaceSound(), 1.0F, 1.0F);
+    }
+
+    public SoundEvent getPlaceSound() {
+        return SoundEvents.ITEM_FRAME_PLACE;
+    }
+
     protected void dropItem(@Nullable Entity entity, boolean p_31804_, boolean shouldDropAll) {
-        this.setItem(ItemStack.EMPTY);
         boolean isInstabuild = false;
         if (entity instanceof Player player) {
             if (player.getAbilities().instabuild) {
@@ -211,6 +290,10 @@ public class TripleIceCreamStand extends ItemFrame {
         }
     }
 
+    public SoundEvent getAddItemSound() {
+        return SoundEvents.ITEM_FRAME_ADD_ITEM;
+    }
+
     public void onSyncedDataUpdated(EntityDataAccessor<?> entityDataAccessor) {
         super.onSyncedDataUpdated(entityDataAccessor);
         if (entityDataAccessor.equals(DATA_ITEM1)) {
@@ -225,7 +308,7 @@ public class TripleIceCreamStand extends ItemFrame {
     }
 
     protected void onItemChanged(ItemStack itemStack) {
-        if (!itemStack.isEmpty() && itemStack.getFrame() != this) {
+        if (!itemStack.isEmpty()) { // TODO ???
             itemStack.setEntityRepresentation(this);
         }
 
@@ -256,7 +339,24 @@ public class TripleIceCreamStand extends ItemFrame {
         }
     }
 
-    // TODO Should override getSlot? because it calls this.getItem()
+    public SoundEvent getRotateItemSound() {
+        return SoundEvents.ITEM_FRAME_ROTATE_ITEM;
+    }
+
+    // From 1.17:
+    //   e.g. /item replace entity UUID container.0 with fancyicecreammod:chocolate_ice_cream
+    public SlotAccess getSlot(int slot) {
+        return 0 <= slot && slot <= 2 ? new SlotAccess() {
+            public ItemStack get() {
+                return TripleIceCreamStand.this.getItem(slot);
+            }
+
+            public boolean set(ItemStack itemStack) {
+                TripleIceCreamStand.this.setItem(itemStack, slot);
+                return true;
+            }
+        } : super.getSlot(slot);
+    }
 
     public boolean hurt(DamageSource damageSource, float p_31777_) {
         if (this.isInvulnerableTo(damageSource)) {
@@ -273,6 +373,10 @@ public class TripleIceCreamStand extends ItemFrame {
         }
     }
 
+    public SoundEvent getRemoveItemSound() {
+        return SoundEvents.ITEM_FRAME_REMOVE_ITEM;
+    }
+
     @Override
     public int getWidth() {
         return 6;
@@ -283,14 +387,44 @@ public class TripleIceCreamStand extends ItemFrame {
         return 6;
     }
 
+    public boolean shouldRenderAtSqrDistance(double p_31769_) {
+        double d0 = 16.0D;
+        d0 *= 64.0D * getViewScale();
+        return p_31769_ < d0 * d0;
+    }
+
+    public Packet<?> getAddEntityPacket() {
+        return NetworkHooks.getEntitySpawningPacket(this);
+    }
+
+    public void recreateFromPacket(ClientboundAddEntityPacket packet) {
+        super.recreateFromPacket(packet);
+        this.setDirection(Direction.from3DDataValue(packet.getData()));
+    }
+
+    @Override
+    public void writeSpawnData(FriendlyByteBuf buffer) {
+        buffer.writeInt(this.direction.get3DDataValue());
+    }
+
+    @Override
+    public void readSpawnData(FriendlyByteBuf additionalData) {
+        this.setDirection(Direction.from3DDataValue(additionalData.readInt()));
+    }
+
     @Override
     public ItemStack getPickResult() {
         int emptyStandSlot = this.getEmptyStandSlot();
         return emptyStandSlot < 0 ? this.getFrameItemStack() : this.getItem(emptyStandSlot - 1).copy();
     }
 
-    @Override
     public ItemStack getFrameItemStack() {
         return new ItemStack(TRIPLE_ICE_CREAM_STAND.get());
+    }
+
+    public float getVisualRotationYInDegrees() {
+        Direction direction = this.getDirection();
+        int i = direction.getAxis().isVertical() ? 90 * direction.getAxisDirection().getStep() : 0;
+        return (float) Mth.wrapDegrees(180 + direction.get2DDataValue() * 90 + this.getRotation() * 45 + i);
     }
 }
