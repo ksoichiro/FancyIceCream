@@ -2,6 +2,8 @@ package com.ksoichiro.mcmod.fancyicecream.entity;
 
 import com.ksoichiro.mcmod.fancyicecream.entity.decoration.IceCreamStand;
 import com.ksoichiro.mcmod.fancyicecream.entity.decoration.IceCreamStandRenderer;
+import com.ksoichiro.mcmod.fancyicecream.entity.decoration.TripleIceCreamStand;
+import com.ksoichiro.mcmod.fancyicecream.entity.decoration.TripleIceCreamStandRenderer;
 import com.ksoichiro.mcmod.fancyicecream.main.FancyIceCreamMod;
 import net.minecraft.entity.EntityClassification;
 import net.minecraft.entity.EntityType;
@@ -27,6 +29,14 @@ public class FancyIceCreamModEntityType {
             .setUpdateInterval(Integer.MAX_VALUE)
             .build("ice_cream_stand"));
 
+    public static final RegistryObject<EntityType<TripleIceCreamStand>> TRIPLE_ICE_CREAM_STAND = ENTITY_TYPE.register("triple_ice_cream_stand", () ->
+        EntityType.Builder
+            .<TripleIceCreamStand>create(TripleIceCreamStand::new, EntityClassification.MISC.MISC)
+            .size(0.5F, 0.5F)
+            .setTrackingRange(10)
+            .setUpdateInterval(Integer.MAX_VALUE)
+            .build("triple_ice_cream_stand"));
+
     public static void register(IEventBus eventBus) {
         ENTITY_TYPE.register(eventBus);
     }
@@ -36,10 +46,12 @@ public class FancyIceCreamModEntityType {
         @SubscribeEvent
         public static void registerRenderer(FMLClientSetupEvent event) {
             RenderingRegistry.registerEntityRenderingHandler(ICE_CREAM_STAND.get(), IceCreamStandRenderer::new);
+            RenderingRegistry.registerEntityRenderingHandler(TRIPLE_ICE_CREAM_STAND.get(), TripleIceCreamStandRenderer::new);
         }
         @SubscribeEvent
         public static void registerModel(final ModelRegistryEvent event) {
             ModelLoader.addSpecialModel(IceCreamStandRenderer.STAND_LOCATION);
+            ModelLoader.addSpecialModel(TripleIceCreamStandRenderer.STAND_LOCATION);
         }
     }
 }
