@@ -2,7 +2,7 @@ package com.ksoichiro.mcmod.fancyicecream.entity.decoration;
 
 import com.ksoichiro.mcmod.fancyicecream.common.Tag;
 import com.ksoichiro.mcmod.fancyicecream.entity.FancyIceCreamModEntityType;
-import com.mojang.logging.LogUtils;
+import com.ksoichiro.mcmod.fancyicecream.registry.FancyIceCreamModItems;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -12,7 +12,6 @@ import net.minecraft.network.protocol.game.ClientboundAddEntityPacket;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.Mth;
@@ -33,19 +32,17 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 import net.minecraftforge.entity.IEntityAdditionalSpawnData;
 import net.minecraftforge.network.NetworkHooks;
-import net.minecraftforge.registries.ForgeRegistries;
-import net.minecraftforge.registries.RegistryObject;
 import org.apache.commons.lang3.Validate;
-import org.slf4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
 public class IceCreamStand extends HangingEntity implements IEntityAdditionalSpawnData {
-    private static final Logger LOGGER = LogUtils.getLogger();
+    private static final Logger LOGGER = LogManager.getLogger();
     protected static final Tag<Item> ICE_CREAM_TAG = Tag.createItemTag("ice_cream");
-    public static final RegistryObject<Item> ICE_CREAM_STAND = RegistryObject.create(new ResourceLocation("fancyicecreammod:ice_cream_stand"), ForgeRegistries.ITEMS);
 
     private static final EntityDataAccessor<Integer> DATA_ROTATION = SynchedEntityData.defineId(IceCreamStand.class, EntityDataSerializers.INT);
     protected static final EntityDataAccessor<ItemStack> DATA_ITEM1 = SynchedEntityData.defineId(IceCreamStand.class, EntityDataSerializers.ITEM_STACK);
@@ -430,7 +427,7 @@ public class IceCreamStand extends HangingEntity implements IEntityAdditionalSpa
     }
 
     public ItemStack getFrameItemStack() {
-        return new ItemStack(ICE_CREAM_STAND.get());
+        return new ItemStack(FancyIceCreamModItems.ICE_CREAM_STAND.get());
     }
 
     public float getVisualRotationYInDegrees() {
