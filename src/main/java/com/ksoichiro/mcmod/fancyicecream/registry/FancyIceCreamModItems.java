@@ -2,8 +2,13 @@ package com.ksoichiro.mcmod.fancyicecream.registry;
 
 import com.ksoichiro.mcmod.fancyicecream.item.*;
 import com.ksoichiro.mcmod.fancyicecream.main.FancyIceCreamMod;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
+import net.minecraftforge.client.event.ModelRegistryEvent;
+import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.eventbus.api.IEventBus;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fmllegacy.RegistryObject;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -29,5 +34,19 @@ public class FancyIceCreamModItems {
 
     private static RegistryObject<Item> registerItem(String name, Supplier<Item> item) {
         return ITEMS.register(name, item);
+    }
+
+    @Mod.EventBusSubscriber(modid = FancyIceCreamMod.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
+    public static class Registerer {
+        @SubscribeEvent
+        public static void registerModel(final ModelRegistryEvent event) {
+            ModelLoader.addSpecialModel(new ResourceLocation(FancyIceCreamMod.MOD_ID, "block/vanilla_ice_cream"));
+            ModelLoader.addSpecialModel(new ResourceLocation(FancyIceCreamMod.MOD_ID, "block/apple_ice_cream"));
+            ModelLoader.addSpecialModel(new ResourceLocation(FancyIceCreamMod.MOD_ID, "block/choco_chip_ice_cream"));
+            ModelLoader.addSpecialModel(new ResourceLocation(FancyIceCreamMod.MOD_ID, "block/chocolate_ice_cream"));
+            ModelLoader.addSpecialModel(new ResourceLocation(FancyIceCreamMod.MOD_ID, "block/glow_berry_ice_cream"));
+            ModelLoader.addSpecialModel(new ResourceLocation(FancyIceCreamMod.MOD_ID, "block/golden_apple_ice_cream"));
+            ModelLoader.addSpecialModel(new ResourceLocation(FancyIceCreamMod.MOD_ID, "block/honey_ice_cream"));
+        }
     }
 }
