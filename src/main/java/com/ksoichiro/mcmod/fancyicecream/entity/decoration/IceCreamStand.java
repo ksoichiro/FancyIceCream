@@ -186,7 +186,8 @@ public class IceCreamStand extends HangingEntity implements IEntityAdditionalSpa
         }
         this.updateFacingWithBoundingBox(Direction.byIndex(compoundTag.getByte("Facing")));
         // Always use
-        this.setRotation(compoundTag.getByte("ItemRotation"));
+        // Without 2nd parameter, this is going to be stuck.
+        this.setRotation(compoundTag.getByte("ItemRotation"), false);
     }
 
 

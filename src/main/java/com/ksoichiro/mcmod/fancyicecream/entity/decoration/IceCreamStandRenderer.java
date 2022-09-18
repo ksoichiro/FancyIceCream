@@ -53,7 +53,7 @@ public class IceCreamStandRenderer<T extends IceCreamStand> extends EntityRender
         ModelManager modelmanager = blockrenderdispatcher.getBlockModelShapes().getModelManager();
         poseStack.push();
         poseStack.translate(-0.5D, -0.5D, -0.5D);
-        blockrenderdispatcher.getBlockModelRenderer().renderModelBrightnessColor(poseStack.getLast(), bufferIn.getBuffer(Atlases.getSolidBlockType()), (BlockState)null, modelmanager.getModel(STAND_LOCATION), 1.0F, 1.0F, 1.0F, packedLightIn, OverlayTexture.NO_OVERLAY);
+        blockrenderdispatcher.getBlockModelRenderer().renderModelBrightnessColor(poseStack.getLast(), bufferIn.getBuffer(Atlases.getSolidBlockType()), (BlockState)null, modelmanager.getModel(getEntityTexture(iceCreamStand)), 1.0F, 1.0F, 1.0F, packedLightIn, OverlayTexture.NO_OVERLAY);
         poseStack.pop();
 
         if (iceCreamStand.hasItems()) {
