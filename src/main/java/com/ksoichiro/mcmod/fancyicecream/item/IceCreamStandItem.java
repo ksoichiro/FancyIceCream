@@ -2,17 +2,18 @@ package com.ksoichiro.mcmod.fancyicecream.item;
 
 import com.ksoichiro.mcmod.fancyicecream.entity.decoration.IceCreamStand;
 import com.ksoichiro.mcmod.fancyicecream.main.FancyIceCreamMod;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.item.HangingEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.HangingEntityItem;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.ItemUseContext;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.util.ActionResultType;
-import net.minecraft.util.Direction;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.decoration.HangingEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.HangingEntityItem;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.context.UseOnContext;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.gameevent.GameEvent;
 
 public class IceCreamStandItem extends HangingEntityItem {
     public IceCreamStandItem() {
@@ -20,19 +21,19 @@ public class IceCreamStandItem extends HangingEntityItem {
     }
 
     @Override
-    public ActionResultType useOn(ItemUseContext context) {
+    public InteractionResult useOn(UseOnContext context) {
         BlockPos blockpos = context.getClickedPos();
         Direction direction = context.getClickedFace();
         BlockPos blockpos1 = blockpos.relative(direction);
-        PlayerEntity player = context.getPlayer();
+        Player player = context.getPlayer();
         ItemStack itemstack = context.getItemInHand();
         if (player != null && !this.mayPlace(player, direction, itemstack, blockpos1)) {
-            return ActionResultType.FAIL;
+            return InteractionResult.FAIL;
         }
-        World level = context.getLevel();
-        HangingEntity hangingentity = new IceCreamStand(level, blockpos1, direction, player.getDirection());
+        Level level = context.getLevel();
+        HangingEntity hangingentity = getEntityFactory().create(level, blockpos1, direction, player.getDirection());
 
-        CompoundNBT compoundtag = itemstack.getTag();
+        CompoundTag compoundtag = itemstack.getTag();
         if (compoundtag != null) {
             EntityType.updateCustomEntityTag(level, player, hangingentity, compoundtag);
         }
@@ -40,17 +41,26 @@ public class IceCreamStandItem extends HangingEntityItem {
         if (hangingentity.survives()) {
             if (!level.isClientSide) {
                 hangingentity.playPlacementSound();
+                level.gameEvent(player, GameEvent.ENTITY_PLACE, blockpos);
                 level.addFreshEntity(hangingentity);
             }
             itemstack.shrink(1);
-            return ActionResultType.sidedSuccess(level.isClientSide);
+            return InteractionResult.sidedSuccess(level.isClientSide);
         }
-        return ActionResultType.CONSUME;
+        return InteractionResult.CONSUME;
     }
 
-    protected boolean mayPlace(PlayerEntity player, Direction clickedFaceDirection, ItemStack itemStack, BlockPos blockPos) {
+    protected boolean mayPlace(Player player, Direction clickedFaceDirection, ItemStack itemStack, BlockPos blockPos) {
         return clickedFaceDirection == Direction.UP
-                && !World.isOutsideBuildHeight(blockPos)
+                && !player.level.isOutsideBuildHeight(blockPos)
                 && player.mayUseItemAt(blockPos, clickedFaceDirection, itemStack);
+    }
+
+    protected interface IceCreamStandFactory<T extends HangingEntity> {
+        T create(Level level, BlockPos blockpos1, Direction direction, Direction placedDirection);
+    }
+
+    protected IceCreamStandFactory<?> getEntityFactory() {
+        return IceCreamStand::new;
     }
 }
