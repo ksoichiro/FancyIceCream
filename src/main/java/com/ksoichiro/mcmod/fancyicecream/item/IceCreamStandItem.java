@@ -31,7 +31,7 @@ public class IceCreamStandItem extends HangingEntityItem {
             return InteractionResult.FAIL;
         }
         Level level = context.getLevel();
-        HangingEntity hangingentity = new IceCreamStand(level, blockpos1, direction, player.getDirection());
+        HangingEntity hangingentity = getEntityFactory().create(level, blockpos1, direction, player.getDirection());
 
         CompoundTag compoundtag = itemstack.getTag();
         if (compoundtag != null) {
@@ -54,5 +54,13 @@ public class IceCreamStandItem extends HangingEntityItem {
         return clickedFaceDirection == Direction.UP
                 && !player.level.isOutsideBuildHeight(blockPos)
                 && player.mayUseItemAt(blockPos, clickedFaceDirection, itemStack);
+    }
+
+    protected interface IceCreamStandFactory<T extends HangingEntity> {
+        T create(Level level, BlockPos blockpos1, Direction direction, Direction placedDirection);
+    }
+
+    protected IceCreamStandFactory<?> getEntityFactory() {
+        return IceCreamStand::new;
     }
 }
