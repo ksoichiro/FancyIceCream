@@ -3,35 +3,27 @@ package com.ksoichiro.mcmod.fancyicecream.entity.decoration;
 import com.ksoichiro.mcmod.fancyicecream.common.Tag;
 import com.ksoichiro.mcmod.fancyicecream.entity.FancyIceCreamModEntityType;
 import com.ksoichiro.mcmod.fancyicecream.registry.FancyIceCreamModItems;
-import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.network.protocol.Packet;
-import net.minecraft.network.protocol.game.ClientboundAddEntityPacket;
-import net.minecraft.network.syncher.EntityDataAccessor;
-import net.minecraft.network.syncher.EntityDataSerializers;
-import net.minecraft.network.syncher.SynchedEntityData;
-import net.minecraft.sounds.SoundEvent;
-import net.minecraft.sounds.SoundEvents;
-import net.minecraft.util.Mth;
-import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResult;
-import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.SlotAccess;
-import net.minecraft.world.entity.decoration.HangingEntity;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.DiodeBlock;
-import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.phys.AABB;
-import net.minecraftforge.fmllegacy.common.registry.IEntityAdditionalSpawnData;
-import net.minecraftforge.fmllegacy.network.NetworkHooks;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
+import net.minecraft.block.RedstoneDiodeBlock;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityType;
+import net.minecraft.entity.item.HangingEntity;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.network.IPacket;
+import net.minecraft.network.PacketBuffer;
+import net.minecraft.network.datasync.DataParameter;
+import net.minecraft.network.datasync.DataSerializers;
+import net.minecraft.network.datasync.EntityDataManager;
+import net.minecraft.util.*;
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
+import net.minecraftforge.fml.common.registry.IEntityAdditionalSpawnData;
+import net.minecraftforge.fml.network.NetworkHooks;
 import org.apache.commons.lang3.Validate;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -44,27 +36,36 @@ public class IceCreamStand extends HangingEntity implements IEntityAdditionalSpa
     private static final Logger LOGGER = LogManager.getLogger();
     protected static final Tag<Item> ICE_CREAM_TAG = Tag.createItemTag("ice_cream");
 
-    private static final EntityDataAccessor<Integer> DATA_ROTATION = SynchedEntityData.defineId(IceCreamStand.class, EntityDataSerializers.INT);
-    protected static final EntityDataAccessor<ItemStack> DATA_ITEM1 = SynchedEntityData.defineId(IceCreamStand.class, EntityDataSerializers.ITEM_STACK);
+    private static final DataParameter<Integer> DATA_ROTATION = EntityDataManager.defineId(IceCreamStand.class, DataSerializers.INT);
+    protected static final DataParameter<ItemStack> DATA_ITEM1 = EntityDataManager.defineId(IceCreamStand.class, DataSerializers.ITEM_STACK);
 
-    public IceCreamStand(EntityType<? extends HangingEntity> entityType, Level level) {
+    public IceCreamStand(EntityType<? extends HangingEntity> entityType, World level) {
         super(entityType, level);
     }
 
-    public IceCreamStand(Level level, BlockPos pos, Direction direction, Direction placedDirection) {
+    public IceCreamStand(World level, BlockPos pos, Direction direction, Direction placedDirection) {
         this(FancyIceCreamModEntityType.ICE_CREAM_STAND.get(), level, pos, direction, placedDirection);
     }
 
-    public IceCreamStand(EntityType<? extends HangingEntity> entityType, Level level, BlockPos pos, Direction direction, Direction placedDirection) {
+    public IceCreamStand(EntityType<? extends HangingEntity> entityType, World level, BlockPos pos, Direction direction, Direction placedDirection) {
         super(entityType, level, pos);
         this.setDirection(direction);
 
         // Set base rotation from direction
-        int rotation = switch (placedDirection) {
-            case SOUTH -> 4;
-            case WEST -> 2;
-            case EAST -> 6;
-            default -> 0;
+        int rotation;
+        switch (placedDirection) {
+            case SOUTH:
+                rotation = 4;
+                break;
+            case WEST:
+                rotation = 2;
+                break;
+            case EAST:
+                rotation = 6;
+                break;
+            default:
+                rotation = 0;
+                break;
         };
         this.setRotation(rotation);
     }
@@ -73,7 +74,7 @@ public class IceCreamStand extends HangingEntity implements IEntityAdditionalSpa
         return 1;
     }
 
-    protected EntityDataAccessor<ItemStack> getItemEntityDataAccessor(int slot) {
+    protected DataParameter<ItemStack> getItemEntityDataAccessor(int slot) {
         if (slot == 0) {
             return DATA_ITEM1;
         }
@@ -89,19 +90,19 @@ public class IceCreamStand extends HangingEntity implements IEntityAdditionalSpa
         }
     }
 
-    protected void setDirection(Direction p_31793_) {
-        Validate.notNull(p_31793_);
-        this.direction = p_31793_;
-        if (p_31793_.getAxis().isHorizontal()) {
-            this.setXRot(0.0F);
-            this.setYRot((float)(this.direction.get2DDataValue() * 90));
+    protected void setDirection(Direction p_174859_1_) {
+        Validate.notNull(p_174859_1_);
+        this.direction = p_174859_1_;
+        if (p_174859_1_.getAxis().isHorizontal()) {
+            this.xRot = 0.0F;
+            this.yRot = (float)(this.direction.get2DDataValue() * 90);
         } else {
-            this.setXRot((float)(-90 * p_31793_.getAxisDirection().getStep()));
-            this.setYRot(0.0F);
+            this.xRot = (float)(-90 * p_174859_1_.getAxisDirection().getStep());
+            this.yRot = 0.0F;
         }
 
-        this.xRotO = this.getXRot();
-        this.yRotO = this.getYRot();
+        this.xRotO = this.xRot;
+        this.yRotO = this.yRot;
         this.recalculateBoundingBox();
     }
 
@@ -130,7 +131,7 @@ public class IceCreamStand extends HangingEntity implements IEntityAdditionalSpa
             d4 /= 32.0D;
             d5 /= 32.0D;
             d6 /= 32.0D;
-            this.setBoundingBox(new AABB(d1 - d4, d2 - d5, d3 - d6, d1 + d4, d2 + d5, d3 + d6));
+            this.setBoundingBox(new AxisAlignedBB(d1 - d4, d2 - d5, d3 - d6, d1 + d4, d2 + d5, d3 + d6));
         }
     }
 
@@ -139,7 +140,7 @@ public class IceCreamStand extends HangingEntity implements IEntityAdditionalSpa
             return false;
         } else {
             BlockState blockstate = this.level.getBlockState(this.pos.relative(this.direction.getOpposite()));
-            return blockstate.getMaterial().isSolid() || this.direction.getAxis().isHorizontal() && DiodeBlock.isDiode(blockstate) ? this.level.getEntities(this, this.getBoundingBox(), HANGING_ENTITY).isEmpty() : false;
+            return blockstate.getMaterial().isSolid() || this.direction.getAxis().isHorizontal() && RedstoneDiodeBlock.isDiode(blockstate) ? this.level.getEntities(this, this.getBoundingBox(), HANGING_ENTITY).isEmpty() : false;
         }
     }
 
@@ -156,23 +157,23 @@ public class IceCreamStand extends HangingEntity implements IEntityAdditionalSpa
     }
 
     @Override
-    public void addAdditionalSaveData(CompoundTag compoundTag) {
+    public void addAdditionalSaveData(CompoundNBT compoundTag) {
         super.addAdditionalSaveData(compoundTag);
         compoundTag.putByte("Facing", (byte)this.direction.get3DDataValue());
         // Always use
         compoundTag.putByte("ItemRotation", (byte)this.getRotation());
         for (int i = 0; i < this.getMaxHoldableItems(); i++) {
             if (!this.getItem(i).isEmpty()) {
-                compoundTag.put("Item" + (i + 1), this.getItem(i).save(new CompoundTag()));
+                compoundTag.put("Item" + (i + 1), this.getItem(i).save(new CompoundNBT()));
             }
         }
     }
 
     @Override
-    public void readAdditionalSaveData(CompoundTag compoundTag) {
+    public void readAdditionalSaveData(CompoundNBT compoundTag) {
         super.readAdditionalSaveData(compoundTag);
         for (int i = 0; i < this.getMaxHoldableItems(); i++) {
-            CompoundTag compoundtag = compoundTag.getCompound("Item" + (i + 1));
+            CompoundNBT compoundtag = compoundTag.getCompound("Item" + (i + 1));
             if (compoundtag != null && !compoundtag.isEmpty()) {
                 ItemStack itemstack = ItemStack.of(compoundtag);
                 if (itemstack.isEmpty()) {
@@ -206,8 +207,9 @@ public class IceCreamStand extends HangingEntity implements IEntityAdditionalSpa
 
     protected void dropItem(@Nullable Entity entity, boolean p_31804_, boolean shouldDropAll) {
         boolean isInstabuild = false;
-        if (entity instanceof Player player) {
-            if (player.getAbilities().instabuild) {
+        if (entity instanceof PlayerEntity) {
+            PlayerEntity playerentity = (PlayerEntity)entity;
+            if (playerentity.abilities.instabuild) {
                 isInstabuild = true;
             }
         }
@@ -302,7 +304,7 @@ public class IceCreamStand extends HangingEntity implements IEntityAdditionalSpa
         return SoundEvents.ITEM_FRAME_ADD_ITEM;
     }
 
-    public void onSyncedDataUpdated(EntityDataAccessor<?> entityDataAccessor) {
+    public void onSyncedDataUpdated(DataParameter<?> entityDataAccessor) {
         super.onSyncedDataUpdated(entityDataAccessor);
         for (int i = 0; i < this.getMaxHoldableItems(); i++) {
             if (entityDataAccessor.equals(this.getItemEntityDataAccessor(i))) {
@@ -320,16 +322,16 @@ public class IceCreamStand extends HangingEntity implements IEntityAdditionalSpa
     }
 
     @Override
-    public InteractionResult interact(Player player, InteractionHand hand) {
+    public ActionResultType interact(PlayerEntity player, Hand hand) {
         ItemStack itemstack = player.getItemInHand(hand);
         int emptyStandSlot = this.getEmptyStandSlot();
         boolean isStandEmpty = 0 <= emptyStandSlot;
         boolean hasItemInHand = !itemstack.isEmpty();
         if (!this.level.isClientSide) {
             boolean isIceCream = ICE_CREAM_TAG.contains(itemstack.getItem());
-            if (isStandEmpty && hasItemInHand && !this.isRemoved() && isIceCream) {
+            if (isStandEmpty && hasItemInHand && !this.removed && isIceCream) {
                 this.setItem(itemstack, emptyStandSlot);
-                if (!player.getAbilities().instabuild) {
+                if (!player.abilities.instabuild) {
                     itemstack.shrink(1);
                 }
             } else {
@@ -337,9 +339,9 @@ public class IceCreamStand extends HangingEntity implements IEntityAdditionalSpa
                 this.setRotation(this.getRotation() + 1);
             }
 
-            return InteractionResult.CONSUME;
+            return ActionResultType.CONSUME;
         } else {
-            return isStandEmpty && !hasItemInHand ? InteractionResult.PASS : InteractionResult.SUCCESS;
+            return isStandEmpty && !hasItemInHand ? ActionResultType.PASS : ActionResultType.SUCCESS;
         }
     }
 
@@ -347,19 +349,13 @@ public class IceCreamStand extends HangingEntity implements IEntityAdditionalSpa
         return SoundEvents.ITEM_FRAME_ROTATE_ITEM;
     }
 
-    // From 1.17:
-    //   e.g. /item replace entity UUID container.0 with fancyicecreammod:chocolate_ice_cream
-    public SlotAccess getSlot(int slot) {
-        return 0 <= slot && slot <= 2 ? new SlotAccess() {
-            public ItemStack get() {
-                return IceCreamStand.this.getItem(slot);
-            }
-
-            public boolean set(ItemStack itemStack) {
-                IceCreamStand.this.setItem(itemStack, slot);
-                return true;
-            }
-        } : super.getSlot(slot);
+    public boolean setSlot(int slot, ItemStack itemStack) {
+        if (0 <= slot && slot <= 2) {
+            this.setItem(itemStack, slot);
+            return true;
+        } else {
+            return false;
+        }
     }
 
     public boolean hurt(DamageSource damageSource, float p_31777_) {
@@ -397,42 +393,22 @@ public class IceCreamStand extends HangingEntity implements IEntityAdditionalSpa
         return p_31769_ < d0 * d0;
     }
 
-    public Packet<?> getAddEntityPacket() {
+    public IPacket<?> getAddEntityPacket() {
         return NetworkHooks.getEntitySpawningPacket(this);
     }
 
-    public void recreateFromPacket(ClientboundAddEntityPacket packet) {
-        super.recreateFromPacket(packet);
-        this.setDirection(Direction.from3DDataValue(packet.getData()));
-    }
-
     @Override
-    public void writeSpawnData(FriendlyByteBuf buffer) {
+    public void writeSpawnData(PacketBuffer buffer) {
         // TODO should Items be written?
         buffer.writeInt(this.direction.get3DDataValue());
     }
 
     @Override
-    public void readSpawnData(FriendlyByteBuf additionalData) {
+    public void readSpawnData(PacketBuffer additionalData) {
         this.setDirection(Direction.from3DDataValue(additionalData.readInt()));
-    }
-
-    @Override
-    public ItemStack getPickResult() {
-        ItemStack itemStack = this.getLastStandSlotItem();
-        if (itemStack != null) {
-            return itemStack.copy();
-        }
-        return this.getFrameItemStack();
     }
 
     public ItemStack getFrameItemStack() {
         return new ItemStack(FancyIceCreamModItems.ICE_CREAM_STAND.get());
-    }
-
-    public float getVisualRotationYInDegrees() {
-        Direction direction = this.getDirection();
-        int i = direction.getAxis().isVertical() ? 90 * direction.getAxisDirection().getStep() : 0;
-        return (float) Mth.wrapDegrees(180 + direction.get2DDataValue() * 90 + this.getRotation() * 45 + i);
     }
 }

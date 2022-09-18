@@ -1,9 +1,9 @@
 package com.ksoichiro.mcmod.fancyicecream.common;
 
 import com.ksoichiro.mcmod.fancyicecream.main.FancyIceCreamMod;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.item.Item;
 import net.minecraft.tags.ItemTags;
-import net.minecraft.world.item.Item;
+import net.minecraft.util.ResourceLocation;
 
 public class Tag<T> {
     private net.minecraftforge.common.Tags.IOptionalNamedTag<T> tag;
