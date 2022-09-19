@@ -6,7 +6,7 @@ import net.minecraft.item.ItemStack;
 
 public class FancyIceCreamModTab extends ItemGroup {
     public FancyIceCreamModTab() {
-        super("fancyicecreammod_tab");
+        super("fancyicecream_tab");
     }
 
     @Override
