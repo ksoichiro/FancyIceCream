@@ -8,7 +8,7 @@ import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 
 @Mod(FancyIceCreamMod.MOD_ID)
 public class FancyIceCreamMod {
-    public static final String MOD_ID = "fancyicecreammod";
+    public static final String MOD_ID = "fancyicecream";
     public static final FancyIceCreamModTab FANCY_ICE_CREAM_MOD_TAB = new FancyIceCreamModTab();
 
     public FancyIceCreamMod() {

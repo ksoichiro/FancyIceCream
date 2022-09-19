@@ -6,7 +6,7 @@ import net.minecraft.world.item.ItemStack;
 
 public class FancyIceCreamModTab extends CreativeModeTab {
     public FancyIceCreamModTab() {
-        super("fancyicecreammod_tab");
+        super("fancyicecream_tab");
     }
 
     @Override
