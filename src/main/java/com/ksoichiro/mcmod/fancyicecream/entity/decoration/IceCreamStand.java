@@ -348,7 +348,7 @@ public class IceCreamStand extends HangingEntity implements IEntityAdditionalSpa
     }
 
     // From 1.17:
-    //   e.g. /item replace entity UUID container.0 with fancyicecreammod:chocolate_ice_cream
+    //   e.g. /item replace entity UUID container.0 with fancyicecream:chocolate_ice_cream
     public SlotAccess getSlot(int slot) {
         return 0 <= slot && slot <= 2 ? new SlotAccess() {
             public ItemStack get() {
