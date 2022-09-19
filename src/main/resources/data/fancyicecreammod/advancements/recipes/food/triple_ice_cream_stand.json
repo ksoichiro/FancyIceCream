@@ -1,0 +1,27 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "fancyicecreammod:triple_ice_cream_stand"
+    ]
+  },
+  "criteria": {
+    "has_ice_cream_stand": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "fancyicecreammod:ice_cream_stand"
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_ice_cream_stand"
+    ]
+  ]
+}
