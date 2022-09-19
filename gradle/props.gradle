@@ -1,5 +1,5 @@
 ext {
     minecraftVersion = '1.18.2'
     forgeVersion = '40.1.73'
-    modId = 'fancyicecreammod'
+    modId = 'fancyicecream'
 }
