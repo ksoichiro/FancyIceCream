@@ -1,6 +1,8 @@
-# Fancy Ice Cream
+# ![](assets/logo.png) Fancy Ice Cream
 
-🍨 A Minecraft mod to add ice cream recipes.
+A Minecraft mod to add ice cream recipes.
+
+![](assets/screenshot.png)
 
 ## Prerequisites
 
