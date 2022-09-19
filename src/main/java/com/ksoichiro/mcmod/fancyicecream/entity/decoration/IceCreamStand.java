@@ -45,7 +45,7 @@ import java.util.List;
 public class IceCreamStand extends HangingEntity implements IEntityAdditionalSpawnData {
     private static final Logger LOGGER = LogUtils.getLogger();
     protected static final Tag<Item> ICE_CREAM_TAG = Tag.createItemTag("ice_cream");
-    public static final RegistryObject<Item> ICE_CREAM_STAND = RegistryObject.create(new ResourceLocation("fancyicecreammod:ice_cream_stand"), ForgeRegistries.ITEMS);
+    public static final RegistryObject<Item> ICE_CREAM_STAND = RegistryObject.create(new ResourceLocation("fancyicecream:ice_cream_stand"), ForgeRegistries.ITEMS);
 
     private static final EntityDataAccessor<Integer> DATA_ROTATION = SynchedEntityData.defineId(IceCreamStand.class, EntityDataSerializers.INT);
     protected static final EntityDataAccessor<ItemStack> DATA_ITEM1 = SynchedEntityData.defineId(IceCreamStand.class, EntityDataSerializers.ITEM_STACK);
@@ -351,7 +351,7 @@ public class IceCreamStand extends HangingEntity implements IEntityAdditionalSpa
     }
 
     // From 1.17:
-    //   e.g. /item replace entity UUID container.0 with fancyicecreammod:chocolate_ice_cream
+    //   e.g. /item replace entity UUID container.0 with fancyicecream:chocolate_ice_cream
     public SlotAccess getSlot(int slot) {
         return 0 <= slot && slot <= 2 ? new SlotAccess() {
             public ItemStack get() {
