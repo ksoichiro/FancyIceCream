@@ -17,7 +17,6 @@ A Minecraft mod to add ice cream recipes.
 | ![](src/main/resources/assets/fancyicecream/textures/item/apple_ice_cream.png)| Apple Ice Cream | |
 | ![](src/main/resources/assets/fancyicecream/textures/item/choco_chip_ice_cream.png) | Choco Chip Ice Cream | |
 | ![](src/main/resources/assets/fancyicecream/textures/item/chocolate_ice_cream.png) | Chocolate Ice Cream | |
-| ![](src/main/resources/assets/fancyicecream/textures/item/glow_berry_ice_cream.png) | Glow Berry Ice Cream | Available from Minecraft 1.17 |
 | ![](src/main/resources/assets/fancyicecream/textures/item/golden_apple_ice_cream.png) | Golden Apple Ice Cream | |
 | ![](src/main/resources/assets/fancyicecream/textures/item/honey_ice_cream.png) | Honey Ice Cream | |
 | ![](src/main/resources/assets/fancyicecream/textures/item/vanilla_ice_cream.png) | Vanilla Ice Cream | |
