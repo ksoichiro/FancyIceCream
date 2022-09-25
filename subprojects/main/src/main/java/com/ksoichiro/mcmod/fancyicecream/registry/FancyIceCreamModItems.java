@@ -1,13 +1,11 @@
 package com.ksoichiro.mcmod.fancyicecream.registry;
 
+import com.ksoichiro.mcmod.fancyicecream.IForgeCompat;
 import com.ksoichiro.mcmod.fancyicecream.item.*;
 import com.ksoichiro.mcmod.fancyicecream.main.FancyIceCreamMod;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
-import net.minecraftforge.client.event.ModelEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
@@ -27,25 +25,19 @@ public class FancyIceCreamModItems {
     public static final RegistryObject<Item> ICE_CREAM_STAND = registerItem("ice_cream_stand", IceCreamStandItem::new);
     public static final RegistryObject<Item> TRIPLE_ICE_CREAM_STAND = registerItem("triple_ice_cream_stand", TripleIceCreamStandItem::new);
 
-    public static void register(IEventBus eventBus) {
+    public static void register(IEventBus eventBus, IForgeCompat compat) {
         ITEMS.register(eventBus);
+
+        compat.addModel(new ResourceLocation(FancyIceCreamMod.MOD_ID, "block/vanilla_ice_cream"));
+        compat.addModel(new ResourceLocation(FancyIceCreamMod.MOD_ID, "block/apple_ice_cream"));
+        compat.addModel(new ResourceLocation(FancyIceCreamMod.MOD_ID, "block/choco_chip_ice_cream"));
+        compat.addModel(new ResourceLocation(FancyIceCreamMod.MOD_ID, "block/chocolate_ice_cream"));
+        compat.addModel(new ResourceLocation(FancyIceCreamMod.MOD_ID, "block/glow_berry_ice_cream"));
+        compat.addModel(new ResourceLocation(FancyIceCreamMod.MOD_ID, "block/golden_apple_ice_cream"));
+        compat.addModel(new ResourceLocation(FancyIceCreamMod.MOD_ID, "block/honey_ice_cream"));
     }
 
     private static RegistryObject<Item> registerItem(String name, Supplier<Item> item) {
         return ITEMS.register(name, item);
-    }
-
-    @Mod.EventBusSubscriber(modid = FancyIceCreamMod.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
-    public static class Registerer {
-        @SubscribeEvent
-        public static void registerModels(final ModelEvent.RegisterAdditional event) {
-            event.register(new ResourceLocation(FancyIceCreamMod.MOD_ID, "block/vanilla_ice_cream"));
-            event.register(new ResourceLocation(FancyIceCreamMod.MOD_ID, "block/apple_ice_cream"));
-            event.register(new ResourceLocation(FancyIceCreamMod.MOD_ID, "block/choco_chip_ice_cream"));
-            event.register(new ResourceLocation(FancyIceCreamMod.MOD_ID, "block/chocolate_ice_cream"));
-            event.register(new ResourceLocation(FancyIceCreamMod.MOD_ID, "block/glow_berry_ice_cream"));
-            event.register(new ResourceLocation(FancyIceCreamMod.MOD_ID, "block/golden_apple_ice_cream"));
-            event.register(new ResourceLocation(FancyIceCreamMod.MOD_ID, "block/honey_ice_cream"));
-        }
     }
 }

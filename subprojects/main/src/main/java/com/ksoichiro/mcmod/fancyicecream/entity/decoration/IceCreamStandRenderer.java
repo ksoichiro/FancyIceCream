@@ -41,11 +41,7 @@ public class IceCreamStandRenderer<T extends IceCreamStand> extends EntityRender
 
     @Override
     public void render(T iceCreamStand, float entityYaw, float partialTicks, PoseStack poseStack, MultiBufferSource bufferIn, int packedLightIn) {
-        var renderNameTagEvent = new net.minecraftforge.client.event.RenderNameTagEvent(iceCreamStand, iceCreamStand.getDisplayName(), this, poseStack, bufferIn, packedLightIn, partialTicks);
-        net.minecraftforge.common.MinecraftForge.EVENT_BUS.post(renderNameTagEvent);
-        if (renderNameTagEvent.getResult() != net.minecraftforge.eventbus.api.Event.Result.DENY && (renderNameTagEvent.getResult() == net.minecraftforge.eventbus.api.Event.Result.ALLOW || this.shouldShowName(iceCreamStand))) {
-            this.renderNameTag(iceCreamStand, renderNameTagEvent.getContent(), poseStack, bufferIn, packedLightIn);
-        }
+        super.render(iceCreamStand, entityYaw, partialTicks, poseStack, bufferIn, packedLightIn);
 
         poseStack.pushPose();
         Direction direction = iceCreamStand.getDirection();
