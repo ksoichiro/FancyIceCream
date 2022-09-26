@@ -193,7 +193,8 @@ jar {
 gradle.projectsEvaluated {
     compileJava.doLast { task ->
         def files = rootProject.subprojects.collect {
-            if (it != project && it.hasProperty('sourceSets')) {
+            println it.project.name
+            if (it != project && it.project.name != 'shared-api' && it.hasProperty('sourceSets')) {
                 return it.sourceSets.main.output
             }
         }

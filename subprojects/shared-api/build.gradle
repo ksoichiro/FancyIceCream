@@ -1,0 +1,11 @@
+plugins {
+    id 'eclipse'
+    id 'maven-publish'
+    id 'java'
+}
+
+java.toolchain.languageVersion = JavaLanguageVersion.of(17)
+
+tasks.withType(JavaCompile).configureEach {
+    options.encoding = 'UTF-8' // Use the UTF-8 charset for Java compilation
+}
