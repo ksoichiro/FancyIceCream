@@ -9,4 +9,5 @@ public interface IForgeCompat {
     void register(IEventBus bus);
     void addModel(ResourceLocation resourceLocation);
     DeferredRegister<EntityType<?>> getEntityTypeDeferredRegister();
+    IItemTagCompat createItemTag(String name);
 }

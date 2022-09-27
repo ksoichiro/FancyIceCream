@@ -1,6 +1,6 @@
 package com.ksoichiro.mcmod.fancyicecream.entity.decoration;
 
-import com.ksoichiro.mcmod.fancyicecream.common.Tag;
+import com.ksoichiro.mcmod.fancyicecream.IItemTagCompat;
 import com.ksoichiro.mcmod.fancyicecream.entity.FancyIceCreamModEntityType;
 import com.mojang.logging.LogUtils;
 import net.minecraft.core.BlockPos;
@@ -42,9 +42,11 @@ import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.ksoichiro.mcmod.fancyicecream.main.FancyIceCreamMod.FORGE_COMPAT;
+
 public class IceCreamStand extends HangingEntity implements IEntityAdditionalSpawnData {
     private static final Logger LOGGER = LogUtils.getLogger();
-    protected static final Tag<Item> ICE_CREAM_TAG = Tag.createItemTag("ice_cream");
+    protected static final IItemTagCompat ICE_CREAM_TAG = FORGE_COMPAT.createItemTag("ice_cream");
     public static final RegistryObject<Item> ICE_CREAM_STAND = RegistryObject.create(new ResourceLocation("fancyicecream:ice_cream_stand"), ForgeRegistries.ITEMS);
 
     private static final EntityDataAccessor<Integer> DATA_ROTATION = SynchedEntityData.defineId(IceCreamStand.class, EntityDataSerializers.INT);

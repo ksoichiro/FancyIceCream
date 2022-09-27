@@ -170,6 +170,7 @@ dependencies {
     // http://www.gradle.org/docs/current/userguide/artifact_dependencies_tutorial.html
     // http://www.gradle.org/docs/current/userguide/dependency_management.html
     api project(':subprojects:shared')
+    api project(':subprojects:1.18.2-forge-40.1.73')
     api project(':subprojects:1.19-forge-41.0.1')
     api project(':subprojects:1.19-forge-41.0.64')
     api project(':subprojects:1.19-forge-41.0.94')

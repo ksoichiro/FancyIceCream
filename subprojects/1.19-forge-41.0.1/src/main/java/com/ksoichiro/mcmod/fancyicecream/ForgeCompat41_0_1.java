@@ -1,6 +1,7 @@
 package com.ksoichiro.mcmod.fancyicecream;
 
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.ItemTags;
 import net.minecraft.world.entity.EntityType;
 import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.client.model.ForgeModelBakery;
@@ -46,5 +47,13 @@ public class ForgeCompat41_0_1 implements IForgeCompat {
 
     public DeferredRegister<EntityType<?>> getEntityTypeDeferredRegister() {
         return ENTITY_TYPE;
+    }
+
+    @Override
+    public IItemTagCompat createItemTag(String name) {
+        ItemTagCompat41_0_1 t = new ItemTagCompat41_0_1();
+        t.tag = ItemTags.create(new ResourceLocation(FancyIceCreamModInfo.MOD_ID, name));
+        t.registry = ForgeRegistries.ITEMS;
+        return t;
     }
 }
