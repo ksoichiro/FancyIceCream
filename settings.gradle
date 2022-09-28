@@ -1,3 +1,11 @@
 rootProject.name = "fancyicecream"
 
-include 'subprojects:shared-api', 'subprojects:shared', 'subprojects:mod', 'subprojects:1.19-forge-41.0.94', 'subprojects:1.19-forge-41.0.64', 'subprojects:1.19-forge-41.0.1', 'subprojects:1.18.2-forge-40.1.73'
+include(
+  'subprojects:shared-api',
+  'subprojects:shared',
+  'subprojects:mod', 
+  'subprojects:1.19-forge-41.0.94', 
+  'subprojects:1.19-forge-41.0.64', 
+  'subprojects:1.19-forge-41.0.1', 
+  'subprojects:1.18.2-forge-40.1.73',
+)
