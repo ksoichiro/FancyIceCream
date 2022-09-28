@@ -14,7 +14,7 @@ plugins {
     id 'maven-publish'
 }
 apply plugin: 'net.minecraftforge.gradle'
-apply from: "${project.projectDir}/gradle/props.gradle"
+apply from: "${project.projectDir}/props.gradle"
 
 version = '0.0.2'
 group = 'com.ksoichiro.mcmod.fancyicecream' // http://maven.apache.org/guides/mini/guide-naming-conventions.html
