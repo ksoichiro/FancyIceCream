@@ -164,6 +164,7 @@ dependencies {
     // For more info...
     // http://www.gradle.org/docs/current/userguide/artifact_dependencies_tutorial.html
     // http://www.gradle.org/docs/current/userguide/dependency_management.html
+    implementation project(':subprojects:shared')
 }
 
 // Example configuration to allow publishing using the maven-publish plugin

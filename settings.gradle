@@ -8,4 +8,5 @@ include(
   'subprojects:1.19-forge-41.0.64', 
   'subprojects:1.19-forge-41.0.1', 
   'subprojects:1.18.2-forge-40.1.73',
+  'subprojects:1.18-forge-38.0.17',
 )

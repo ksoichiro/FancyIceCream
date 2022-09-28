@@ -170,6 +170,7 @@ dependencies {
     // http://www.gradle.org/docs/current/userguide/artifact_dependencies_tutorial.html
     // http://www.gradle.org/docs/current/userguide/dependency_management.html
     compileOnly project(':subprojects:shared')
+    compileOnly project(':subprojects:1.18-forge-38.0.17')
     compileOnly project(':subprojects:1.18.2-forge-40.1.73')
     compileOnly project(':subprojects:1.19-forge-41.0.1')
     compileOnly project(':subprojects:1.19-forge-41.0.64')

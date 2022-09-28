@@ -28,7 +28,9 @@ public class FancyIceCreamMod {
             Integer version = Integer.parseInt(versionString);
             versions.add(version);
         }
-        if (versions.get(0) == 40 && versions.get(1) == 1) {
+        if (versions.get(0) == 38 && versions.get(1) == 0 && versions.get(2) >= 17) {
+            FORGE_COMPAT = ForgeCompat38_0_17.getInstance();
+        } else if (versions.get(0) == 40 && versions.get(1) == 1) {
             FORGE_COMPAT = ForgeCompat40_1_73.getInstance();
         } else if (versions.get(0) == 41 && versions.get(1) == 0 && versions.get(2) < 64) {
             FORGE_COMPAT = ForgeCompat41_0_1.getInstance();

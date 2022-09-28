@@ -2,7 +2,8 @@ package com.ksoichiro.mcmod.fancyicecream.entity.decoration;
 
 import com.ksoichiro.mcmod.fancyicecream.IItemTagCompat;
 import com.ksoichiro.mcmod.fancyicecream.entity.FancyIceCreamModEntityType;
-import com.mojang.logging.LogUtils;
+import com.ksoichiro.mcmod.fancyicecream.logging.LogUtils;
+import com.ksoichiro.mcmod.fancyicecream.registry.FancyIceCreamModItems;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -12,7 +13,6 @@ import net.minecraft.network.protocol.game.ClientboundAddEntityPacket;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.Mth;
@@ -24,7 +24,6 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.SlotAccess;
 import net.minecraft.world.entity.decoration.HangingEntity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
@@ -33,8 +32,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 import net.minecraftforge.entity.IEntityAdditionalSpawnData;
 import net.minecraftforge.network.NetworkHooks;
-import net.minecraftforge.registries.ForgeRegistries;
-import net.minecraftforge.registries.RegistryObject;
 import org.apache.commons.lang3.Validate;
 import org.slf4j.Logger;
 
@@ -47,7 +44,6 @@ import static com.ksoichiro.mcmod.fancyicecream.main.FancyIceCreamMod.FORGE_COMP
 public class IceCreamStand extends HangingEntity implements IEntityAdditionalSpawnData {
     private static final Logger LOGGER = LogUtils.getLogger();
     protected static final IItemTagCompat ICE_CREAM_TAG = FORGE_COMPAT.createItemTag("ice_cream");
-    public static final RegistryObject<Item> ICE_CREAM_STAND = RegistryObject.create(new ResourceLocation("fancyicecream:ice_cream_stand"), ForgeRegistries.ITEMS);
 
     private static final EntityDataAccessor<Integer> DATA_ROTATION = SynchedEntityData.defineId(IceCreamStand.class, EntityDataSerializers.INT);
     protected static final EntityDataAccessor<ItemStack> DATA_ITEM1 = SynchedEntityData.defineId(IceCreamStand.class, EntityDataSerializers.ITEM_STACK);
@@ -432,7 +428,7 @@ public class IceCreamStand extends HangingEntity implements IEntityAdditionalSpa
     }
 
     public ItemStack getFrameItemStack() {
-        return new ItemStack(ICE_CREAM_STAND.get());
+        return new ItemStack(FancyIceCreamModItems.ICE_CREAM_STAND.get());
     }
 
     public float getVisualRotationYInDegrees() {
