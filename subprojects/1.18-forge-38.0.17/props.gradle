@@ -1,0 +1,5 @@
+ext {
+    minecraftVersion = '1.18'
+    forgeVersion = '38.0.17'
+    modId = 'fancyicecream'
+}
