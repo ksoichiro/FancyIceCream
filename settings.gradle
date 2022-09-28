@@ -1,3 +1,5 @@
-apply from: "./gradle/props.gradle"
+rootProject.name = "fancyicecream"
 
-rootProject.name = "${modId}-${minecraftVersion}"
+include(
+        'subprojects:1.18-forge-38.0.17',
+)
