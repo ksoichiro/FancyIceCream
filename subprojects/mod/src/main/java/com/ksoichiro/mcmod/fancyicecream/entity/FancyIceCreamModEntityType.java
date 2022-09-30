@@ -1,6 +1,7 @@
 package com.ksoichiro.mcmod.fancyicecream.entity;
 
 import com.ksoichiro.mcmod.fancyicecream.IForgeCompat;
+import com.ksoichiro.mcmod.fancyicecream.IRegistryObjectCompat;
 import com.ksoichiro.mcmod.fancyicecream.entity.decoration.IceCreamStand;
 import com.ksoichiro.mcmod.fancyicecream.entity.decoration.IceCreamStandRenderer;
 import com.ksoichiro.mcmod.fancyicecream.entity.decoration.TripleIceCreamStand;
@@ -13,12 +14,11 @@ import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.registries.DeferredRegister;
-import net.minecraftforge.registries.RegistryObject;
 
 public class FancyIceCreamModEntityType {
-    public static RegistryObject<EntityType<IceCreamStand>> ICE_CREAM_STAND;
+    public static IRegistryObjectCompat<EntityType<IceCreamStand>> ICE_CREAM_STAND;
 
-    public static RegistryObject<EntityType<TripleIceCreamStand>> TRIPLE_ICE_CREAM_STAND;
+    public static IRegistryObjectCompat<EntityType<TripleIceCreamStand>> TRIPLE_ICE_CREAM_STAND;
 
     public static void register(IEventBus eventBus, IForgeCompat compat) {
         DeferredRegister<EntityType<?>> entityType = compat.getEntityTypeDeferredRegister();
@@ -27,7 +27,7 @@ public class FancyIceCreamModEntityType {
         compat.addModel(IceCreamStandRenderer.STAND_LOCATION);
         compat.addModel(TripleIceCreamStandRenderer.STAND_LOCATION);
 
-        ICE_CREAM_STAND = entityType.register("ice_cream_stand", () ->
+        ICE_CREAM_STAND = FancyIceCreamMod.FORGE_COMPAT.registerEntityType("ice_cream_stand", () ->
             EntityType.Builder
                 .<IceCreamStand>of(IceCreamStand::new, MobCategory.MISC)
                 .sized(0.5F, 0.5F)
@@ -35,7 +35,7 @@ public class FancyIceCreamModEntityType {
                 .updateInterval(Integer.MAX_VALUE)
                 .build("ice_cream_stand"));
 
-        TRIPLE_ICE_CREAM_STAND = entityType.register("triple_ice_cream_stand", () ->
+        TRIPLE_ICE_CREAM_STAND = FancyIceCreamMod.FORGE_COMPAT.registerEntityType("triple_ice_cream_stand", () ->
             EntityType.Builder
                 .<TripleIceCreamStand>of(TripleIceCreamStand::new, MobCategory.MISC)
                 .sized(0.5F, 0.5F)
