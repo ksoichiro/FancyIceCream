@@ -7,14 +7,10 @@ import com.ksoichiro.mcmod.fancyicecream.main.FancyIceCreamMod;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraftforge.eventbus.api.IEventBus;
-import net.minecraftforge.registries.DeferredRegister;
-import net.minecraftforge.registries.ForgeRegistries;
 
 import java.util.function.Supplier;
 
 public class FancyIceCreamModItems {
-    private static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, FancyIceCreamMod.MOD_ID);
-
     public static final IRegistryObjectCompat<Item> VANILLA_ICE_CREAM = registerItem("vanilla_ice_cream", VanillaIceCream::new);
     public static final IRegistryObjectCompat<Item> APPLE_ICE_CREAM = registerItem("apple_ice_cream", AppleIceCream::new);
     public static final IRegistryObjectCompat<Item> CHOCO_CHIP_ICE_CREAM = registerItem("choco_chip_ice_cream", ChocoChipIceCream::new);
@@ -26,8 +22,6 @@ public class FancyIceCreamModItems {
     public static final IRegistryObjectCompat<Item> TRIPLE_ICE_CREAM_STAND = registerItem("triple_ice_cream_stand", TripleIceCreamStandItem::new);
 
     public static void register(IEventBus eventBus, IForgeCompat compat) {
-        ITEMS.register(eventBus);
-
         compat.addModel(new ResourceLocation(FancyIceCreamMod.MOD_ID, "block/vanilla_ice_cream"));
         compat.addModel(new ResourceLocation(FancyIceCreamMod.MOD_ID, "block/apple_ice_cream"));
         compat.addModel(new ResourceLocation(FancyIceCreamMod.MOD_ID, "block/choco_chip_ice_cream"));

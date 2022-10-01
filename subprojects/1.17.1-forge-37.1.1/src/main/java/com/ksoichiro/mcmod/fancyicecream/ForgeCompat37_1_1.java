@@ -3,6 +3,7 @@ package com.ksoichiro.mcmod.fancyicecream;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.item.Item;
 import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -11,6 +12,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Supplier;
 
 public class ForgeCompat37_1_1 implements IForgeCompat {
     private static DeferredRegister<EntityType<?>> ENTITY_TYPE;
@@ -55,5 +57,17 @@ public class ForgeCompat37_1_1 implements IForgeCompat {
         ItemTagCompat37_1_1 t = new ItemTagCompat37_1_1();
         t.tag = ItemTags.createOptional(new ResourceLocation(FancyIceCreamModInfo.MOD_ID, name));
         return t;
+    }
+
+    @Override
+    @SuppressWarnings({"unchecked", "rawtypes"})
+    public IRegistryObjectCompat<Item> registerItem(String name, Supplier item) {
+        return new RegistryObjectCompat37_1_1(ITEMS.register(name, item));
+    }
+
+    @Override
+    @SuppressWarnings({"unchecked", "rawtypes"})
+    public IRegistryObjectCompat<EntityType<?>> registerEntityType(String name, Supplier entityType) {
+        return new RegistryObjectCompat37_1_1(getEntityTypeDeferredRegister().register(name, entityType));
     }
 }

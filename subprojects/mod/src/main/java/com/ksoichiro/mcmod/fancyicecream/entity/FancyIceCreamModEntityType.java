@@ -21,9 +21,6 @@ public class FancyIceCreamModEntityType {
     public static IRegistryObjectCompat<EntityType<TripleIceCreamStand>> TRIPLE_ICE_CREAM_STAND;
 
     public static void register(IEventBus eventBus, IForgeCompat compat) {
-        DeferredRegister<EntityType<?>> entityType = compat.getEntityTypeDeferredRegister();
-        entityType.register(eventBus);
-
         compat.addModel(IceCreamStandRenderer.STAND_LOCATION);
         compat.addModel(TripleIceCreamStandRenderer.STAND_LOCATION);
 
@@ -42,6 +39,9 @@ public class FancyIceCreamModEntityType {
                 .clientTrackingRange(10)
                 .updateInterval(Integer.MAX_VALUE)
                 .build("triple_ice_cream_stand"));
+
+        DeferredRegister<EntityType<?>> entityType = compat.getEntityTypeDeferredRegister();
+        entityType.register(eventBus);
     }
 
     @Mod.EventBusSubscriber(modid = FancyIceCreamMod.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)

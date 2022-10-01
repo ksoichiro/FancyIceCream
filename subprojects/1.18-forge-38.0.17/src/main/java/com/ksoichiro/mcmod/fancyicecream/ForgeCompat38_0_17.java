@@ -36,6 +36,7 @@ public class ForgeCompat38_0_17 implements IForgeCompat<Item, EntityType<?>> {
     @Override
     public void register(IEventBus bus) {
         bus.addListener(ForgeCompat38_0_17::registerModels);
+        ITEMS.register(bus);
     }
 
     public static void registerModels(final ModelRegistryEvent event) {
