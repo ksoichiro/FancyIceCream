@@ -1,11 +1,14 @@
 package com.ksoichiro.mcmod.fancyicecream;
 
+import net.minecraft.network.protocol.Packet;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.ItemTags;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.Item;
 import net.minecraftforge.client.event.ModelEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
+import net.minecraftforge.network.NetworkHooks;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 
@@ -70,5 +73,10 @@ public class ForgeCompat41_0_64 implements IForgeCompat {
     @SuppressWarnings({"unchecked", "rawtypes"})
     public IRegistryObjectCompat registerEntityType(String name, Supplier entityType) {
         return new RegistryObjectCompat41_0_61(getEntityTypeDeferredRegister().register(name, entityType));
+    }
+
+    @Override
+    public Packet<?> getEntitySpawningPacket(Object entity) {
+        return NetworkHooks.getEntitySpawningPacket((Entity) entity);
     }
 }

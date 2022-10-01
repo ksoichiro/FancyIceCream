@@ -1,5 +1,6 @@
 package com.ksoichiro.mcmod.fancyicecream;
 
+import net.minecraft.network.protocol.Packet;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -14,4 +15,5 @@ public interface IForgeCompat<T, E> {
     IItemTagCompat createItemTag(String name);
     IRegistryObjectCompat<T> registerItem(String name, Supplier<T> item);
     IRegistryObjectCompat<E> registerEntityType(String name, Supplier<E> entityType);
+    Packet<?> getEntitySpawningPacket(Object entity);
 }
