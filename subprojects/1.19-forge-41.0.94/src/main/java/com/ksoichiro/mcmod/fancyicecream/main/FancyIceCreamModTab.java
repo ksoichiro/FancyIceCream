@@ -5,6 +5,7 @@ import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
 
 public class FancyIceCreamModTab extends CreativeModeTab {
+    public static final FancyIceCreamModTab FANCY_ICE_CREAM_MOD_TAB = new FancyIceCreamModTab();
     public FancyIceCreamModTab() {
         super("fancyicecream_tab");
     }

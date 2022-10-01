@@ -1,10 +1,10 @@
 package com.ksoichiro.mcmod.fancyicecream.entity;
 
+import com.ksoichiro.mcmod.fancyicecream.FancyIceCreamModInfo;
 import com.ksoichiro.mcmod.fancyicecream.entity.decoration.IceCreamStand;
 import com.ksoichiro.mcmod.fancyicecream.entity.decoration.IceCreamStandRenderer;
 import com.ksoichiro.mcmod.fancyicecream.entity.decoration.TripleIceCreamStand;
 import com.ksoichiro.mcmod.fancyicecream.entity.decoration.TripleIceCreamStandRenderer;
-import com.ksoichiro.mcmod.fancyicecream.main.FancyIceCreamMod;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraftforge.client.event.EntityRenderersEvent;
@@ -17,7 +17,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 
 public class FancyIceCreamModEntityType {
-    private static final DeferredRegister<EntityType<?>> ENTITY_TYPE = DeferredRegister.create(ForgeRegistries.ENTITY_TYPES, FancyIceCreamMod.MOD_ID);
+    private static final DeferredRegister<EntityType<?>> ENTITY_TYPE = DeferredRegister.create(ForgeRegistries.ENTITY_TYPES, FancyIceCreamModInfo.MOD_ID);
 
     public static final RegistryObject<EntityType<IceCreamStand>> ICE_CREAM_STAND = ENTITY_TYPE.register("ice_cream_stand", () ->
         EntityType.Builder
@@ -39,7 +39,7 @@ public class FancyIceCreamModEntityType {
         ENTITY_TYPE.register(eventBus);
     }
 
-    @Mod.EventBusSubscriber(modid = FancyIceCreamMod.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
+    @Mod.EventBusSubscriber(modid = FancyIceCreamModInfo.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
     public static class Registerer {
         @SubscribeEvent
         public static void registerModels(final ModelEvent.RegisterAdditional event) {

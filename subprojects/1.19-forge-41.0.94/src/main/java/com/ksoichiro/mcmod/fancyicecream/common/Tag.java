@@ -1,6 +1,6 @@
 package com.ksoichiro.mcmod.fancyicecream.common;
 
-import com.ksoichiro.mcmod.fancyicecream.main.FancyIceCreamMod;
+import com.ksoichiro.mcmod.fancyicecream.FancyIceCreamModInfo;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagKey;
@@ -15,7 +15,7 @@ public class Tag<T> {
 
     public static Tag<Item> createItemTag(String name) {
         Tag<Item> t = new Tag<>();
-        t.tag = ItemTags.create(new ResourceLocation(FancyIceCreamMod.MOD_ID, name));
+        t.tag = ItemTags.create(new ResourceLocation(FancyIceCreamModInfo.MOD_ID, name));
         t.registry = ForgeRegistries.ITEMS;
         return t;
     }

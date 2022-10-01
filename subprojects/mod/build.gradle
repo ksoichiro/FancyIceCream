@@ -169,7 +169,8 @@ dependencies {
     // For more info...
     // http://www.gradle.org/docs/current/userguide/artifact_dependencies_tutorial.html
     // http://www.gradle.org/docs/current/userguide/dependency_management.html
-    api project(':subprojects:1.19-forge-41.0.94')
+    compileOnly project(':subprojects:shared')
+    compileOnly project(':subprojects:1.19-forge-41.0.94')
 }
 
 // Example for how to get properties into the manifest for reading at runtime.

@@ -1,7 +1,7 @@
 package com.ksoichiro.mcmod.fancyicecream.item;
 
 import com.ksoichiro.mcmod.fancyicecream.entity.decoration.IceCreamStand;
-import com.ksoichiro.mcmod.fancyicecream.main.FancyIceCreamMod;
+import com.ksoichiro.mcmod.fancyicecream.main.FancyIceCreamModTab;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -17,7 +17,7 @@ import net.minecraft.world.level.gameevent.GameEvent;
 
 public class IceCreamStandItem extends HangingEntityItem {
     public IceCreamStandItem() {
-        super(null, new Properties().tab(FancyIceCreamMod.FANCY_ICE_CREAM_MOD_TAB));
+        super(null, new Properties().tab(FancyIceCreamModTab.FANCY_ICE_CREAM_MOD_TAB));
     }
 
     @Override

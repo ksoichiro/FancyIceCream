@@ -2,5 +2,6 @@ rootProject.name = "fancyicecream"
 
 include (
         'subprojects:mod',
+        'subprojects:shared',
         'subprojects:1.19-forge-41.0.94',
 )

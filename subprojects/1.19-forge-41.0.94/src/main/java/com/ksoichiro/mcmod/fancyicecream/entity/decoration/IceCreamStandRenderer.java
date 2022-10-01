@@ -1,6 +1,6 @@
 package com.ksoichiro.mcmod.fancyicecream.entity.decoration;
 
-import com.ksoichiro.mcmod.fancyicecream.main.FancyIceCreamMod;
+import com.ksoichiro.mcmod.fancyicecream.FancyIceCreamModInfo;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Vector3f;
 import net.minecraft.client.Minecraft;
@@ -25,7 +25,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 import java.util.List;
 
 public class IceCreamStandRenderer<T extends IceCreamStand> extends EntityRenderer<T> {
-    public static final ResourceLocation STAND_LOCATION = new ResourceLocation(FancyIceCreamMod.MOD_ID, "block/ice_cream_stand");
+    public static final ResourceLocation STAND_LOCATION = new ResourceLocation(FancyIceCreamModInfo.MOD_ID, "block/ice_cream_stand");
     protected final Minecraft minecraft = Minecraft.getInstance();
     protected final ItemRenderer itemRenderer;
 
