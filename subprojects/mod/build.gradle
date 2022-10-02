@@ -1,3 +1,5 @@
+import com.github.jengelman.gradle.plugins.shadow.tasks.ConfigureShadowRelocation
+
 buildscript {
     repositories {
         // These repositories are only for Gradle plugins, put any other repositories in the repository block further below
@@ -14,6 +16,7 @@ plugins {
     id 'maven-publish'
     id 'java-library'
     id 'org.barfuin.gradle.taskinfo' version '1.0.5'
+    id 'com.github.johnrengelman.shadow' version '7.1.2'
 }
 apply plugin: 'net.minecraftforge.gradle'
 apply from: "${project.projectDir}/props.gradle"
@@ -152,6 +155,22 @@ repositories {
     // }
 }
 
+shadowJar {
+    // Only shadow fluent-hc
+    dependencies {
+        include(dependency('net.bytebuddy:byte-buddy:.*'))
+    }
+
+    // Relocate fluent-hc to prevent conflicts with other mods that include it
+    relocate 'net.bytebuddy', 'com.ksoichiro.mcmod.fancyicecream.repack.net.bytebuddy'
+
+    classifier '' // Replace the default JAR
+}
+
+reobf {
+    shadowJar {} // Reobfuscate the shadowed JAR
+}
+
 dependencies {
     // Specify the version of Minecraft to use. If this is any group other than 'net.minecraft', it is assumed
     // that the dep is a ForgeGradle 'patcher' dependency, and its patches will be applied.
@@ -169,7 +188,9 @@ dependencies {
     // For more info...
     // http://www.gradle.org/docs/current/userguide/artifact_dependencies_tutorial.html
     // http://www.gradle.org/docs/current/userguide/dependency_management.html
+    minecraftLibrary 'net.bytebuddy:byte-buddy:1.12.17'
     compileOnly project(':subprojects:shared')
+    compileOnly project(':subprojects:1.17.1-forge-37.1.1')
     compileOnly project(':subprojects:1.18-forge-38.0.17')
     compileOnly project(':subprojects:1.18.2-forge-40.1.73')
     compileOnly project(':subprojects:1.19-forge-41.0.1')
@@ -227,6 +248,16 @@ publishing {
     }
 }
 
+//artifacts {
+//    archives shadowJar
+//}
+
 tasks.withType(JavaCompile).configureEach {
     options.encoding = 'UTF-8' // Use the UTF-8 charset for Java compilation
 }
+
+task relocateShadowJar(type: ConfigureShadowRelocation) {
+    target = tasks.shadowJar
+}
+
+tasks.shadowJar.dependsOn tasks.relocateShadowJar

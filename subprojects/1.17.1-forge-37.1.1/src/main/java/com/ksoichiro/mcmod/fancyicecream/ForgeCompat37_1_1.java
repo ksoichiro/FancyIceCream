@@ -3,6 +3,7 @@ package com.ksoichiro.mcmod.fancyicecream;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.ItemTags;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.Item;
 import net.minecraftforge.client.event.ModelRegistryEvent;
@@ -37,6 +38,7 @@ public class ForgeCompat37_1_1 implements IForgeCompat {
     @Override
     public void register(IEventBus bus) {
         bus.addListener(ForgeCompat37_1_1::registerModels);
+        ITEMS.register(bus);
     }
 
     public static void registerModels(final ModelRegistryEvent event) {
@@ -76,6 +78,6 @@ public class ForgeCompat37_1_1 implements IForgeCompat {
 
     @Override
     public Packet<?> getEntitySpawningPacket(Object entity) {
-        return NetworkHooks.getEntitySpawningPacket(entity);
+        return NetworkHooks.getEntitySpawningPacket((Entity) entity);
     }
 }

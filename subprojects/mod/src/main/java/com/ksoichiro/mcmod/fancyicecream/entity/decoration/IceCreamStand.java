@@ -30,7 +30,6 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.DiodeBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
-import net.minecraftforge.entity.IEntityAdditionalSpawnData;
 import net.minecraftforge.fmllegacy.network.NetworkHooks;
 import org.apache.commons.lang3.Validate;
 import org.slf4j.Logger;
@@ -41,7 +40,7 @@ import java.util.List;
 
 import static com.ksoichiro.mcmod.fancyicecream.main.FancyIceCreamMod.FORGE_COMPAT;
 
-public class IceCreamStand extends HangingEntity implements IEntityAdditionalSpawnData {
+public class IceCreamStand extends HangingEntity /*implements IEntityAdditionalSpawnData*/ {
     private static final Logger LOGGER = LogUtils.getLogger();
     protected static final IItemTagCompat ICE_CREAM_TAG = FORGE_COMPAT.createItemTag("ice_cream");
 
@@ -407,13 +406,11 @@ public class IceCreamStand extends HangingEntity implements IEntityAdditionalSpa
         this.setDirection(Direction.from3DDataValue(packet.getData()));
     }
 
-    @Override
     public void writeSpawnData(FriendlyByteBuf buffer) {
         // TODO should Items be written?
         buffer.writeInt(this.direction.get3DDataValue());
     }
 
-    @Override
     public void readSpawnData(FriendlyByteBuf additionalData) {
         this.setDirection(Direction.from3DDataValue(additionalData.readInt()));
     }
