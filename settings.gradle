@@ -1,3 +1,11 @@
+pluginManagement {
+    repositories {
+        maven { url = 'https://maven.minecraftforge.net/' }
+        maven { url = 'https://maven.parchmentmc.org' }
+        mavenCentral()
+    }
+}
+
 apply from: "./gradle/props.gradle"
 
 rootProject.name = "${modId}-${minecraftVersion}"
