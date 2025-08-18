@@ -2,7 +2,7 @@ package com.ksoichiro.mcmod.fancyicecream.entity.decoration;
 
 import com.ksoichiro.mcmod.fancyicecream.main.FancyIceCreamMod;
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Vector3f;
+import com.mojang.math.Axis;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.Sheets;
@@ -53,7 +53,7 @@ public class IceCreamStandRenderer<T extends IceCreamStand> extends EntityRender
         poseStack.translate(-vec3.x(), -vec3.y(), -vec3.z());
         poseStack.translate((double)direction.getStepX() * 0.46875D, (double)direction.getStepY() * 0.46875D, (double)direction.getStepZ() * 0.46875D);
 
-        poseStack.mulPose(Vector3f.YP.rotationDegrees((float) iceCreamStand.getRotation() * 360.0F / 8.0F));
+        poseStack.mulPose(Axis.YP.rotationDegrees((float) iceCreamStand.getRotation() * 360.0F / 8.0F));
 
         BlockRenderDispatcher blockrenderdispatcher = this.minecraft.getBlockRenderer();
         ModelManager modelmanager = blockrenderdispatcher.getBlockModelShaper().getModelManager();
@@ -82,9 +82,9 @@ public class IceCreamStandRenderer<T extends IceCreamStand> extends EntityRender
                 if (model.equals(modelmanager.getMissingModel())) {
                     poseStack.translate(translations[i][0] / 16.0D, translations[i][1] / 16.0D, translations[i][2] / 16.0D);
                     poseStack.scale(0.5F, 0.5F, 0.5F);
-                    poseStack.mulPose(Vector3f.YP.rotationDegrees(180.0F));
-                    poseStack.mulPose(Vector3f.XP.rotationDegrees(20.0F));
-                    poseStack.mulPose(Vector3f.ZP.rotationDegrees(-45.0F));
+                    poseStack.mulPose(Axis.YP.rotationDegrees(180.0F));
+                    poseStack.mulPose(Axis.XP.rotationDegrees(20.0F));
+                    poseStack.mulPose(Axis.ZP.rotationDegrees(-45.0F));
                     this.itemRenderer.renderStatic(itemstack, ItemTransforms.TransformType.FIXED, packedLightIn, OverlayTexture.NO_OVERLAY, poseStack, bufferIn, iceCreamStand.getId());
                 } else {
                     poseStack.translate(translations[i][0] / 16.0D, translations[i][1] / 16.0D, translations[i][2] / 16.0D);

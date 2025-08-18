@@ -1,5 +1,6 @@
 ext {
-    minecraftVersion = '1.19'
-    forgeVersion = '41.1.0'
+    minecraftVersion = '1.19.3'
+    forgeVersion = '44.1.0'
+    parchmentMCVersion = '2023.06.25-1.19.3'
     modId = 'fancyicecream'
 }
