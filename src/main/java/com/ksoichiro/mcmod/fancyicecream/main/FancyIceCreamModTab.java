@@ -17,7 +17,7 @@ public class FancyIceCreamModTab {
         event.registerCreativeModeTab(new ResourceLocation(MOD_ID, ""), builder ->
             builder.title(Component.translatable("itemGroup.fancyicecream_tab"))
                 .icon(() -> new ItemStack(FancyIceCreamModItems.VANILLA_ICE_CREAM.get()))
-                .displayItems((params, output, display) -> {
+                .displayItems((params, output) -> {
                     output.accept(FancyIceCreamModItems.VANILLA_ICE_CREAM.get());
                     output.accept(FancyIceCreamModItems.APPLE_ICE_CREAM.get());
                     output.accept(FancyIceCreamModItems.CHOCO_CHIP_ICE_CREAM.get());

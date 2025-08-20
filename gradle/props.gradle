@@ -1,6 +1,8 @@
 ext {
-    minecraftVersion = '1.19.3'
-    forgeVersion = '44.1.0'
-    parchmentMCVersion = '2023.06.25-1.19.3'
+    minecraftVersion = '1.19.4'
+    // https://files.minecraftforge.net/net/minecraftforge/forge/index_1.19.4.html
+    forgeVersion = '45.4.0'
+    // https://parchmentmc.org/docs/getting-started
+    parchmentMCVersion = '2023.06.26-1.19.4'
     modId = 'fancyicecream'
 }

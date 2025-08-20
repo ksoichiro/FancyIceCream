@@ -16,6 +16,7 @@ import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -369,7 +370,7 @@ public class IceCreamStand extends HangingEntity implements IEntityAdditionalSpa
     public boolean hurt(DamageSource damageSource, float p_31777_) {
         if (this.isInvulnerableTo(damageSource)) {
             return false;
-        } else if (!damageSource.isExplosion() && this.hasItems()) {
+        } else if (!damageSource.is(DamageTypeTags.IS_EXPLOSION) && this.hasItems()) {
             if (!this.level.isClientSide) {
                 this.dropItem(damageSource.getEntity(), false, false);
                 this.playSound(this.getRemoveItemSound(), 1.0F, 1.0F);
