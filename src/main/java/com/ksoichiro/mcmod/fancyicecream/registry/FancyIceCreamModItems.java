@@ -39,13 +39,13 @@ public class FancyIceCreamModItems {
     public static class Registerer {
         @SubscribeEvent
         public static void registerModels(final ModelEvent.RegisterAdditional event) {
-            event.register(ResourceLocation.fromNamespaceAndPath(FancyIceCreamMod.MOD_ID, "block/vanilla_ice_cream"));
-            event.register(ResourceLocation.fromNamespaceAndPath(FancyIceCreamMod.MOD_ID, "block/apple_ice_cream"));
-            event.register(ResourceLocation.fromNamespaceAndPath(FancyIceCreamMod.MOD_ID, "block/choco_chip_ice_cream"));
-            event.register(ResourceLocation.fromNamespaceAndPath(FancyIceCreamMod.MOD_ID, "block/chocolate_ice_cream"));
-            event.register(ResourceLocation.fromNamespaceAndPath(FancyIceCreamMod.MOD_ID, "block/glow_berry_ice_cream"));
-            event.register(ResourceLocation.fromNamespaceAndPath(FancyIceCreamMod.MOD_ID, "block/golden_apple_ice_cream"));
-            event.register(ResourceLocation.fromNamespaceAndPath(FancyIceCreamMod.MOD_ID, "block/honey_ice_cream"));
+            event.register(new ResourceLocation(FancyIceCreamMod.MOD_ID, "block/vanilla_ice_cream"));
+            event.register(new ResourceLocation(FancyIceCreamMod.MOD_ID, "block/apple_ice_cream"));
+            event.register(new ResourceLocation(FancyIceCreamMod.MOD_ID, "block/choco_chip_ice_cream"));
+            event.register(new ResourceLocation(FancyIceCreamMod.MOD_ID, "block/chocolate_ice_cream"));
+            event.register(new ResourceLocation(FancyIceCreamMod.MOD_ID, "block/glow_berry_ice_cream"));
+            event.register(new ResourceLocation(FancyIceCreamMod.MOD_ID, "block/golden_apple_ice_cream"));
+            event.register(new ResourceLocation(FancyIceCreamMod.MOD_ID, "block/honey_ice_cream"));
         }
     }
 }

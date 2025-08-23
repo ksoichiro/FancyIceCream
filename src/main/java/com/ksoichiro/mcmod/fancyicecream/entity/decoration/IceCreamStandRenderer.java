@@ -25,7 +25,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 import java.util.List;
 
 public class IceCreamStandRenderer<T extends IceCreamStand> extends EntityRenderer<T> {
-    public static final ResourceLocation STAND_LOCATION = ResourceLocation.fromNamespaceAndPath(FancyIceCreamMod.MOD_ID, "block/ice_cream_stand");
+    public static final ResourceLocation STAND_LOCATION = new ResourceLocation(FancyIceCreamMod.MOD_ID, "block/ice_cream_stand");
     protected final Minecraft minecraft = Minecraft.getInstance();
     protected final ItemRenderer itemRenderer;
 
@@ -104,7 +104,7 @@ public class IceCreamStandRenderer<T extends IceCreamStand> extends EntityRender
         if (itemResource != null) {
             namespace = itemResource.getNamespace();
         }
-        ResourceLocation modelResource = ResourceLocation.fromNamespaceAndPath(namespace, "block/" + item);
+        ResourceLocation modelResource = new ResourceLocation(namespace, "block/" + item);
         return modelmanager.getModel(modelResource);
     }
 
