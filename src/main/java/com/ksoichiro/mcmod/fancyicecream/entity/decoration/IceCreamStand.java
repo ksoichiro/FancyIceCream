@@ -34,7 +34,6 @@ import net.minecraft.world.level.block.DiodeBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 import net.minecraftforge.entity.IEntityAdditionalSpawnData;
-import net.minecraftforge.network.NetworkHooks;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 import org.apache.commons.lang3.Validate;
@@ -47,7 +46,7 @@ import java.util.List;
 public class IceCreamStand extends HangingEntity implements IEntityAdditionalSpawnData {
     private static final Logger LOGGER = LogUtils.getLogger();
     protected static final Tag<Item> ICE_CREAM_TAG = Tag.createItemTag("ice_cream");
-    public static final RegistryObject<Item> ICE_CREAM_STAND = RegistryObject.create(new ResourceLocation("fancyicecream:ice_cream_stand"), ForgeRegistries.ITEMS);
+    public static final RegistryObject<Item> ICE_CREAM_STAND = RegistryObject.create(ResourceLocation.parse("fancyicecream:ice_cream_stand"), ForgeRegistries.ITEMS);
 
     private static final EntityDataAccessor<Integer> DATA_ROTATION = SynchedEntityData.defineId(IceCreamStand.class, EntityDataSerializers.INT);
     protected static final EntityDataAccessor<ItemStack> DATA_ITEM1 = SynchedEntityData.defineId(IceCreamStand.class, EntityDataSerializers.ITEM_STACK);
@@ -140,11 +139,11 @@ public class IceCreamStand extends HangingEntity implements IEntityAdditionalSpa
     }
 
     public boolean survives() {
-        if (!this.level.noCollision(this)) {
+        if (!this.level().noCollision(this)) {
             return false;
         } else {
-            BlockState blockstate = this.level.getBlockState(this.pos.relative(this.direction.getOpposite()));
-            return blockstate.getMaterial().isSolid() || this.direction.getAxis().isHorizontal() && DiodeBlock.isDiode(blockstate) ? this.level.getEntities(this, this.getBoundingBox(), HANGING_ENTITY).isEmpty() : false;
+            BlockState blockstate = this.level().getBlockState(this.pos.relative(this.direction.getOpposite()));
+            return blockstate.isSolid() || this.direction.getAxis().isHorizontal() && DiodeBlock.isDiode(blockstate) ? this.level().getEntities(this, this.getBoundingBox(), HANGING_ENTITY).isEmpty() : false;
         }
     }
 
@@ -299,7 +298,7 @@ public class IceCreamStand extends HangingEntity implements IEntityAdditionalSpa
         }
 
         if (update && this.pos != null) {
-            this.level.updateNeighbourForOutputSignal(this.pos, Blocks.AIR);
+            this.level().updateNeighbourForOutputSignal(this.pos, Blocks.AIR);
         }
     }
 
@@ -330,7 +329,7 @@ public class IceCreamStand extends HangingEntity implements IEntityAdditionalSpa
         int emptyStandSlot = this.getEmptyStandSlot();
         boolean isStandEmpty = 0 <= emptyStandSlot;
         boolean hasItemInHand = !itemstack.isEmpty();
-        if (!this.level.isClientSide) {
+        if (!this.level().isClientSide) {
             boolean isIceCream = ICE_CREAM_TAG.contains(itemstack.getItem());
             if (isStandEmpty && hasItemInHand && !this.isRemoved() && isIceCream) {
                 this.setItem(itemstack, emptyStandSlot);
@@ -371,7 +370,7 @@ public class IceCreamStand extends HangingEntity implements IEntityAdditionalSpa
         if (this.isInvulnerableTo(damageSource)) {
             return false;
         } else if (!damageSource.is(DamageTypeTags.IS_EXPLOSION) && this.hasItems()) {
-            if (!this.level.isClientSide) {
+            if (!this.level().isClientSide) {
                 this.dropItem(damageSource.getEntity(), false, false);
                 this.playSound(this.getRemoveItemSound(), 1.0F, 1.0F);
             }

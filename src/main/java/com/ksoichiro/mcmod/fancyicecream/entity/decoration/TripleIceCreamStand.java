@@ -16,7 +16,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 
 public class TripleIceCreamStand extends IceCreamStand {
-    public static final RegistryObject<Item> TRIPLE_ICE_CREAM_STAND = RegistryObject.create(new ResourceLocation("fancyicecream:triple_ice_cream_stand"), ForgeRegistries.ITEMS);
+    public static final RegistryObject<Item> TRIPLE_ICE_CREAM_STAND = RegistryObject.create(ResourceLocation.parse("fancyicecream:triple_ice_cream_stand"), ForgeRegistries.ITEMS);
 
 
     protected static final EntityDataAccessor<ItemStack> DATA_ITEM2 = SynchedEntityData.defineId(TripleIceCreamStand.class, EntityDataSerializers.ITEM_STACK);

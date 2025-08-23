@@ -1,22 +1,22 @@
 package com.ksoichiro.mcmod.fancyicecream.main;
 
 import com.ksoichiro.mcmod.fancyicecream.registry.FancyIceCreamModItems;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.event.CreativeModeTabEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
+import net.minecraft.world.item.CreativeModeTab;
+import net.minecraftforge.eventbus.api.IEventBus;
+import net.minecraftforge.registries.DeferredRegister;
+import net.minecraftforge.registries.RegistryObject;
 
-import static com.ksoichiro.mcmod.fancyicecream.main.FancyIceCreamMod.MOD_ID;
-
-@Mod.EventBusSubscriber(modid = FancyIceCreamMod.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class FancyIceCreamModTab {
-    @SubscribeEvent
-    public static void buildContents(CreativeModeTabEvent.Register event) {
-        event.registerCreativeModeTab(new ResourceLocation(MOD_ID, ""), builder ->
-            builder.title(Component.translatable("itemGroup.fancyicecream_tab"))
-                .icon(() -> new ItemStack(FancyIceCreamModItems.VANILLA_ICE_CREAM.get()))
+    public static final DeferredRegister<CreativeModeTab> REGISTRAR =
+        DeferredRegister.create(Registries.CREATIVE_MODE_TAB, FancyIceCreamMod.MOD_ID);
+
+    public static final RegistryObject<CreativeModeTab> FANCY_ICE_CREAM_MOD_TAB =
+        REGISTRAR.register("fancyicecream_tab",
+            () -> CreativeModeTab.builder()
+                .title(Component.translatable("itemGroup.fancyicecream_tab"))
+                .icon(FancyIceCreamModItems.VANILLA_ICE_CREAM.get()::getDefaultInstance)
                 .displayItems((params, output) -> {
                     output.accept(FancyIceCreamModItems.VANILLA_ICE_CREAM.get());
                     output.accept(FancyIceCreamModItems.APPLE_ICE_CREAM.get());
@@ -28,6 +28,9 @@ public class FancyIceCreamModTab {
                     output.accept(FancyIceCreamModItems.ICE_CREAM_STAND.get());
                     output.accept(FancyIceCreamModItems.TRIPLE_ICE_CREAM_STAND.get());
                 })
-        );
+                .build());
+
+    public static void register(IEventBus eventBus) {
+        REGISTRAR.register(eventBus);
     }
 }
