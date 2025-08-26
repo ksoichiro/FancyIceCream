@@ -82,3 +82,19 @@ Test the mod using the run configurations:
 - `runClient` for client-side testing in development environment
 - `runServer` for server-side testing
 - Game saves are stored in version-specific directories under `run/`
+
+## Version Updates
+
+For updating the mod to new Minecraft versions, see the detailed instructions in `UPDATE.md`. The update process involves:
+
+1. **Version Configuration Updates**: Update `minecraftVersion`, `forgeVersion`, and `parchmentMCVersion` in `gradle/props.gradle`
+2. **Build and Test**: Use `./gradlew clean` followed by `./gradlew runClient` to verify the update
+3. **Functionality Testing**: Ensure all mod features work correctly in the new version
+4. **API Compatibility**: Check for and resolve any Forge API changes that may affect the mod
+
+Key points for version updates:
+- Use recommended Forge versions when available
+- Verify ParchmentMC mappings availability for the target version
+- Compare with ItemFrame class implementation when fixing IceCreamStand issues
+- Reference version-specific Forge documentation for API changes
+- Compare with MDK build files if build issues occur
