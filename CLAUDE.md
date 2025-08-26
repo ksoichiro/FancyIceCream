@@ -88,9 +88,13 @@ Test the mod using the run configurations:
 For updating the mod to new Minecraft versions, see the detailed instructions in @UPDATE.md. The update process involves:
 
 1. **Version Configuration Updates**: Update `minecraftVersion`, `forgeVersion`, and `parchmentMCVersion` in `gradle/props.gradle`
-2. **Build and Test**: Use `./gradlew clean` followed by `./gradlew runClient` to verify the update
-3. **Functionality Testing**: Ensure all mod features work correctly in the new version
-4. **API Compatibility**: Check for and resolve any Forge API changes that may affect the mod
+2. **Mod Metadata Updates**: Update `src/main/resources/META-INF/mods.toml` with corresponding version ranges:
+   - `loaderVersion` to match Forge major version (e.g., `"[49,)"` for Forge 49.x.x)
+   - `versionRange` in forge dependency section
+   - `versionRange` in minecraft dependency section
+3. **Build and Test**: Use `./gradlew clean` followed by `./gradlew runClient` to verify the update
+4. **Functionality Testing**: Ensure all mod features work correctly in the new version
+5. **API Compatibility**: Check for and resolve any Forge API changes that may affect the mod
 
 Key points for version updates:
 - Use recommended Forge versions when available

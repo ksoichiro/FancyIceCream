@@ -39,6 +39,40 @@ For Minecraft 1.20.3, the steps would be:
 
 This method ensures you get the most current and accurate ParchmentMC version available for your target Minecraft version.
 
+## Mod Metadata Update
+
+In addition to updating the build configuration, the mod metadata file also needs to be updated to match the new versions.
+
+### mods.toml Update
+
+Update `src/main/resources/META-INF/mods.toml` with the following changes:
+
+1. **loaderVersion**: Update to match the new Forge major version
+   - For Forge 49.x.x, use `loaderVersion="[49,)"`
+   - For Forge 48.x.x, use `loaderVersion="[48,)"`
+
+2. **Forge dependency versionRange**: Update the Forge dependency version range in the `[[dependencies.fancyicecream]]` section where `modId="forge"`
+   - Change `versionRange="[48,)"` to `versionRange="[49,)"` (matching the Forge version)
+
+3. **Minecraft dependency versionRange**: Update the Minecraft dependency version range in the `[[dependencies.fancyicecream]]` section where `modId="minecraft"`
+   - Change `versionRange="[1.20.2,)"` to `versionRange="[1.20.3,)"` (matching the target Minecraft version)
+
+### Example for Minecraft 1.20.3 with Forge 49.0.2:
+```toml
+loaderVersion="[49,)" #mandatory
+...
+[[dependencies.fancyicecream]]
+    modId="forge"
+    mandatory=true
+    versionRange="[49,)" #mandatory
+    ...
+[[dependencies.fancyicecream]]
+    modId="minecraft"
+    mandatory=true
+    versionRange="[1.20.3,)"
+    ...
+```
+
 ## Build
 
 For building, use gradlew. Clean previous build results with `clean`, then build the mod and run Minecraft with `runClient`.
