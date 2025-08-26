@@ -19,6 +19,26 @@ If no such version exists, select the latest version.
 This repository uses [ParchmentMC](https://parchmentmc.org/), and can only be updated to versions listed in the [mappings](https://parchmentmc.org/docs/getting-started).
 The ParchmentMC version is specified as `parchmentMCVersion` in @gradle/props.gradle, which needs to be updated.
 
+### Important: Accurate Version Confirmation
+
+The ParchmentMC versions displayed on the getting-started page are shown as image badges, which makes it difficult to programmatically or mechanically read the version information as text. To get the exact latest version, follow these steps:
+
+1. **Visit the ParchmentMC page**: Go to https://parchmentmc.org/docs/getting-started
+2. **Find your target Minecraft version**: Locate the row for your target Minecraft version (e.g., 1.20.3)
+3. **Get the metadata URL**: The version badge image contains a link to the Maven metadata XML. For example, for Minecraft 1.20.3, the metadata URL is:
+   ```
+   https://ldtteam.jfrog.io/artifactory/parchmentmc-internal/org/parchmentmc/data/parchment-1.20.3/maven-metadata.xml
+   ```
+4. **Check the metadata XML**: Access the metadata URL to get the exact latest version from the `<latest>` and `<release>` tags.
+
+### Example: Minecraft 1.20.3
+For Minecraft 1.20.3, the steps would be:
+- Visit the metadata URL: https://ldtteam.jfrog.io/artifactory/parchmentmc-internal/org/parchmentmc/data/parchment-1.20.3/maven-metadata.xml
+- The XML shows the latest version as `2023.12.31`
+- Therefore, use `parchmentMCVersion = '2023.12.31-1.20.3'` in @gradle/props.gradle
+
+This method ensures you get the most current and accurate ParchmentMC version available for your target Minecraft version.
+
 ## Build
 
 For building, use gradlew. Clean previous build results with `clean`, then build the mod and run Minecraft with `runClient`.

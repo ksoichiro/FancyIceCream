@@ -85,7 +85,7 @@ Test the mod using the run configurations:
 
 ## Version Updates
 
-For updating the mod to new Minecraft versions, see the detailed instructions in `UPDATE.md`. The update process involves:
+For updating the mod to new Minecraft versions, see the detailed instructions in @UPDATE.md. The update process involves:
 
 1. **Version Configuration Updates**: Update `minecraftVersion`, `forgeVersion`, and `parchmentMCVersion` in `gradle/props.gradle`
 2. **Build and Test**: Use `./gradlew clean` followed by `./gradlew runClient` to verify the update
@@ -94,7 +94,9 @@ For updating the mod to new Minecraft versions, see the detailed instructions in
 
 Key points for version updates:
 - Use recommended Forge versions when available
-- Verify ParchmentMC mappings availability for the target version
+- **CRITICAL: Verify ParchmentMC mappings availability and get exact version**
+  - The ParchmentMC website displays versions as image badges which makes it difficult to read version information programmatically
+  - Follow the detailed steps in @UPDATE.md for accurate version confirmation via Maven metadata XML
 - Compare with ItemFrame class implementation when fixing IceCreamStand issues
 - Reference version-specific Forge documentation for API changes
 - Compare with MDK build files if build issues occur
