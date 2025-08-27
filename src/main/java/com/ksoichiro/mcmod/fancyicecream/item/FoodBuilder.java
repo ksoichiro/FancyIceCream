@@ -16,19 +16,19 @@ public class FoodBuilder {
     }
 
     public FoodBuilder saturationMod(float saturationMod) {
-        this.builder.saturationMod(saturationMod);
+        this.builder.saturationModifier(saturationMod);
         return this;
     }
 
     public FoodBuilder effect(Effects effect, int duration, int amplifier, float probability) {
         this.builder.effect(
-                () -> new MobEffectInstance(effect.getMobEffect(), duration, amplifier),
+                new MobEffectInstance(effect.getMobEffect(), duration, amplifier),
                 probability);
         return this;
     }
 
     public FoodBuilder alwaysEat() {
-        this.builder.alwaysEat();
+        this.builder.alwaysEdible();
         return this;
     }
 

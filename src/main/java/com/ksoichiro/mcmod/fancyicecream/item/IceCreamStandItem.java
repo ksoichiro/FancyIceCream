@@ -33,9 +33,9 @@ public class IceCreamStandItem extends HangingEntityItem {
         Level level = context.getLevel();
         HangingEntity hangingentity = getEntityFactory().create(level, blockpos1, direction, player.getDirection());
 
-        CompoundTag compoundtag = itemstack.getTag();
-        if (compoundtag != null) {
-            EntityType.updateCustomEntityTag(level, player, hangingentity, compoundtag);
+        if (itemstack.has(net.minecraft.core.component.DataComponents.ENTITY_DATA)) {
+            net.minecraft.world.item.component.CustomData entityData = itemstack.get(net.minecraft.core.component.DataComponents.ENTITY_DATA);
+            EntityType.updateCustomEntityTag(level, player, hangingentity, entityData);
         }
 
         if (hangingentity.survives()) {

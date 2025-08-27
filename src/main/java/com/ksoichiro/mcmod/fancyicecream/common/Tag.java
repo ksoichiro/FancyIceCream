@@ -15,7 +15,7 @@ public class Tag<T> {
 
     public static Tag<Item> createItemTag(String name) {
         Tag<Item> t = new Tag<>();
-        t.tag = ItemTags.create(new ResourceLocation(FancyIceCreamMod.MOD_ID, name));
+        t.tag = ItemTags.create(ResourceLocation.fromNamespaceAndPath(FancyIceCreamMod.MOD_ID, name));
         t.registry = ForgeRegistries.ITEMS;
         return t;
     }

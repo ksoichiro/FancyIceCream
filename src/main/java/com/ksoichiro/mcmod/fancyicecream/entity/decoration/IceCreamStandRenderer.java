@@ -25,7 +25,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 import java.util.List;
 
 public class IceCreamStandRenderer<T extends IceCreamStand> extends EntityRenderer<T> {
-    public static final ResourceLocation STAND_LOCATION = new ResourceLocation(FancyIceCreamMod.MOD_ID, "block/ice_cream_stand");
+    public static final ResourceLocation STAND_LOCATION = ResourceLocation.fromNamespaceAndPath(FancyIceCreamMod.MOD_ID, "block/ice_cream_stand");
     protected final Minecraft minecraft = Minecraft.getInstance();
     protected final ItemRenderer itemRenderer;
 
@@ -44,7 +44,7 @@ public class IceCreamStandRenderer<T extends IceCreamStand> extends EntityRender
         var renderNameTagEvent = new net.minecraftforge.client.event.RenderNameTagEvent(iceCreamStand, iceCreamStand.getDisplayName(), this, poseStack, bufferIn, packedLightIn, partialTicks);
         net.minecraftforge.common.MinecraftForge.EVENT_BUS.post(renderNameTagEvent);
         if (renderNameTagEvent.getResult() != net.minecraftforge.eventbus.api.Event.Result.DENY && (renderNameTagEvent.getResult() == net.minecraftforge.eventbus.api.Event.Result.ALLOW || this.shouldShowName(iceCreamStand))) {
-            this.renderNameTag(iceCreamStand, renderNameTagEvent.getContent(), poseStack, bufferIn, packedLightIn);
+            this.renderNameTag(iceCreamStand, renderNameTagEvent.getContent(), poseStack, bufferIn, packedLightIn, partialTicks);
         }
 
         poseStack.pushPose();
@@ -104,7 +104,7 @@ public class IceCreamStandRenderer<T extends IceCreamStand> extends EntityRender
         if (itemResource != null) {
             namespace = itemResource.getNamespace();
         }
-        ResourceLocation modelResource = new ResourceLocation(namespace, "block/" + item);
+        ResourceLocation modelResource = ResourceLocation.fromNamespaceAndPath(namespace, "block/" + item);
         return modelmanager.getModel(modelResource);
     }
 

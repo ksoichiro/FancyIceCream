@@ -46,7 +46,7 @@ import java.util.List;
 public class IceCreamStand extends HangingEntity implements IEntityAdditionalSpawnData {
     private static final Logger LOGGER = LogUtils.getLogger();
     protected static final Tag<Item> ICE_CREAM_TAG = Tag.createItemTag("ice_cream");
-    public static final RegistryObject<Item> ICE_CREAM_STAND = RegistryObject.create(new ResourceLocation("fancyicecream:ice_cream_stand"), ForgeRegistries.ITEMS);
+    public static final RegistryObject<Item> ICE_CREAM_STAND = RegistryObject.create(ResourceLocation.parse("fancyicecream:ice_cream_stand"), ForgeRegistries.ITEMS);
 
     private static final EntityDataAccessor<Integer> DATA_ROTATION = SynchedEntityData.defineId(IceCreamStand.class, EntityDataSerializers.INT);
     protected static final EntityDataAccessor<ItemStack> DATA_ITEM1 = SynchedEntityData.defineId(IceCreamStand.class, EntityDataSerializers.ITEM_STACK);
@@ -85,11 +85,11 @@ public class IceCreamStand extends HangingEntity implements IEntityAdditionalSpa
     }
 
     @Override
-    protected void defineSynchedData() {
-        super.defineSynchedData();
-        this.getEntityData().define(DATA_ROTATION, 0);
+    protected void defineSynchedData(SynchedEntityData.Builder builder) {
+        super.defineSynchedData(builder);
+        builder.define(DATA_ROTATION, 0);
         for (int i = 0; i < getMaxHoldableItems(); i++) {
-            this.getEntityData().define(getItemEntityDataAccessor(i), ItemStack.EMPTY);
+            builder.define(getItemEntityDataAccessor(i), ItemStack.EMPTY);
         }
     }
 
@@ -167,7 +167,7 @@ public class IceCreamStand extends HangingEntity implements IEntityAdditionalSpa
         compoundTag.putByte("ItemRotation", (byte)this.getRotation());
         for (int i = 0; i < this.getMaxHoldableItems(); i++) {
             if (!this.getItem(i).isEmpty()) {
-                compoundTag.put("Item" + (i + 1), this.getItem(i).save(new CompoundTag()));
+                compoundTag.put("Item" + (i + 1), this.getItem(i).save(this.registryAccess()));
             }
         }
     }
@@ -178,7 +178,7 @@ public class IceCreamStand extends HangingEntity implements IEntityAdditionalSpa
         for (int i = 0; i < this.getMaxHoldableItems(); i++) {
             CompoundTag compoundtag = compoundTag.getCompound("Item" + (i + 1));
             if (compoundtag != null && !compoundtag.isEmpty()) {
-                ItemStack itemstack = ItemStack.of(compoundtag);
+                ItemStack itemstack = ItemStack.parseOptional(this.registryAccess(), compoundtag);
                 if (itemstack.isEmpty()) {
                     LOGGER.warn("Unable to load item from: {}", compoundtag);
                 }
