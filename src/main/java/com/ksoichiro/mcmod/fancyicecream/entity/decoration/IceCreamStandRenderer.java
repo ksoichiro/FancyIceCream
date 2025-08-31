@@ -15,6 +15,7 @@ import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.client.resources.model.ModelManager;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
@@ -59,7 +60,10 @@ public class IceCreamStandRenderer<T extends IceCreamStand> extends EntityRender
         ModelManager modelmanager = blockrenderdispatcher.getBlockModelShaper().getModelManager();
         poseStack.pushPose();
         poseStack.translate(-0.5D, -0.5D, -0.5D);
-        blockrenderdispatcher.getModelRenderer().renderModel(poseStack.last(), bufferIn.getBuffer(Sheets.solidBlockSheet()), (BlockState)null, modelmanager.getModel(this.getTextureLocation(iceCreamStand)), 1.0F, 1.0F, 1.0F, packedLightIn, OverlayTexture.NO_OVERLAY);
+        ModelResourceLocation modelLocation = new ModelResourceLocation(this.getTextureLocation(iceCreamStand), "inventory");
+        blockrenderdispatcher.getModelRenderer().renderModel(poseStack.last(), bufferIn.getBuffer(Sheets.solidBlockSheet()),
+            null, modelmanager.getModel(modelLocation), 1.0F, 1.0F, 1.0F, packedLightIn,
+            OverlayTexture.NO_OVERLAY, net.minecraftforge.client.model.data.ModelData.EMPTY, null);
         poseStack.popPose();
 
         if (iceCreamStand.hasItems()) {
@@ -99,13 +103,17 @@ public class IceCreamStandRenderer<T extends IceCreamStand> extends EntityRender
 
     protected BakedModel getBlockModel(ModelManager modelmanager, ItemStack itemStack) {
         Item item = itemStack.getItem();
-        String namespace = "minecraft";
         ResourceLocation itemResource = ForgeRegistries.ITEMS.getKey(item);
         if (itemResource != null) {
-            namespace = itemResource.getNamespace();
+            // Use the item's ResourceLocation path, not the toString() representation
+            ResourceLocation modelResource = ResourceLocation.fromNamespaceAndPath(itemResource.getNamespace(), "block/" + itemResource.getPath());
+            ModelResourceLocation modelLocation = new ModelResourceLocation(modelResource, "inventory");
+            return modelmanager.getModel(modelLocation);
         }
-        ResourceLocation modelResource = ResourceLocation.fromNamespaceAndPath(namespace, "block/" + item);
-        return modelmanager.getModel(modelResource);
+        // Fallback to vanilla model path
+        ResourceLocation modelResource = ResourceLocation.fromNamespaceAndPath("minecraft", "block/stone");
+        ModelResourceLocation modelLocation = new ModelResourceLocation(modelResource, "inventory");
+        return modelmanager.getModel(modelLocation);
     }
 
     protected double[][] getTranslations() {

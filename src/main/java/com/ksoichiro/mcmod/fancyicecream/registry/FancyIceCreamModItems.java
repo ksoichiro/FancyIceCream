@@ -3,6 +3,7 @@ package com.ksoichiro.mcmod.fancyicecream.registry;
 import com.ksoichiro.mcmod.fancyicecream.item.*;
 import com.ksoichiro.mcmod.fancyicecream.main.FancyIceCreamMod;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraftforge.client.event.ModelEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -39,13 +40,13 @@ public class FancyIceCreamModItems {
     public static class Registerer {
         @SubscribeEvent
         public static void registerModels(final ModelEvent.RegisterAdditional event) {
-            event.register(ResourceLocation.fromNamespaceAndPath(FancyIceCreamMod.MOD_ID, "block/vanilla_ice_cream"));
-            event.register(ResourceLocation.fromNamespaceAndPath(FancyIceCreamMod.MOD_ID, "block/apple_ice_cream"));
-            event.register(ResourceLocation.fromNamespaceAndPath(FancyIceCreamMod.MOD_ID, "block/choco_chip_ice_cream"));
-            event.register(ResourceLocation.fromNamespaceAndPath(FancyIceCreamMod.MOD_ID, "block/chocolate_ice_cream"));
-            event.register(ResourceLocation.fromNamespaceAndPath(FancyIceCreamMod.MOD_ID, "block/glow_berry_ice_cream"));
-            event.register(ResourceLocation.fromNamespaceAndPath(FancyIceCreamMod.MOD_ID, "block/golden_apple_ice_cream"));
-            event.register(ResourceLocation.fromNamespaceAndPath(FancyIceCreamMod.MOD_ID, "block/honey_ice_cream"));
+            event.register(new ModelResourceLocation(ResourceLocation.fromNamespaceAndPath(FancyIceCreamMod.MOD_ID, "block/vanilla_ice_cream"), "inventory"));
+            event.register(new ModelResourceLocation(ResourceLocation.fromNamespaceAndPath(FancyIceCreamMod.MOD_ID, "block/apple_ice_cream"), "inventory"));
+            event.register(new ModelResourceLocation(ResourceLocation.fromNamespaceAndPath(FancyIceCreamMod.MOD_ID, "block/choco_chip_ice_cream"), "inventory"));
+            event.register(new ModelResourceLocation(ResourceLocation.fromNamespaceAndPath(FancyIceCreamMod.MOD_ID, "block/chocolate_ice_cream"), "inventory"));
+            event.register(new ModelResourceLocation(ResourceLocation.fromNamespaceAndPath(FancyIceCreamMod.MOD_ID, "block/glow_berry_ice_cream"), "inventory"));
+            event.register(new ModelResourceLocation(ResourceLocation.fromNamespaceAndPath(FancyIceCreamMod.MOD_ID, "block/golden_apple_ice_cream"), "inventory"));
+            event.register(new ModelResourceLocation(ResourceLocation.fromNamespaceAndPath(FancyIceCreamMod.MOD_ID, "block/honey_ice_cream"), "inventory"));
         }
     }
 }

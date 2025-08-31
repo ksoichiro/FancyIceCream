@@ -7,6 +7,7 @@ import com.ksoichiro.mcmod.fancyicecream.entity.decoration.TripleIceCreamStandRe
 import com.ksoichiro.mcmod.fancyicecream.main.FancyIceCreamMod;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
+import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.client.event.ModelEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -43,8 +44,8 @@ public class FancyIceCreamModEntityType {
     public static class Registerer {
         @SubscribeEvent
         public static void registerModels(final ModelEvent.RegisterAdditional event) {
-            event.register(IceCreamStandRenderer.STAND_LOCATION);
-            event.register(TripleIceCreamStandRenderer.STAND_LOCATION);
+            event.register(new ModelResourceLocation(IceCreamStandRenderer.STAND_LOCATION, "inventory"));
+            event.register(new ModelResourceLocation(TripleIceCreamStandRenderer.STAND_LOCATION, "inventory"));
         }
         @SubscribeEvent
         public static void registerRenderer(final EntityRenderersEvent.RegisterRenderers event) {

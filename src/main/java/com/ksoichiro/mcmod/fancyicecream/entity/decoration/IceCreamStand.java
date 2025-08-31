@@ -1,7 +1,7 @@
 package com.ksoichiro.mcmod.fancyicecream.entity.decoration;
 
-import com.ksoichiro.mcmod.fancyicecream.common.Tag;
 import com.ksoichiro.mcmod.fancyicecream.entity.FancyIceCreamModEntityType;
+import com.ksoichiro.mcmod.fancyicecream.common.ModTags;
 import com.mojang.logging.LogUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -45,7 +45,6 @@ import java.util.List;
 
 public class IceCreamStand extends HangingEntity implements IEntityAdditionalSpawnData {
     private static final Logger LOGGER = LogUtils.getLogger();
-    protected static final Tag<Item> ICE_CREAM_TAG = Tag.createItemTag("ice_cream");
     public static final RegistryObject<Item> ICE_CREAM_STAND = RegistryObject.create(ResourceLocation.parse("fancyicecream:ice_cream_stand"), ForgeRegistries.ITEMS);
 
     private static final EntityDataAccessor<Integer> DATA_ROTATION = SynchedEntityData.defineId(IceCreamStand.class, EntityDataSerializers.INT);
@@ -86,21 +85,21 @@ public class IceCreamStand extends HangingEntity implements IEntityAdditionalSpa
 
     @Override
     protected void defineSynchedData(SynchedEntityData.Builder builder) {
-        super.defineSynchedData(builder);
         builder.define(DATA_ROTATION, 0);
         for (int i = 0; i < getMaxHoldableItems(); i++) {
             builder.define(getItemEntityDataAccessor(i), ItemStack.EMPTY);
         }
     }
 
-    protected void setDirection(Direction p_31793_) {
-        Validate.notNull(p_31793_);
-        this.direction = p_31793_;
-        if (p_31793_.getAxis().isHorizontal()) {
+    @Override
+    protected void setDirection(Direction pFacingDirection) {
+        Validate.notNull(pFacingDirection);
+        this.direction = pFacingDirection;
+        if (pFacingDirection.getAxis().isHorizontal()) {
             this.setXRot(0.0F);
             this.setYRot((float)(this.direction.get2DDataValue() * 90));
         } else {
-            this.setXRot((float)(-90 * p_31793_.getAxisDirection().getStep()));
+            this.setXRot((float)(-90 * pFacingDirection.getAxisDirection().getStep()));
             this.setYRot(0.0F);
         }
 
@@ -109,35 +108,34 @@ public class IceCreamStand extends HangingEntity implements IEntityAdditionalSpa
         this.recalculateBoundingBox();
     }
 
-    protected void recalculateBoundingBox() {
-        if (this.direction != null) {
-            double d0 = 0.46875D;
-            double d1 = (double)this.pos.getX() + 0.5D - (double)this.direction.getStepX() * 0.46875D;
-            double d2 = (double)this.pos.getY() + 0.5D - (double)this.direction.getStepY() * 0.46875D;
-            double d3 = (double)this.pos.getZ() + 0.5D - (double)this.direction.getStepZ() * 0.46875D;
-            this.setPosRaw(d1, d2, d3);
-            double d4 = (double)this.getWidth();
-            double d5 = (double)this.getHeight();
-            double d6 = (double)this.getWidth();
-            Direction.Axis direction$axis = this.direction.getAxis();
-            switch (direction$axis) {
-                case X:
-                    d4 = 1.0D;
-                    break;
-                case Y:
-                    d5 = 1.0D;
-                    break;
-                case Z:
-                    d6 = 1.0D;
-            }
-
-            d4 /= 32.0D;
-            d5 /= 32.0D;
-            d6 /= 32.0D;
-            this.setBoundingBox(new AABB(d1 - d4, d2 - d5, d3 - d6, d1 + d4, d2 + d5, d3 + d6));
+    @Override
+    protected AABB calculateBoundingBox(BlockPos blockPos, Direction direction) {
+        double d0 = 0.46875D;
+        double d1 = (double)blockPos.getX() + 0.5D - (double)direction.getStepX() * 0.46875D;
+        double d2 = (double)blockPos.getY() + 0.5D - (double)direction.getStepY() * 0.46875D;
+        double d3 = (double)blockPos.getZ() + 0.5D - (double)direction.getStepZ() * 0.46875D;
+        double d4 = (double)this.getWidth();
+        double d5 = (double)this.getHeight();
+        double d6 = (double)this.getWidth();
+        Direction.Axis axis = direction.getAxis();
+        switch (axis) {
+            case X:
+                d4 = 1.0D;
+                break;
+            case Y:
+                d5 = 1.0D;
+                break;
+            case Z:
+                d6 = 1.0D;
         }
+
+        d4 = d4 / 32.0D;
+        d5 = d5 / 32.0D;
+        d6 = d6 / 32.0D;
+        return new AABB(d1 - d4, d2 - d5, d3 - d6, d1 + d4, d2 + d5, d3 + d6);
     }
 
+    @Override
     public boolean survives() {
         if (!this.level().noCollision(this)) {
             return false;
@@ -190,9 +188,9 @@ public class IceCreamStand extends HangingEntity implements IEntityAdditionalSpa
         this.setRotation(compoundTag.getByte("ItemRotation"));
     }
 
-    public void dropItem(@Nullable Entity p_31779_) {
+    public void dropItem(@Nullable Entity pBrokenEntity) {
         this.playSound(this.getBreakSound(), 1.0F, 1.0F);
-        this.dropItem(p_31779_, true, true);
+        this.dropItem(pBrokenEntity, true, true);
     }
 
     public SoundEvent getBreakSound() {
@@ -208,14 +206,14 @@ public class IceCreamStand extends HangingEntity implements IEntityAdditionalSpa
         return SoundEvents.ITEM_FRAME_PLACE;
     }
 
-    protected void dropItem(@Nullable Entity entity, boolean p_31804_, boolean shouldDropAll) {
+    protected void dropItem(@Nullable Entity entity, boolean pEntity, boolean shouldDropAll) {
         boolean isInstabuild = false;
         if (entity instanceof Player player) {
             if (player.getAbilities().instabuild) {
                 isInstabuild = true;
             }
         }
-        if (!isInstabuild && p_31804_) {
+        if (!isInstabuild && pEntity) {
             this.spawnAtLocation(this.getFrameItemStack());
         }
 
@@ -330,7 +328,7 @@ public class IceCreamStand extends HangingEntity implements IEntityAdditionalSpa
         boolean isStandEmpty = 0 <= emptyStandSlot;
         boolean hasItemInHand = !itemstack.isEmpty();
         if (!this.level().isClientSide) {
-            boolean isIceCream = ICE_CREAM_TAG.contains(itemstack.getItem());
+            boolean isIceCream = itemstack.is(ModTags.Items.ICE_CREAM);
             if (isStandEmpty && hasItemInHand && !this.isRemoved() && isIceCream) {
                 this.setItem(itemstack, emptyStandSlot);
                 if (!player.getAbilities().instabuild) {
@@ -385,12 +383,10 @@ public class IceCreamStand extends HangingEntity implements IEntityAdditionalSpa
         return SoundEvents.ITEM_FRAME_REMOVE_ITEM;
     }
 
-    @Override
     public int getWidth() {
         return 6;
     }
 
-    @Override
     public int getHeight() {
         return 6;
     }

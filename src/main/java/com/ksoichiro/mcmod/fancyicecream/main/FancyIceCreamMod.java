@@ -10,8 +10,8 @@ import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 public class FancyIceCreamMod {
     public static final String MOD_ID = "fancyicecream";
 
-    public FancyIceCreamMod() {
-        IEventBus bus = FMLJavaModLoadingContext.get().getModEventBus();
+    public FancyIceCreamMod(FMLJavaModLoadingContext context) {
+        IEventBus bus = context.getModEventBus();
         FancyIceCreamModItems.register(bus);
         FancyIceCreamModEntityType.register(bus);
         FancyIceCreamModTab.register(bus);
