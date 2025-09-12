@@ -2,18 +2,22 @@ package com.ksoichiro.mcmod.fancyicecream.registry;
 
 import com.ksoichiro.mcmod.fancyicecream.item.*;
 import com.ksoichiro.mcmod.fancyicecream.main.FancyIceCreamMod;
+import net.minecraft.client.resources.model.BlockStateModelLoader;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.world.item.Item;
-import net.minecraftforge.client.event.ModelEvent;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraftforge.eventbus.api.IEventBus;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 
-import java.util.function.Supplier;
+import java.util.LinkedHashMap;
+import java.util.Map;
+import java.util.function.Function;
 
 public class FancyIceCreamModItems {
     private static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, FancyIceCreamMod.MOD_ID);
@@ -32,21 +36,35 @@ public class FancyIceCreamModItems {
         ITEMS.register(eventBus);
     }
 
-    private static RegistryObject<Item> registerItem(String name, Supplier<Item> item) {
-        return ITEMS.register(name, item);
+    private static RegistryObject<Item> registerItem(String name, Function<String, Item> item) {
+        return ITEMS.register(name, () -> item.apply(name));
     }
 
     @Mod.EventBusSubscriber(modid = FancyIceCreamMod.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
     public static class Registerer {
-        @SubscribeEvent
-        public static void registerModels(final ModelEvent.RegisterAdditional event) {
-            event.register(new ModelResourceLocation(ResourceLocation.fromNamespaceAndPath(FancyIceCreamMod.MOD_ID, "block/vanilla_ice_cream"), "inventory"));
-            event.register(new ModelResourceLocation(ResourceLocation.fromNamespaceAndPath(FancyIceCreamMod.MOD_ID, "block/apple_ice_cream"), "inventory"));
-            event.register(new ModelResourceLocation(ResourceLocation.fromNamespaceAndPath(FancyIceCreamMod.MOD_ID, "block/choco_chip_ice_cream"), "inventory"));
-            event.register(new ModelResourceLocation(ResourceLocation.fromNamespaceAndPath(FancyIceCreamMod.MOD_ID, "block/chocolate_ice_cream"), "inventory"));
-            event.register(new ModelResourceLocation(ResourceLocation.fromNamespaceAndPath(FancyIceCreamMod.MOD_ID, "block/glow_berry_ice_cream"), "inventory"));
-            event.register(new ModelResourceLocation(ResourceLocation.fromNamespaceAndPath(FancyIceCreamMod.MOD_ID, "block/golden_apple_ice_cream"), "inventory"));
-            event.register(new ModelResourceLocation(ResourceLocation.fromNamespaceAndPath(FancyIceCreamMod.MOD_ID, "block/honey_ice_cream"), "inventory"));
+        public static void registerModels() {
+            // Since ModelEvent.RegisterAdditional has been removed in 1.21.3,
+            // we have to register our models by replacing vanilla definitions.
+            // This map is private and is made accessible using AT.
+            Map<ResourceLocation, StateDefinition<Block, BlockState>> tmp = new LinkedHashMap<>(BlockStateModelLoader.STATIC_DEFINITIONS);
+            registerModel(tmp, "vanilla_ice_cream");
+            registerModel(tmp, "apple_ice_cream");
+            registerModel(tmp, "choco_chip_ice_cream");
+            registerModel(tmp, "chocolate_ice_cream");
+            registerModel(tmp, "glow_berry_ice_cream");
+            registerModel(tmp, "golden_apple_ice_cream");
+            registerModel(tmp, "honey_ice_cream");
+            registerModel(tmp, "ice_cream_stand");
+            registerModel(tmp, "triple_ice_cream_stand");
+            BlockStateModelLoader.STATIC_DEFINITIONS = tmp;
+        }
+
+        private static void registerModel(Map<ResourceLocation, StateDefinition<Block, BlockState>> pDefinitions, String pPath) {
+            pDefinitions.put(ResourceLocation.fromNamespaceAndPath(FancyIceCreamMod.MOD_ID, pPath), createFakeBlockState());
+        }
+
+        private static StateDefinition<Block, BlockState> createFakeBlockState() {
+            return new StateDefinition.Builder<Block, BlockState>(Blocks.AIR).create(Block::defaultBlockState, BlockState::new);
         }
     }
 }

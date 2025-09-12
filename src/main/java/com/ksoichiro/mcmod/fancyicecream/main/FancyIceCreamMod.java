@@ -15,5 +15,6 @@ public class FancyIceCreamMod {
         FancyIceCreamModItems.register(bus);
         FancyIceCreamModEntityType.register(bus);
         FancyIceCreamModTab.register(bus);
+        FancyIceCreamModItems.Registerer.registerModels();
     }
 }

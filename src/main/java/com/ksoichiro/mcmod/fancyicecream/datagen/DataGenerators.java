@@ -4,6 +4,8 @@ import com.ksoichiro.mcmod.fancyicecream.main.FancyIceCreamMod;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.PackOutput;
+import net.minecraft.data.recipes.RecipeOutput;
+import net.minecraft.data.recipes.RecipeProvider;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.data.event.GatherDataEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -23,7 +25,17 @@ public class DataGenerators {
         ExistingFileHelper existingFileHelper = event.getExistingFileHelper();
         CompletableFuture<HolderLookup.Provider> lookupProvider = event.getLookupProvider();
 
-        generator.addProvider(event.includeServer(), new FancyIceCreamRecipeProvider(packOutput, lookupProvider));
+        generator.addProvider(event.includeServer(), new RecipeProvider.Runner(packOutput, lookupProvider) {
+            @Override
+            protected RecipeProvider createRecipeProvider(HolderLookup.Provider registries, RecipeOutput recipeOutput) {
+                return new FancyIceCreamRecipeProvider(registries, recipeOutput);
+            }
+
+            @Override
+            public String getName() {
+                return "FancyIceCreamRecipes";
+            }
+        });
         generator.addProvider(event.includeServer(), new FancyIceCreamAdvancementProvider(packOutput, lookupProvider, existingFileHelper));
     }
 }

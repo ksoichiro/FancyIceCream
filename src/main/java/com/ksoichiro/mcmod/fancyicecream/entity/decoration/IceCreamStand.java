@@ -1,7 +1,7 @@
 package com.ksoichiro.mcmod.fancyicecream.entity.decoration;
 
-import com.ksoichiro.mcmod.fancyicecream.entity.FancyIceCreamModEntityType;
 import com.ksoichiro.mcmod.fancyicecream.common.ModTags;
+import com.ksoichiro.mcmod.fancyicecream.entity.FancyIceCreamModEntityType;
 import com.mojang.logging.LogUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -14,6 +14,7 @@ import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.tags.DamageTypeTags;
@@ -188,7 +189,8 @@ public class IceCreamStand extends HangingEntity implements IEntityAdditionalSpa
         this.setRotation(compoundTag.getByte("ItemRotation"));
     }
 
-    public void dropItem(@Nullable Entity pBrokenEntity) {
+    @Override
+    public void dropItem(ServerLevel level, @Nullable Entity pBrokenEntity) {
         this.playSound(this.getBreakSound(), 1.0F, 1.0F);
         this.dropItem(pBrokenEntity, true, true);
     }
@@ -214,7 +216,7 @@ public class IceCreamStand extends HangingEntity implements IEntityAdditionalSpa
             }
         }
         if (!isInstabuild && pEntity) {
-            this.spawnAtLocation(this.getFrameItemStack());
+            this.spawnAtLocation((ServerLevel) this.level(), this.getFrameItemStack());
         }
 
         for (int i = this.getMaxHoldableItems() - 1; i >= 0; i--) {
@@ -223,7 +225,7 @@ public class IceCreamStand extends HangingEntity implements IEntityAdditionalSpa
                 this.setItem(ItemStack.EMPTY, i);
                 itemstack = itemstack.copy();
                 if (!isInstabuild) {
-                    this.spawnAtLocation(itemstack);
+                    this.spawnAtLocation((ServerLevel) this.level(), itemstack);
                 }
                 if (!shouldDropAll) {
                     break;
@@ -364,18 +366,16 @@ public class IceCreamStand extends HangingEntity implements IEntityAdditionalSpa
         } : super.getSlot(slot);
     }
 
-    public boolean hurt(DamageSource damageSource, float p_31777_) {
-        if (this.isInvulnerableTo(damageSource)) {
+    @Override
+    public boolean hurtServer(ServerLevel level, DamageSource damageSource, float amount) {
+        if (this.isInvulnerableToBase(damageSource)) {
             return false;
         } else if (!damageSource.is(DamageTypeTags.IS_EXPLOSION) && this.hasItems()) {
-            if (!this.level().isClientSide) {
-                this.dropItem(damageSource.getEntity(), false, false);
-                this.playSound(this.getRemoveItemSound(), 1.0F, 1.0F);
-            }
-
+            this.dropItem(damageSource.getEntity(), false, false);
+            this.playSound(this.getRemoveItemSound(), 1.0F, 1.0F);
             return true;
         } else {
-            return super.hurt(damageSource, p_31777_);
+            return super.hurtServer(level, damageSource, amount);
         }
     }
 

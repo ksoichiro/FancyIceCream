@@ -2,24 +2,25 @@ package com.ksoichiro.mcmod.fancyicecream.datagen;
 
 import com.ksoichiro.mcmod.fancyicecream.registry.FancyIceCreamModItems;
 import net.minecraft.core.HolderLookup;
-import net.minecraft.data.PackOutput;
-import net.minecraft.data.recipes.RecipeCategory;
-import net.minecraft.data.recipes.RecipeOutput;
-import net.minecraft.data.recipes.RecipeProvider;
-import net.minecraft.data.recipes.ShapedRecipeBuilder;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.data.recipes.*;
 import net.minecraft.world.item.Items;
 
-import java.util.concurrent.CompletableFuture;
-
 public class FancyIceCreamRecipeProvider extends RecipeProvider {
-    public FancyIceCreamRecipeProvider(PackOutput packOutput, CompletableFuture<HolderLookup.Provider> registries) {
-        super(packOutput, registries);
+    private final HolderLookup.Provider registries;
+
+    public FancyIceCreamRecipeProvider(HolderLookup.Provider registries, RecipeOutput recipeOutput) {
+        super(registries, recipeOutput);
+        this.registries = registries;
     }
 
     @Override
-    protected void buildRecipes(RecipeOutput recipeOutput) {
+    protected void buildRecipes() {
+        RecipeOutput recipeOutput = this.output;
+        var items = registries.lookupOrThrow(Registries.ITEM);
+
         // Base vanilla ice cream recipe
-        ShapedRecipeBuilder.shaped(RecipeCategory.FOOD, FancyIceCreamModItems.VANILLA_ICE_CREAM.get(), 3)
+        ShapedRecipeBuilder.shaped(items, RecipeCategory.FOOD, FancyIceCreamModItems.VANILLA_ICE_CREAM.get(), 3)
             .pattern("ABA")
             .pattern("CBC")
             .pattern(" D ")
@@ -31,7 +32,7 @@ public class FancyIceCreamRecipeProvider extends RecipeProvider {
             .save(recipeOutput);
 
         // Apple ice cream recipe
-        ShapedRecipeBuilder.shaped(RecipeCategory.FOOD, FancyIceCreamModItems.APPLE_ICE_CREAM.get())
+        ShapedRecipeBuilder.shaped(items, RecipeCategory.FOOD, FancyIceCreamModItems.APPLE_ICE_CREAM.get())
             .pattern("A")
             .pattern("B")
             .define('A', Items.APPLE)
@@ -40,7 +41,7 @@ public class FancyIceCreamRecipeProvider extends RecipeProvider {
             .save(recipeOutput);
 
         // Choco chip ice cream recipe
-        ShapedRecipeBuilder.shaped(RecipeCategory.FOOD, FancyIceCreamModItems.CHOCO_CHIP_ICE_CREAM.get())
+        ShapedRecipeBuilder.shaped(items, RecipeCategory.FOOD, FancyIceCreamModItems.CHOCO_CHIP_ICE_CREAM.get())
             .pattern("A")
             .pattern("B")
             .define('A', Items.COCOA_BEANS)
@@ -49,7 +50,7 @@ public class FancyIceCreamRecipeProvider extends RecipeProvider {
             .save(recipeOutput);
 
         // Chocolate ice cream recipe
-        ShapedRecipeBuilder.shaped(RecipeCategory.FOOD, FancyIceCreamModItems.CHOCOLATE_ICE_CREAM.get())
+        ShapedRecipeBuilder.shaped(items, RecipeCategory.FOOD, FancyIceCreamModItems.CHOCOLATE_ICE_CREAM.get())
             .pattern("AA")
             .pattern("B ")
             .define('A', Items.COCOA_BEANS)
@@ -58,7 +59,7 @@ public class FancyIceCreamRecipeProvider extends RecipeProvider {
             .save(recipeOutput);
 
         // Glow berry ice cream recipe
-        ShapedRecipeBuilder.shaped(RecipeCategory.FOOD, FancyIceCreamModItems.GLOW_BERRY_ICE_CREAM.get())
+        ShapedRecipeBuilder.shaped(items, RecipeCategory.FOOD, FancyIceCreamModItems.GLOW_BERRY_ICE_CREAM.get())
             .pattern("A")
             .pattern("B")
             .define('A', Items.GLOW_BERRIES)
@@ -67,7 +68,7 @@ public class FancyIceCreamRecipeProvider extends RecipeProvider {
             .save(recipeOutput);
 
         // Golden apple ice cream recipe
-        ShapedRecipeBuilder.shaped(RecipeCategory.FOOD, FancyIceCreamModItems.GOLDEN_APPLE_ICE_CREAM.get())
+        ShapedRecipeBuilder.shaped(items, RecipeCategory.FOOD, FancyIceCreamModItems.GOLDEN_APPLE_ICE_CREAM.get())
             .pattern("A")
             .pattern("B")
             .define('A', Items.GOLDEN_APPLE)
@@ -76,7 +77,7 @@ public class FancyIceCreamRecipeProvider extends RecipeProvider {
             .save(recipeOutput);
 
         // Honey ice cream recipe
-        ShapedRecipeBuilder.shaped(RecipeCategory.FOOD, FancyIceCreamModItems.HONEY_ICE_CREAM.get())
+        ShapedRecipeBuilder.shaped(items, RecipeCategory.FOOD, FancyIceCreamModItems.HONEY_ICE_CREAM.get())
             .pattern("A")
             .pattern("B")
             .define('A', Items.HONEY_BOTTLE)
@@ -85,7 +86,7 @@ public class FancyIceCreamRecipeProvider extends RecipeProvider {
             .save(recipeOutput);
 
         // Ice cream stand recipe
-        ShapedRecipeBuilder.shaped(RecipeCategory.DECORATIONS, FancyIceCreamModItems.ICE_CREAM_STAND.get())
+        ShapedRecipeBuilder.shaped(items, RecipeCategory.DECORATIONS, FancyIceCreamModItems.ICE_CREAM_STAND.get())
             .pattern("A A")
             .pattern(" A ")
             .define('A', Items.IRON_NUGGET)
@@ -93,7 +94,7 @@ public class FancyIceCreamRecipeProvider extends RecipeProvider {
             .save(recipeOutput);
 
         // Triple ice cream stand recipe
-        ShapedRecipeBuilder.shaped(RecipeCategory.DECORATIONS, FancyIceCreamModItems.TRIPLE_ICE_CREAM_STAND.get())
+        ShapedRecipeBuilder.shaped(items, RecipeCategory.DECORATIONS, FancyIceCreamModItems.TRIPLE_ICE_CREAM_STAND.get())
             .pattern("A A")
             .pattern(" B ")
             .define('A', Items.IRON_NUGGET)

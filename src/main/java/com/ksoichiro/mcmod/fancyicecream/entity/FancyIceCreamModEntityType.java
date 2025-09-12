@@ -5,11 +5,12 @@ import com.ksoichiro.mcmod.fancyicecream.entity.decoration.IceCreamStandRenderer
 import com.ksoichiro.mcmod.fancyicecream.entity.decoration.TripleIceCreamStand;
 import com.ksoichiro.mcmod.fancyicecream.entity.decoration.TripleIceCreamStandRenderer;
 import com.ksoichiro.mcmod.fancyicecream.main.FancyIceCreamMod;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
-import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraftforge.client.event.EntityRenderersEvent;
-import net.minecraftforge.client.event.ModelEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -26,7 +27,7 @@ public class FancyIceCreamModEntityType {
             .sized(0.5F, 0.5F)
             .clientTrackingRange(10)
             .updateInterval(Integer.MAX_VALUE)
-            .build("ice_cream_stand"));
+            .build(ResourceKey.create(Registries.ENTITY_TYPE, ResourceLocation.fromNamespaceAndPath(FancyIceCreamMod.MOD_ID, "ice_cream_stand"))));
 
     public static final RegistryObject<EntityType<TripleIceCreamStand>> TRIPLE_ICE_CREAM_STAND = ENTITY_TYPE.register("triple_ice_cream_stand", () ->
         EntityType.Builder
@@ -34,7 +35,7 @@ public class FancyIceCreamModEntityType {
             .sized(0.5F, 0.5F)
             .clientTrackingRange(10)
             .updateInterval(Integer.MAX_VALUE)
-            .build("triple_ice_cream_stand"));
+            .build(ResourceKey.create(Registries.ENTITY_TYPE, ResourceLocation.fromNamespaceAndPath(FancyIceCreamMod.MOD_ID, "triple_ice_cream_stand"))));
 
     public static void register(IEventBus eventBus) {
         ENTITY_TYPE.register(eventBus);
@@ -42,11 +43,6 @@ public class FancyIceCreamModEntityType {
 
     @Mod.EventBusSubscriber(modid = FancyIceCreamMod.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
     public static class Registerer {
-        @SubscribeEvent
-        public static void registerModels(final ModelEvent.RegisterAdditional event) {
-            event.register(new ModelResourceLocation(IceCreamStandRenderer.STAND_LOCATION, "inventory"));
-            event.register(new ModelResourceLocation(TripleIceCreamStandRenderer.STAND_LOCATION, "inventory"));
-        }
         @SubscribeEvent
         public static void registerRenderer(final EntityRenderersEvent.RegisterRenderers event) {
             event.registerEntityRenderer(ICE_CREAM_STAND.get(), IceCreamStandRenderer::new);

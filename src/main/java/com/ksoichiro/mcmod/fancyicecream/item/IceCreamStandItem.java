@@ -3,21 +3,19 @@ package com.ksoichiro.mcmod.fancyicecream.item;
 import com.ksoichiro.mcmod.fancyicecream.entity.decoration.IceCreamStand;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.decoration.HangingEntity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.HangingEntityItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.gameevent.GameEvent;
 
-public class IceCreamStandItem extends HangingEntityItem {
-    public IceCreamStandItem() {
-        super(null, new Item.Properties());
+public class IceCreamStandItem extends Item {
+    public IceCreamStandItem(String itemName) {
+        super(new ItemProperties(itemName));
     }
 
     @Override
@@ -45,7 +43,7 @@ public class IceCreamStandItem extends HangingEntityItem {
                 level.addFreshEntity(hangingentity);
             }
             itemstack.shrink(1);
-            return InteractionResult.sidedSuccess(level.isClientSide);
+            return level.isClientSide ? InteractionResult.SUCCESS : InteractionResult.CONSUME;
         }
         return InteractionResult.CONSUME;
     }
