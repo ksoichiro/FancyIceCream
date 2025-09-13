@@ -37,7 +37,7 @@ import net.minecraft.world.phys.AABB;
 import net.minecraftforge.entity.IEntityAdditionalSpawnData;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
-import org.apache.commons.lang3.Validate;
+import java.util.Objects;
 import org.slf4j.Logger;
 
 import javax.annotation.Nullable;
@@ -94,7 +94,7 @@ public class IceCreamStand extends HangingEntity implements IEntityAdditionalSpa
 
     @Override
     protected void setDirection(Direction pFacingDirection) {
-        Validate.notNull(pFacingDirection);
+        Objects.requireNonNull(pFacingDirection);
         this.direction = pFacingDirection;
         if (pFacingDirection.getAxis().isHorizontal()) {
             this.setXRot(0.0F);

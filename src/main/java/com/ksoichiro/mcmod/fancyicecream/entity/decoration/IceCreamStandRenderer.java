@@ -36,7 +36,7 @@ public class IceCreamStandRenderer<T extends IceCreamStand> extends EntityRender
 
     public IceCreamStandRenderer(EntityRendererProvider.Context context) {
         super(context);
-        this.itemRenderer = context.getItemRenderer();
+        this.itemRenderer = Minecraft.getInstance().getItemRenderer();
         this.blockRenderer = context.getBlockRenderDispatcher();
     }
 
