@@ -9,8 +9,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
-import net.minecraftforge.eventbus.api.IEventBus;
-import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.eventbus.api.bus.BusGroup;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
@@ -32,15 +31,14 @@ public class FancyIceCreamModItems {
     public static final RegistryObject<Item> ICE_CREAM_STAND = registerItem("ice_cream_stand", IceCreamStandItem::new);
     public static final RegistryObject<Item> TRIPLE_ICE_CREAM_STAND = registerItem("triple_ice_cream_stand", TripleIceCreamStandItem::new);
 
-    public static void register(IEventBus eventBus) {
-        ITEMS.register(eventBus);
+    public static void register(BusGroup busGroup) {
+        ITEMS.register(busGroup);
     }
 
     private static RegistryObject<Item> registerItem(String name, Function<String, Item> item) {
         return ITEMS.register(name, () -> item.apply(name));
     }
 
-    @Mod.EventBusSubscriber(modid = FancyIceCreamMod.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
     public static class Registerer {
         public static void registerModels() {
             // Since ModelEvent.RegisterAdditional has been removed in 1.21.3,

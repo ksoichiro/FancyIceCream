@@ -11,8 +11,8 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraftforge.client.event.EntityRenderersEvent;
-import net.minecraftforge.eventbus.api.IEventBus;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.eventbus.api.bus.BusGroup;
+import net.minecraftforge.eventbus.api.listener.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -37,8 +37,8 @@ public class FancyIceCreamModEntityType {
             .updateInterval(Integer.MAX_VALUE)
             .build(ResourceKey.create(Registries.ENTITY_TYPE, ResourceLocation.fromNamespaceAndPath(FancyIceCreamMod.MOD_ID, "triple_ice_cream_stand"))));
 
-    public static void register(IEventBus eventBus) {
-        ENTITY_TYPE.register(eventBus);
+    public static void register(BusGroup busGroup) {
+        ENTITY_TYPE.register(busGroup);
     }
 
     @Mod.EventBusSubscriber(modid = FancyIceCreamMod.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)

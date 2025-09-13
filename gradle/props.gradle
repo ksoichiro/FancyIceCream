@@ -1,9 +1,9 @@
 ext {
-    minecraftVersion = '1.21.5'
-    // https://files.minecraftforge.net/net/minecraftforge/forge/index_1.21.5.html
-    forgeVersion = '55.1.0'
+    minecraftVersion = '1.21.6'
+    // https://files.minecraftforge.net/net/minecraftforge/forge/index_1.21.6.html
+    forgeVersion = '56.0.9'
     // https://parchmentmc.org/docs/getting-started
-    parchmentMCVersion = '2025.06.15-1.21.5'
+    parchmentMCVersion = '2025.06.29-1.21.6'
     modId = 'fancyicecream'
     modVersion = '0.0.2'
 }

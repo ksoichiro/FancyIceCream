@@ -1,8 +1,8 @@
-// Only edit below this line, the above code adds and enables the necessary things for Forge to be setup.
 plugins {
     id 'eclipse'
+    id 'idea'
     id 'maven-publish'
-    id 'net.minecraftforge.gradle' version '[6.0.24,6.2)'
+    id 'net.minecraftforge.gradle' version '6.0.44'
     id 'org.parchmentmc.librarian.forgegradle' version '1.+'
 }
 apply from: "${project.projectDir}/gradle/props.gradle"
@@ -75,10 +75,10 @@ minecraft {
             // "REGISTRYDUMP": For getting the contents of all registries.
             property 'forge.logging.markers', 'REGISTRIES'
 
-            // Recommended logging level for the console
-            // You can set various levels here.
-            // Please read: https://stackoverflow.com/questions/2031163/when-to-use-the-different-log-levels
             property 'forge.logging.console.level', 'debug'
+
+            // Recommended for development - enables more descriptive errors at the cost of slower startup and registration.
+            property 'eventbus.api.strictRuntimeChecks', 'true'
         }
 
         client {
@@ -109,16 +109,37 @@ minecraft {
 }
 
 repositories {
-    // Put repositories for dependencies here
-    // ForgeGradle automatically adds the Forge maven and Maven Central for you
-    
-    // Add Minecraft libraries repository for native library patches
+    // Fix for LWJGL native dependency issue on macOS - from MultiLoader Template
+    // Place Minecraft libraries first to override Maven Central for LWJGL
+    // This must be placed before mavenCentral() and maven
     maven {
-        name = 'Minecraft Libraries'
-        url = 'https://libraries.minecraft.net/'
+        name = 'Minecraft libraries'
+        url = 'https://libraries.minecraft.net'
+        content {
+            //includeGroup('org.lwjgl')
+            includeModule("org.lwjgl", "lwjgl-freetype")
+        }
+    }
+    // Put repositories for dependencies here
+    mavenCentral()
+    maven {
+        name = 'Forge'
+        url = 'https://maven.minecraftforge.net'
+    }
+    exclusiveContent {
+        forRepository {
+            maven {
+                name = 'Sponge'
+                url = 'https://repo.spongepowered.org/repository/maven-public'
+            }
+        }
+        filter {
+            includeGroupAndSubgroups('org.spongepowered')
+        }
     }
 
-    // If you have mod jar dependencies in ./libs, you can declare them as a repository like so:
+    // If you have mod jar dependencies in ./libs, you can declare them as a repository like so.
+    // See https://docs.gradle.org/current/userguide/declaring_repositories.html#sub:flat_dir_resolver
     // flatDir {
     //     dir 'libs'
     // }
@@ -129,6 +150,11 @@ dependencies {
     // that the dep is a ForgeGradle 'patcher' dependency, and its patches will be applied.
     // The userdev artifact is a special name and will get all sorts of transformations applied to it.
     minecraft "net.minecraftforge:forge:${minecraftVersion}-${forgeVersion}"
+
+    // Forge 1.21.6+ uses EventBus 7, which shifts most of its runtime validation to compile-time via an annotation processor
+    // to improve performance in production environments. This line is required to enable said compile-time validation
+    // in your development environment, helping you catch issues early.
+    annotationProcessor 'net.minecraftforge:eventbus-validator:7.0-beta.10'
 
     // Real mod deobf dependency examples - these get remapped to your current mappings
     // compileOnly fg.deobf("mezz.jei:jei-${mc_version}:${jei_version}:api") // Adds JEI API as a compile dependency
@@ -181,6 +207,9 @@ clean {
     delete 'src/generated'
     delete 'run-data'
 }
+
+// IntelliJ no longer downloads javadocs and sources by default, this tells Gradle to force IntelliJ to do it.
+idea.module { downloadJavadoc = downloadSources = true }
 
 eclipse {
     // Run everytime eclipse builds the code

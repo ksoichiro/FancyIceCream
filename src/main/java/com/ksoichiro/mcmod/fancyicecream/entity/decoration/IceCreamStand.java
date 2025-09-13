@@ -2,10 +2,8 @@ package com.ksoichiro.mcmod.fancyicecream.entity.decoration;
 
 import com.ksoichiro.mcmod.fancyicecream.common.ModTags;
 import com.ksoichiro.mcmod.fancyicecream.entity.FancyIceCreamModEntityType;
-import com.mojang.logging.LogUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
@@ -33,20 +31,20 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.DiodeBlock;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.world.phys.AABB;
 import net.minecraftforge.entity.IEntityAdditionalSpawnData;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
-import java.util.Objects;
-import org.slf4j.Logger;
+import org.apache.commons.lang3.Validate;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
+import java.util.Objects;
 
 public class IceCreamStand extends HangingEntity implements IEntityAdditionalSpawnData {
-    private static final Logger LOGGER = LogUtils.getLogger();
     public static final RegistryObject<Item> ICE_CREAM_STAND = RegistryObject.create(ResourceLocation.parse("fancyicecream:ice_cream_stand"), ForgeRegistries.ITEMS);
 
     private static final EntityDataAccessor<Integer> DATA_ROTATION = SynchedEntityData.defineId(IceCreamStand.class, EntityDataSerializers.INT);
@@ -87,6 +85,7 @@ public class IceCreamStand extends HangingEntity implements IEntityAdditionalSpa
 
     @Override
     protected void defineSynchedData(SynchedEntityData.Builder builder) {
+        super.defineSynchedData(builder);
         builder.define(DATA_ROTATION, 0);
         for (int i = 0; i < getMaxHoldableItems(); i++) {
             builder.define(getItemEntityDataAccessor(i), ItemStack.EMPTY);
@@ -95,11 +94,11 @@ public class IceCreamStand extends HangingEntity implements IEntityAdditionalSpa
 
     @Override
     protected void setDirection(Direction pFacingDirection) {
-        Objects.requireNonNull(pFacingDirection);
-        this.direction = pFacingDirection;
+        Validate.notNull(pFacingDirection);
+        super.setDirectionRaw(pFacingDirection);
         if (pFacingDirection.getAxis().isHorizontal()) {
             this.setXRot(0.0F);
-            this.setYRot((float)(this.direction.get2DDataValue() * 90));
+            this.setYRot((float)(this.getDirection().get2DDataValue() * 90));
         } else {
             this.setXRot((float)(-90 * pFacingDirection.getAxisDirection().getStep()));
             this.setYRot(0.0F);
@@ -142,8 +141,8 @@ public class IceCreamStand extends HangingEntity implements IEntityAdditionalSpa
         if (!this.level().noCollision(this)) {
             return false;
         } else {
-            BlockState blockstate = this.level().getBlockState(this.pos.relative(this.direction.getOpposite()));
-            return blockstate.isSolid() || this.direction.getAxis().isHorizontal() && DiodeBlock.isDiode(blockstate) ? this.level().getEntities(this, this.getBoundingBox(), HANGING_ENTITY).isEmpty() : false;
+            BlockState blockstate = this.level().getBlockState(this.pos.relative(this.getDirection().getOpposite()));
+            return blockstate.isSolid() || this.getDirection().getAxis().isHorizontal() && DiodeBlock.isDiode(blockstate) ? this.level().getEntities(this, this.getBoundingBox(), HANGING_ENTITY).isEmpty() : false;
         }
     }
 
@@ -160,35 +159,30 @@ public class IceCreamStand extends HangingEntity implements IEntityAdditionalSpa
     }
 
     @Override
-    public void addAdditionalSaveData(CompoundTag compoundTag) {
+    public void addAdditionalSaveData(ValueOutput compoundTag) {
         super.addAdditionalSaveData(compoundTag);
-        compoundTag.putByte("Facing", (byte)this.direction.get3DDataValue());
+        compoundTag.putByte("Facing", (byte)this.getDirection().get3DDataValue());
         // Always use
         compoundTag.putByte("ItemRotation", (byte)this.getRotation());
         for (int i = 0; i < this.getMaxHoldableItems(); i++) {
             if (!this.getItem(i).isEmpty()) {
-                compoundTag.put("Item" + (i + 1), this.getItem(i).save(this.registryAccess()));
+                compoundTag.store("Item" + (i + 1), ItemStack.CODEC, this.getItem(i));
             }
         }
     }
 
     @Override
-    public void readAdditionalSaveData(CompoundTag compoundTag) {
+    public void readAdditionalSaveData(ValueInput compoundTag) {
         super.readAdditionalSaveData(compoundTag);
         for (int i = 0; i < this.getMaxHoldableItems(); i++) {
-            var compoundtag = compoundTag.getCompound("Item" + (i + 1));
-            if (compoundtag.isPresent()) {
-                Optional<ItemStack> itemstack = ItemStack.parse(this.registryAccess(), compoundtag.get());
-                if (itemstack.isEmpty()) {
-                    LOGGER.warn("Unable to load item from: {}", compoundtag);
-                } else {
-                    this.setItem(itemstack.get(), i, false);
-                }
+            ItemStack itemStack = compoundTag.read("Item" + (i + 1), ItemStack.CODEC).orElse(ItemStack.EMPTY);
+            if (!itemStack.isEmpty()) {
+                this.setItem(itemStack, i, false);
             }
         }
-        this.setDirection(Direction.from3DDataValue(compoundTag.getByte("Facing").get()));
+        this.setDirection(compoundTag.read("Facing", Direction.LEGACY_ID_CODEC).orElse(Direction.DOWN));
         // Always use
-        this.setRotation(compoundTag.getByte("ItemRotation").get());
+        this.setRotation(compoundTag.getByteOr("ItemRotation", (byte) 0));
     }
 
     @Override
@@ -400,7 +394,7 @@ public class IceCreamStand extends HangingEntity implements IEntityAdditionalSpa
     }
 
     public Packet<ClientGamePacketListener> getAddEntityPacket() {
-        return new ClientboundAddEntityPacket(this, this.direction.get3DDataValue(), this.getPos());
+        return new ClientboundAddEntityPacket(this, this.getDirection().get3DDataValue(), this.getPos());
     }
 
     public void recreateFromPacket(ClientboundAddEntityPacket packet) {
@@ -411,7 +405,7 @@ public class IceCreamStand extends HangingEntity implements IEntityAdditionalSpa
     @Override
     public void writeSpawnData(FriendlyByteBuf buffer) {
         // TODO should Items be written?
-        buffer.writeInt(this.direction.get3DDataValue());
+        buffer.writeInt(this.getDirection().get3DDataValue());
     }
 
     @Override
