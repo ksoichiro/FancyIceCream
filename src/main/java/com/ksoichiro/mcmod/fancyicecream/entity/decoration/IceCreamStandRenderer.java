@@ -7,19 +7,24 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.block.BlockRenderDispatcher;
+import net.minecraft.client.renderer.block.ModelBlockRenderer;
+import net.minecraft.client.renderer.block.model.BlockStateModel;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.client.renderer.texture.OverlayTexture;
-import net.minecraft.client.resources.model.BakedModel;
+import net.minecraft.client.resources.model.BlockStateDefinitions;
 import net.minecraft.client.resources.model.ModelManager;
-import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.client.model.data.ModelData;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -32,7 +37,7 @@ public class IceCreamStandRenderer<T extends IceCreamStand> extends EntityRender
     protected final Minecraft minecraft = Minecraft.getInstance();
     protected final ItemRenderer itemRenderer;
     protected final BlockRenderDispatcher blockRenderer;
-    private BakedModel cachedStandModel = null;
+    private BlockStateModel cachedStandModel = null;
 
     public IceCreamStandRenderer(EntityRendererProvider.Context context) {
         super(context);
@@ -55,8 +60,8 @@ public class IceCreamStandRenderer<T extends IceCreamStand> extends EntityRender
         // Render the ice cream stand using block model with proper lighting
         poseStack.pushPose();
         poseStack.translate(-0.5D, -0.5D, -0.5D);
-        this.blockRenderer.getModelRenderer().renderModel(poseStack.last(), bufferIn.getBuffer(RenderType.entitySolid(getCachedStandModel().getParticleIcon().atlasLocation())),
-            null, getCachedStandModel(), 1.0F, 1.0F, 1.0F, packedLightIn,
+        ModelBlockRenderer.renderModel(poseStack.last(), bufferIn.getBuffer(RenderType.entitySolid(getCachedStandModel().particleIcon().atlasLocation())),
+            getCachedStandModel(), 1.0F, 1.0F, 1.0F, packedLightIn,
             OverlayTexture.NO_OVERLAY, ModelData.EMPTY, null);
         poseStack.popPose();
 
@@ -76,8 +81,8 @@ public class IceCreamStandRenderer<T extends IceCreamStand> extends EntityRender
                 poseStack.pushPose();
                 BlockRenderDispatcher blockrenderdispatcher = this.minecraft.getBlockRenderer();
                 ModelManager modelmanager = blockrenderdispatcher.getBlockModelShaper().getModelManager();
-                BakedModel model = getBlockModel(modelmanager, itemstack);
-                if (model.equals(modelmanager.getMissingModel())) {
+                BlockStateModel model = getBlockModel(modelmanager, itemstack);
+                if (model.equals(modelmanager.getMissingBlockStateModel())) {
                     poseStack.translate(translations[i][0] / 16.0D, translations[i][1] / 16.0D, translations[i][2] / 16.0D);
                     poseStack.scale(0.5F, 0.5F, 0.5F);
                     poseStack.mulPose(Axis.YP.rotationDegrees(180.0F));
@@ -88,30 +93,27 @@ public class IceCreamStandRenderer<T extends IceCreamStand> extends EntityRender
                     poseStack.translate(translations[i][0] / 16.0D, translations[i][1] / 16.0D, translations[i][2] / 16.0D);
                     poseStack.scale(0.8F, 0.8F, 0.8F);
                     poseStack.translate(-0.5D, -0.5D, -0.5D);
-                    blockrenderdispatcher.getModelRenderer().renderModel(poseStack.last(), bufferIn.getBuffer(RenderType.entitySolid(model.getParticleIcon().atlasLocation())), null, model, 1.0F, 1.0F, 1.0F, packedLightIn, OverlayTexture.NO_OVERLAY, ModelData.EMPTY, null);
+                    ModelBlockRenderer.renderModel(poseStack.last(), bufferIn.getBuffer(RenderType.entitySolid(model.particleIcon().atlasLocation())), model, 1.0F, 1.0F, 1.0F, packedLightIn, OverlayTexture.NO_OVERLAY, ModelData.EMPTY, null);
                 }
                 poseStack.popPose();
             }
         }
     }
 
-    protected BakedModel getBlockModel(ModelManager modelmanager, ItemStack itemStack) {
+    protected BlockStateModel getBlockModel(ModelManager modelmanager, ItemStack itemStack) {
         Item item = itemStack.getItem();
         ResourceLocation itemResource = ForgeRegistries.ITEMS.getKey(item);
         if (itemResource != null) {
             // Use the item's ResourceLocation path, not the toString() representation
-            ResourceLocation modelResource = ResourceLocation.fromNamespaceAndPath(itemResource.getNamespace(), itemResource.getPath());
-            ModelResourceLocation modelLocation = new ModelResourceLocation(modelResource, "");
-            return modelmanager.getModel(modelLocation);
+            BlockState blockstate = BlockStateDefinitions.STATIC_DEFINITIONS.get(ResourceLocation.fromNamespaceAndPath(itemResource.getNamespace(), itemResource.getPath())).any();
+            return this.blockRenderer.getBlockModel(blockstate);
         }
         // Fallback to vanilla model path
-        ResourceLocation modelResource = ResourceLocation.fromNamespaceAndPath("minecraft", "block/stone");
-        ModelResourceLocation modelLocation = new ModelResourceLocation(modelResource, "inventory");
-        return modelmanager.getModel(modelLocation);
+        return modelmanager.getBlockModelShaper().getBlockModel(Blocks.STONE.defaultBlockState());
     }
 
-    protected ModelResourceLocation getModelResourceLoc() {
-        return new ModelResourceLocation(ResourceLocation.fromNamespaceAndPath(FancyIceCreamMod.MOD_ID, "ice_cream_stand"), "");
+    protected ResourceLocation getModelResourceLoc() {
+        return ResourceLocation.fromNamespaceAndPath(FancyIceCreamMod.MOD_ID, "ice_cream_stand");
     }
 
     @Override
@@ -129,17 +131,17 @@ public class IceCreamStandRenderer<T extends IceCreamStand> extends EntityRender
         state.itemStack = entity.getFrameItemStack();
     }
 
-    private BakedModel getCachedStandModel() {
+    private BlockStateModel getCachedStandModel() {
         if (cachedStandModel == null) {
             cachedStandModel = loadStandModel();
         }
         return cachedStandModel;
     }
 
-    private BakedModel loadStandModel() {
-        ModelResourceLocation modelLocation = getModelResourceLoc();
-        ModelManager modelManager = this.blockRenderer.getBlockModelShaper().getModelManager();
-        return modelManager.getModel(modelLocation);
+    private BlockStateModel loadStandModel() {
+        var resourceLoc = getModelResourceLoc();
+        BlockState blockstate = BlockStateDefinitions.STATIC_DEFINITIONS.get(ResourceLocation.fromNamespaceAndPath(resourceLoc.getNamespace(), resourceLoc.getPath())).any();
+        return this.blockRenderer.getBlockModel(blockstate);
     }
 
     protected double[][] getTranslations() {

@@ -28,7 +28,7 @@ public class FancyIceCreamAdvancementProvider extends ForgeAdvancementProvider {
                 .display(FancyIceCreamModItems.VANILLA_ICE_CREAM.get(),
                     Component.translatable("advancement.fancyicecream.root.title"),
                     Component.translatable("advancement.fancyicecream.root.description"),
-                    ResourceLocation.withDefaultNamespace("textures/gui/advancements/backgrounds/adventure.png"),
+                    ResourceLocation.fromNamespaceAndPath(FancyIceCreamMod.MOD_ID, "gui/advancements/backgrounds/ice_cream"),
                     AdvancementType.TASK,
                     false,
                     false,

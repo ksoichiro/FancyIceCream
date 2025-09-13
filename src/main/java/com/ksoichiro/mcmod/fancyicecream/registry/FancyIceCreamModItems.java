@@ -2,7 +2,7 @@ package com.ksoichiro.mcmod.fancyicecream.registry;
 
 import com.ksoichiro.mcmod.fancyicecream.item.*;
 import com.ksoichiro.mcmod.fancyicecream.main.FancyIceCreamMod;
-import net.minecraft.client.resources.model.BlockStateModelLoader;
+import net.minecraft.client.resources.model.BlockStateDefinitions;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
@@ -46,7 +46,7 @@ public class FancyIceCreamModItems {
             // Since ModelEvent.RegisterAdditional has been removed in 1.21.3,
             // we have to register our models by replacing vanilla definitions.
             // This map is private and is made accessible using AT.
-            Map<ResourceLocation, StateDefinition<Block, BlockState>> tmp = new LinkedHashMap<>(BlockStateModelLoader.STATIC_DEFINITIONS);
+            Map<ResourceLocation, StateDefinition<Block, BlockState>> tmp = new LinkedHashMap<>(BlockStateDefinitions.STATIC_DEFINITIONS);
             registerModel(tmp, "vanilla_ice_cream");
             registerModel(tmp, "apple_ice_cream");
             registerModel(tmp, "choco_chip_ice_cream");
@@ -56,7 +56,7 @@ public class FancyIceCreamModItems {
             registerModel(tmp, "honey_ice_cream");
             registerModel(tmp, "ice_cream_stand");
             registerModel(tmp, "triple_ice_cream_stand");
-            BlockStateModelLoader.STATIC_DEFINITIONS = tmp;
+            BlockStateDefinitions.STATIC_DEFINITIONS = tmp;
         }
 
         private static void registerModel(Map<ResourceLocation, StateDefinition<Block, BlockState>> pDefinitions, String pPath) {

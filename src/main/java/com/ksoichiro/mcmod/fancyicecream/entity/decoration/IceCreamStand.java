@@ -43,6 +43,7 @@ import org.slf4j.Logger;
 import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class IceCreamStand extends HangingEntity implements IEntityAdditionalSpawnData {
     private static final Logger LOGGER = LogUtils.getLogger();
@@ -175,18 +176,19 @@ public class IceCreamStand extends HangingEntity implements IEntityAdditionalSpa
     public void readAdditionalSaveData(CompoundTag compoundTag) {
         super.readAdditionalSaveData(compoundTag);
         for (int i = 0; i < this.getMaxHoldableItems(); i++) {
-            CompoundTag compoundtag = compoundTag.getCompound("Item" + (i + 1));
-            if (compoundtag != null && !compoundtag.isEmpty()) {
-                ItemStack itemstack = ItemStack.parseOptional(this.registryAccess(), compoundtag);
+            var compoundtag = compoundTag.getCompound("Item" + (i + 1));
+            if (compoundtag.isPresent()) {
+                Optional<ItemStack> itemstack = ItemStack.parse(this.registryAccess(), compoundtag.get());
                 if (itemstack.isEmpty()) {
                     LOGGER.warn("Unable to load item from: {}", compoundtag);
+                } else {
+                    this.setItem(itemstack.get(), i, false);
                 }
-                this.setItem(itemstack, i, false);
             }
         }
-        this.setDirection(Direction.from3DDataValue(compoundTag.getByte("Facing")));
+        this.setDirection(Direction.from3DDataValue(compoundTag.getByte("Facing").get()));
         // Always use
-        this.setRotation(compoundTag.getByte("ItemRotation"));
+        this.setRotation(compoundTag.getByte("ItemRotation").get());
     }
 
     @Override
