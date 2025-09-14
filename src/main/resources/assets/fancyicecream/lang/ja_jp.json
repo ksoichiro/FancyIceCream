@@ -8,5 +8,13 @@
   "item.fancyicecream.golden_apple_ice_cream": "金のリンゴアイスクリーム",
   "item.fancyicecream.honey_ice_cream": "ハチミツアイスクリーム",
   "item.fancyicecream.ice_cream_stand": "アイスクリームスタンド",
-  "item.fancyicecream.triple_ice_cream_stand": "トリプルアイスクリームスタンド"
+  "item.fancyicecream.triple_ice_cream_stand": "トリプルアイスクリームスタンド",
+  "advancement.fancyicecream.root.title": "ファンシーアイスクリーム",
+  "advancement.fancyicecream.root.description": "最初のバニラアイスクリームを作ろう",
+  "advancement.fancyicecream.ice_cream_master.title": "アイスクリームマスター",
+  "advancement.fancyicecream.ice_cream_master.description": "すべての種類のアイスクリームを集めよう",
+  "advancement.fancyicecream.decorator.title": "甘いデコレーター",
+  "advancement.fancyicecream.decorator.description": "アイスクリームスタンドを作ろう",
+  "advancement.fancyicecream.triple_decorator.title": "トリプル脅威",
+  "advancement.fancyicecream.triple_decorator.description": "トリプルアイスクリームスタンドを作ろう"
 }
