@@ -7,7 +7,7 @@ plugins {
 }
 apply from: "${project.projectDir}/gradle/props.gradle"
 
-version = '0.0.1'
+version = modVersion
 group = 'com.ksoichiro.mcmod.fancyicecream' // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 base {
     archivesName = modId

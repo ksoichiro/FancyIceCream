@@ -5,4 +5,5 @@ ext {
     // https://parchmentmc.org/docs/getting-started
     parchmentMCVersion = '2024.06.16-1.20.6'
     modId = 'fancyicecream'
+    modVersion = '0.0.2'
 }
