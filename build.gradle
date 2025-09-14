@@ -215,8 +215,12 @@ task copyGeneratedResources(type: Copy) {
     dependsOn 'runData'
 }
 
-// Ensure data generation and copying runs before building and publishing
+// Ensure data generation and copying runs before building, running, and publishing
 afterEvaluate {
+    // Add dependency to all run tasks (runClient, runServer, etc.)
+    tasks.matching { it.name.startsWith('run') && it.name != 'runData' }.configureEach {
+        dependsOn 'copyGeneratedResources'
+    }
     jar.dependsOn 'copyGeneratedResources'
     // publish depends on jar, so we don't need explicit copyGeneratedResources dependency
 }
