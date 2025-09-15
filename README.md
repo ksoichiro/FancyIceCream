@@ -1,5 +1,7 @@
 # ![](assets/logo.png) Fancy Ice Cream
 
+[![Buy Me a Coffee](https://img.shields.io/badge/Buy%20Me%20a%20Coffee-support-orange?style=flat&logo=buymeacoffee)](https://www.buymeacoffee.com/ksoichiro)
+
 A Minecraft mod to add ice cream recipes.
 
 ![](assets/screenshot.png)
