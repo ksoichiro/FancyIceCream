@@ -32,18 +32,20 @@ public class IceCreamStandItem extends Item {
         HangingEntity hangingentity = getEntityFactory().create(level, blockpos1, direction, player.getDirection());
 
         if (itemstack.has(net.minecraft.core.component.DataComponents.ENTITY_DATA)) {
-            net.minecraft.world.item.component.CustomData entityData = itemstack.get(net.minecraft.core.component.DataComponents.ENTITY_DATA);
-            EntityType.updateCustomEntityTag(level, player, hangingentity, entityData);
+            var entityData = itemstack.get(net.minecraft.core.component.DataComponents.ENTITY_DATA);
+            if (entityData != null) {
+                EntityType.updateCustomEntityTag(level, player, hangingentity, entityData);
+            }
         }
 
         if (hangingentity.survives()) {
-            if (!level.isClientSide) {
+            if (!level.isClientSide()) {
                 hangingentity.playPlacementSound();
                 level.gameEvent(player, GameEvent.ENTITY_PLACE, blockpos);
                 level.addFreshEntity(hangingentity);
             }
             itemstack.shrink(1);
-            return level.isClientSide ? InteractionResult.SUCCESS : InteractionResult.CONSUME;
+            return level.isClientSide() ? InteractionResult.SUCCESS : InteractionResult.CONSUME;
         }
         return InteractionResult.CONSUME;
     }

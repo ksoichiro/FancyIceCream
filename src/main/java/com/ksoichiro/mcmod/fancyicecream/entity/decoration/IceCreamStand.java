@@ -142,7 +142,7 @@ public class IceCreamStand extends HangingEntity implements IEntityAdditionalSpa
             return false;
         } else {
             BlockState blockstate = this.level().getBlockState(this.pos.relative(this.getDirection().getOpposite()));
-            return blockstate.isSolid() || this.getDirection().getAxis().isHorizontal() && DiodeBlock.isDiode(blockstate) ? this.level().getEntities(this, this.getBoundingBox(), HANGING_ENTITY).isEmpty() : false;
+            return blockstate.isSolid() || this.getDirection().getAxis().isHorizontal() && DiodeBlock.isDiode(blockstate) ? this.level().getEntities(this, this.getBoundingBox(), (entity) -> entity instanceof HangingEntity).isEmpty() : false;
         }
     }
 
@@ -325,7 +325,7 @@ public class IceCreamStand extends HangingEntity implements IEntityAdditionalSpa
         int emptyStandSlot = this.getEmptyStandSlot();
         boolean isStandEmpty = 0 <= emptyStandSlot;
         boolean hasItemInHand = !itemstack.isEmpty();
-        if (!this.level().isClientSide) {
+        if (!this.level().isClientSide()) {
             boolean isIceCream = itemstack.is(ModTags.Items.ICE_CREAM);
             if (isStandEmpty && hasItemInHand && !this.isRemoved() && isIceCream) {
                 this.setItem(itemstack, emptyStandSlot);

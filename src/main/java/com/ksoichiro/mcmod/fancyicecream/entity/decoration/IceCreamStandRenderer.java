@@ -4,29 +4,25 @@ import com.ksoichiro.mcmod.fancyicecream.main.FancyIceCreamMod;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.block.BlockRenderDispatcher;
-import net.minecraft.client.renderer.block.ModelBlockRenderer;
 import net.minecraft.client.renderer.block.model.BlockStateModel;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.ItemRenderer;
+import net.minecraft.client.renderer.state.CameraRenderState;
 import net.minecraft.client.renderer.texture.OverlayTexture;
+import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.client.resources.model.BlockStateDefinitions;
 import net.minecraft.client.resources.model.ModelManager;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
-import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.client.model.data.ModelData;
 import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.NotNull;
 
@@ -46,8 +42,8 @@ public class IceCreamStandRenderer<T extends IceCreamStand> extends EntityRender
     }
 
     @Override
-    public void render(IceCreamStandRenderState iceCreamStand, PoseStack poseStack, MultiBufferSource bufferIn, int packedLightIn) {
-        super.render(iceCreamStand, poseStack, bufferIn, packedLightIn);
+    public void submit(IceCreamStandRenderState iceCreamStand, PoseStack poseStack, SubmitNodeCollector nodeCollector, CameraRenderState camera) {
+        super.submit(iceCreamStand, poseStack, nodeCollector, camera);
 
         poseStack.pushPose();
         Direction direction = iceCreamStand.direction;
@@ -60,19 +56,19 @@ public class IceCreamStandRenderer<T extends IceCreamStand> extends EntityRender
         // Render the ice cream stand using block model with proper lighting
         poseStack.pushPose();
         poseStack.translate(-0.5D, -0.5D, -0.5D);
-        ModelBlockRenderer.renderModel(poseStack.last(), bufferIn.getBuffer(RenderType.entitySolid(getCachedStandModel().particleIcon().atlasLocation())),
-            getCachedStandModel(), 1.0F, 1.0F, 1.0F, packedLightIn,
-            OverlayTexture.NO_OVERLAY, ModelData.EMPTY, null);
+        nodeCollector.submitBlockModel(poseStack, RenderType.entitySolidZOffsetForward(TextureAtlas.LOCATION_BLOCKS),
+            getCachedStandModel(), 1.0F, 1.0F, 1.0F, iceCreamStand.lightCoords,
+            OverlayTexture.NO_OVERLAY, iceCreamStand.outlineColor);
         poseStack.popPose();
 
         if (iceCreamStand.hasItems) {
-            renderStandItems(iceCreamStand, poseStack, bufferIn, packedLightIn);
+            renderStandItems(iceCreamStand, poseStack, nodeCollector);
         }
 
         poseStack.popPose();
     }
 
-    protected void renderStandItems(IceCreamStandRenderState iceCreamStand, PoseStack poseStack, MultiBufferSource bufferIn, int packedLightIn) {
+    protected void renderStandItems(IceCreamStandRenderState iceCreamStand, PoseStack poseStack, SubmitNodeCollector nodeCollector) {
         List<ItemStack> itemstacks = iceCreamStand.items;
         double[][] translations = getTranslations();
         for (int i = 0; i < itemstacks.size(); i++) {
@@ -82,18 +78,13 @@ public class IceCreamStandRenderer<T extends IceCreamStand> extends EntityRender
                 BlockRenderDispatcher blockrenderdispatcher = this.minecraft.getBlockRenderer();
                 ModelManager modelmanager = blockrenderdispatcher.getBlockModelShaper().getModelManager();
                 BlockStateModel model = getBlockModel(modelmanager, itemstack);
-                if (model.equals(modelmanager.getMissingBlockStateModel())) {
-                    poseStack.translate(translations[i][0] / 16.0D, translations[i][1] / 16.0D, translations[i][2] / 16.0D);
-                    poseStack.scale(0.5F, 0.5F, 0.5F);
-                    poseStack.mulPose(Axis.YP.rotationDegrees(180.0F));
-                    poseStack.mulPose(Axis.XP.rotationDegrees(20.0F));
-                    poseStack.mulPose(Axis.ZP.rotationDegrees(-45.0F));
-                    this.itemRenderer.renderStatic(itemstack, ItemDisplayContext.FIXED, packedLightIn, OverlayTexture.NO_OVERLAY, poseStack, bufferIn, null, 0);
-                } else {
+                if (!model.equals(modelmanager.getMissingBlockStateModel())) {
                     poseStack.translate(translations[i][0] / 16.0D, translations[i][1] / 16.0D, translations[i][2] / 16.0D);
                     poseStack.scale(0.8F, 0.8F, 0.8F);
                     poseStack.translate(-0.5D, -0.5D, -0.5D);
-                    ModelBlockRenderer.renderModel(poseStack.last(), bufferIn.getBuffer(RenderType.entitySolid(model.particleIcon().atlasLocation())), model, 1.0F, 1.0F, 1.0F, packedLightIn, OverlayTexture.NO_OVERLAY, ModelData.EMPTY, null);
+                    nodeCollector.submitBlockModel(poseStack, RenderType.entitySolidZOffsetForward(TextureAtlas.LOCATION_BLOCKS),
+                        model, 1.0F, 1.0F, 1.0F, iceCreamStand.lightCoords,
+                        OverlayTexture.NO_OVERLAY, iceCreamStand.outlineColor);
                 }
                 poseStack.popPose();
             }
