@@ -1,0 +1,53 @@
+architectury {
+    platformSetupLoomIde()
+    neoForge()
+}
+
+
+configurations {
+    common
+    shadowCommon // Don't use shadow from the shadow plugin since it interferes with Architectury's special handling of it.
+    compileClasspath.extendsFrom common
+    runtimeClasspath.extendsFrom common
+    developmentNeoForge.extendsFrom common
+}
+
+dependencies {
+    neoForge "net.neoforged:neoforge:21.8.47"
+
+    common(project(path: ":common", configuration: "namedElements")) { transitive false }
+    shadowCommon(project(path: ":common", configuration: "transformProductionNeoForge")) { transitive false }
+
+    common(project(path: ":versions:v1.21.8:common", configuration: "namedElements")) { transitive false }
+    shadowCommon(project(path: ":versions:v1.21.8:common", configuration: "transformProductionNeoForge")) { transitive false }
+
+    modApi "dev.architectury:architectury-neoforge:9.2.14"
+}
+
+processResources {
+    inputs.property "version", project.version
+
+    filesMatching("META-INF/neoforge.mods.toml") {
+        expand "version": project.version,
+               "mod_id": "fancyicecream"
+    }
+}
+
+// Temporarily simplified for basic compilation testing
+java {
+    withSourcesJar()
+}
+
+publishing {
+    publications {
+        maven(MavenPublication) {
+            artifactId = rootProject.archives_base_name + "-" + project.name
+            from components.java
+        }
+    }
+
+    // See https://docs.gradle.org/current/userguide/publishing_maven.html for information on how to set up publishing.
+    repositories {
+        // Add repositories to publish to here.
+    }
+}

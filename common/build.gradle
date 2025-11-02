@@ -1,0 +1,27 @@
+architectury {
+    common(rootProject.enabled_platforms.split(","))
+}
+
+dependencies {
+    // Architectury API for common code
+    modApi "dev.architectury:architectury:9.2.14"
+}
+
+java {
+    withSourcesJar()
+}
+
+publishing {
+    publications {
+        maven(MavenPublication) {
+            artifactId = "fancyicecream-common"
+            from components.java
+        }
+    }
+
+    repositories {
+        maven {
+            url "file://${project.projectDir}/../mcmodsrepo"
+        }
+    }
+}

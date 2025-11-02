@@ -2,10 +2,22 @@ pluginManagement {
     repositories {
         maven { url = 'https://maven.minecraftforge.net/' }
         maven { url = 'https://maven.parchmentmc.org' }
+        maven { url = 'https://maven.architectury.dev/' }
+        maven { url = 'https://maven.fabricmc.net/' }
+        gradlePluginPortal()
         mavenCentral()
     }
 }
 
 apply from: "./gradle/props.gradle"
 
-rootProject.name = "${modId}-${minecraftVersion}"
+rootProject.name = 'FancyIceCream'
+
+// Fully common module
+include 'common'
+
+// Version-specific modules (starting with 1.21.8)
+include 'versions:v1.21.8:common'
+include 'versions:v1.21.8:forge'
+// Temporarily disabled due to NeoForge setup issues with Architectury Loom beta
+// include 'versions:v1.21.8:neoforge'

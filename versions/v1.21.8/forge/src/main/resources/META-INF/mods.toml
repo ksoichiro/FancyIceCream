@@ -1,0 +1,36 @@
+modLoader="javafml"
+loaderVersion="[52,)"
+license="MIT"
+issueTrackerURL="https://github.com/ksoichiro/FancyIceCream/issues"
+
+[[mods]]
+modId="fancyicecream"
+version="${version}"
+displayName="Fancy Ice Cream"
+description='''
+Adds various delicious ice cream items and decorative stands to Minecraft.
+'''
+authors="ksoichiro"
+credits="Thanks to the Minecraft modding community"
+logoFile="logo.png"
+
+[[dependencies.fancyicecream]]
+modId="forge"
+mandatory=true
+versionRange="[52,)"
+ordering="NONE"
+side="BOTH"
+
+[[dependencies.fancyicecream]]
+modId="minecraft"
+mandatory=true
+versionRange="[1.21.1,)"
+ordering="NONE"
+side="BOTH"
+
+[[dependencies.fancyicecream]]
+modId="architectury"
+mandatory=true
+versionRange="[9.2.14,)"
+ordering="AFTER"
+side="BOTH"

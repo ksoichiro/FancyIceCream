@@ -1,0 +1,30 @@
+architectury {
+    common(rootProject.enabled_platforms.split(","))
+}
+
+dependencies {
+    // Common module dependency - temporarily disabled to avoid circular dependency
+    // api project(":common")
+
+    // Architectury API
+    modApi "dev.architectury:architectury:9.2.14"
+}
+
+java {
+    withSourcesJar()
+}
+
+publishing {
+    publications {
+        maven(MavenPublication) {
+            artifactId = "fancyicecream-v1.21.8-common"
+            from components.java
+        }
+    }
+
+    repositories {
+        maven {
+            url "file://${project.projectDir}/../../mcmodsrepo"
+        }
+    }
+}
