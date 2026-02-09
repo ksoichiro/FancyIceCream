@@ -29,3 +29,5 @@ mcmodsrepo/
 # Data Generation - Generated files should not be committed
 src/generated/
 run-data/
+
+.envrc
