@@ -10,18 +10,34 @@ if (project.hasProperty('parchment_mc_version')) {
     }
 }
 
-minecraft {
-    reobf = false
-    copyIdeResources = true
+def forgeMajor = forge_major_version as int
 
-    accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
+minecraft {
+    // 1.20.6+ (Forge 50+): No reobfuscation needed
+    if (forgeMajor >= 50) {
+        reobf = false
+    }
+
+    // 1.20.4+ (Forge 49+): Copy IDE resources
+    if (forgeMajor >= 49) {
+        copyIdeResources = true
+    }
+
+    // Access transformer - only if the file exists
+    def atFile = file('src/main/resources/META-INF/accesstransformer.cfg')
+    if (atFile.exists()) {
+        accessTransformer = atFile
+    }
 
     runs {
         configureEach {
             workingDirectory project.file('run')
             property 'forge.logging.markers', 'REGISTRIES'
             property 'forge.logging.console.level', 'debug'
-            property 'eventbus.api.strictRuntimeChecks', 'true'
+            // 1.21.6+ (Forge 56+): EventBus strict runtime checks
+            if (forgeMajor >= 56) {
+                property 'eventbus.api.strictRuntimeChecks', 'true'
+            }
         }
 
         client {
@@ -47,34 +63,43 @@ minecraft {
 dependencies {
     minecraft "net.minecraftforge:forge:${forge_version}"
 
-    // Forge 1.21.6+ uses EventBus 7, which shifts most of its runtime validation to compile-time
-    // via an annotation processor. Required for compile-time validation in dev environment.
-    if ((forge_major_version as int) >= 56) {
+    // Forge 1.21.6+ (Forge 56+): EventBus 7 compile-time validation
+    if (forgeMajor >= 56) {
         annotationProcessor 'net.minecraftforge:eventbus-validator:7.0-beta.10'
     }
 }
 
-// Merge resources and classes into the same directory for proper module support
-sourceSets.each {
-    def dir = layout.buildDirectory.dir("sourcesSets/$it.name")
-    it.output.resourcesDir = dir
-    it.java.destinationDirectory = dir
-}
-
-// Copy generated resources to the build output directory
-task copyGeneratedResources(type: Copy) {
-    from 'src/generated/resources'
-    into sourceSets.main.output.resourcesDir
-    exclude '.cache/**'
-    dependsOn 'runData'
-}
-
-// Ensure data generation and copying runs before building, running, and publishing
-afterEvaluate {
-    tasks.matching { it.name.startsWith('run') && it.name != 'runData' }.configureEach {
-        dependsOn 'copyGeneratedResources'
+// 1.20.4+ (Forge 49+): Merge resources and classes into the same directory for proper module support
+if (forgeMajor >= 49) {
+    sourceSets.each {
+        def dir = layout.buildDirectory.dir("sourcesSets/$it.name")
+        it.output.resourcesDir = dir
+        it.java.destinationDirectory = dir
     }
-    jar.dependsOn 'copyGeneratedResources'
+
+    // Copy generated resources to the build output directory
+    // NOTE: Explicit copy task needed because sourceSets.each overrides standard resource directory settings
+    task copyGeneratedResources(type: Copy) {
+        from 'src/generated/resources'
+        into sourceSets.main.output.resourcesDir
+        exclude '.cache/**'
+        dependsOn 'runData'
+    }
+
+    afterEvaluate {
+        tasks.matching { it.name.startsWith('run') && it.name != 'runData' }.configureEach {
+            dependsOn 'copyGeneratedResources'
+        }
+        jar.dependsOn 'copyGeneratedResources'
+    }
+} else {
+    // Pre-1.20.4: Include generated resources via srcDir
+    sourceSets.main.resources { srcDir 'src/generated/resources' }
+}
+
+// Pre-1.20.6 (Forge < 50): Reobfuscate the jar
+if (forgeMajor < 50) {
+    jar.finalizedBy('reobfJar')
 }
 
 jar {

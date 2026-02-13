@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-This is a Minecraft Forge mod called "Fancy Ice Cream" that adds various ice cream items and decorative stands to Minecraft. The mod supports multiple Minecraft versions (1.21.1 - 1.21.9) using a multi-version build structure where each version has its own module directory.
+This is a Minecraft Forge mod called "Fancy Ice Cream" that adds various ice cream items and decorative stands to Minecraft. The mod supports multiple Minecraft versions (1.20.1 - 1.21.9) using a multi-version build structure where each version has its own module directory.
 
 ## Build System
 
@@ -79,12 +79,18 @@ The mod follows standard Forge patterns:
 4. **Creative Tab**: Custom creative tab for grouping mod items
 
 ### Version Groups
-- **Group C** (1.21.6-1.21.9): BusGroup, eventbus-validator, latest API
-- **Group B** (1.21.3-1.21.5): IceCreamStandRenderState, IEventBus
-- **Group A** (1.21.1): Old rendering, old food system, ModelEvent.RegisterAdditional
+- **1.21.6-1.21.9** (Forge 56-59): BusGroup, eventbus-validator, latest API
+- **1.21.3-1.21.5** (Forge 53-55): IceCreamStandRenderState, IEventBus
+- **1.21.1** (Forge 52): Old rendering, old food system, ModelEvent.RegisterAdditional
+- **1.20.6** (Forge 50): Java 21, sourceSets merge, no reobf
+- **1.20.1-1.20.4** (Forge 47-49): Java 17, reobfJar required
 
-### Key Differences Between Versions
-- Forge 1.21.6+ requires `eventbus-validator` annotation processor (controlled by `forge_major_version >= 56`)
+### Key Differences Between Versions (conditional in build.gradle)
+- Forge 56+ (`forge_major_version >= 56`): `eventbus-validator` annotation processor, `eventbus.api.strictRuntimeChecks`
+- Forge 50+ (`forge_major_version >= 50`): `reobf = false` (no reobfuscation needed)
+- Forge 49+ (`forge_major_version >= 49`): `sourceSets.each` merge, `copyGeneratedResources` task, `copyIdeResources`
+- Forge < 50: `jar.finalizedBy('reobfJar')`
+- Forge < 49: `sourceSets.main.resources { srcDir }` for generated resources
 - ParchmentMC currently disabled for all versions due to compilation issues in multi-project setup
 
 ## Development Notes
