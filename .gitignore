@@ -27,7 +27,7 @@ forge*changelog.txt
 mcmodsrepo/
 
 # Data Generation - Generated files should not be committed
-src/generated/
-run-data/
+**/src/generated/
+**/run-data/
 
 .envrc

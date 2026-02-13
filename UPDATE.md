@@ -2,90 +2,76 @@
 
 This document explains the update process for adapting this Mod to new versions of Minecraft.
 
-## Minecraft Version Update
+## Multi-Version Structure
 
-The Minecraft version is specified as `minecraftVersion` in @gradle/props.gradle, which needs to be updated.
+This project uses a multi-version build structure. Each Minecraft version has its own module directory (`forge-<VERSION>/`) with version-specific source code and resources. Version configuration is stored in `props/<VERSION>.properties`.
 
-## Forge Version Update
+## Adding a New Minecraft Version
 
-The Mod is based on [Minecraft Forge](https://files.minecraftforge.net/net/minecraftforge/forge/), so the Forge version corresponding to the Minecraft version also needs to be updated.
-The Forge version is specified as `forgeVersion` in @gradle/props.gradle, which needs to be updated.
+### 1. Create Version Properties
+
+Create `props/<NEW_VERSION>.properties`:
+
+```properties
+minecraft_version=<NEW_VERSION>
+java_version=21
+forge_version=<NEW_VERSION>-<FORGE_VERSION>
+forge_major_version=<FORGE_MAJOR>
+enabled_platforms=forge
+```
+
+### 2. Forge Version Selection
+
+The Mod is based on [Minecraft Forge](https://files.minecraftforge.net/net/minecraftforge/forge/), so the Forge version corresponding to the Minecraft version needs to be specified.
 Usually, multiple Forge versions are provided for a given Minecraft version.
 If there is a version marked as "Download Recommended", select that version.
 If no such version exists, select the latest version.
 
-## ParchmentMC Version Update
+### 3. ParchmentMC (Optional)
 
-This repository uses [ParchmentMC](https://parchmentmc.org/), and can only be updated to versions listed in the [mappings](https://parchmentmc.org/docs/getting-started).
-The ParchmentMC version is specified as `parchmentMCVersion` in @gradle/props.gradle, which needs to be updated.
+ParchmentMC is currently disabled for all versions due to compilation issues (Direction switch expressions fail) in the multi-project setup. If this is resolved in the future, add `parchment_mc_version=YYYY.MM.DD-<MC_VERSION>` to the props file.
 
-### Important: Accurate Version Confirmation
-
-The ParchmentMC versions displayed on the getting-started page are shown as image badges, which makes it difficult to programmatically or mechanically read the version information as text. To get the exact latest version, follow these steps:
-
-1. **Visit the ParchmentMC page**: Go to https://parchmentmc.org/docs/getting-started
-2. **Find your target Minecraft version**: Locate the row for your target Minecraft version (e.g., 1.20.3)
-3. **Get the metadata URL**: The version badge image contains a link to the Maven metadata XML. For example, for Minecraft 1.20.3, the metadata URL is:
-   ```
-   https://ldtteam.jfrog.io/artifactory/parchmentmc-internal/org/parchmentmc/data/parchment-1.20.3/maven-metadata.xml
-   ```
-4. **Check the metadata XML**: Access the metadata URL to get the exact latest version from the `<latest>` and `<release>` tags.
-
-### Example: Minecraft 1.20.3
-For Minecraft 1.20.3, the steps would be:
-- Visit the metadata URL: https://ldtteam.jfrog.io/artifactory/parchmentmc-internal/org/parchmentmc/data/parchment-1.20.3/maven-metadata.xml
-- The XML shows the latest version as `2023.12.31`
-- Therefore, use `parchmentMCVersion = '2023.12.31-1.20.3'` in @gradle/props.gradle
-
-This method ensures you get the most current and accurate ParchmentMC version available for your target Minecraft version.
-
-## Mod Metadata Update
-
-In addition to updating the build configuration, the mod metadata file also needs to be updated to match the new versions.
-
-### mods.toml Update
-
-Update `src/main/resources/META-INF/mods.toml` with the following changes:
-
-1. **loaderVersion**: Update to match the new Forge major version
-   - For Forge 49.x.x, use `loaderVersion="[49,)"`
-   - For Forge 48.x.x, use `loaderVersion="[48,)"`
-
-2. **Forge dependency versionRange**: Update the Forge dependency version range in the `[[dependencies.fancyicecream]]` section where `modId="forge"`
-   - Change `versionRange="[48,)"` to `versionRange="[49,)"` (matching the Forge version)
-
-3. **Minecraft dependency versionRange**: Update the Minecraft dependency version range in the `[[dependencies.fancyicecream]]` section where `modId="minecraft"`
-   - Change `versionRange="[1.20.2,)"` to `versionRange="[1.20.3,)"` (matching the target Minecraft version)
-
-### Example for Minecraft 1.20.3 with Forge 49.0.2:
-```toml
-loaderVersion="[49,)" #mandatory
-...
-[[dependencies.fancyicecream]]
-    modId="forge"
-    mandatory=true
-    versionRange="[49,)" #mandatory
-    ...
-[[dependencies.fancyicecream]]
-    modId="minecraft"
-    mandatory=true
-    versionRange="[1.20.3,)"
-    ...
+To get the exact version, check the Maven metadata XML:
+```
+https://ldtteam.jfrog.io/artifactory/parchmentmc-internal/org/parchmentmc/data/parchment-<MC_VERSION>/maven-metadata.xml
 ```
 
-## Build
+### 4. Create Module Directory
 
-For building, use gradlew. Clean previous build results with `clean`, then build the mod and run Minecraft with `runClient`.
+Create `forge-<NEW_VERSION>/` by copying from the nearest existing version:
 
-Command examples:
+```bash
+cp -r forge-<NEAREST_VERSION>/src forge-<NEW_VERSION>/src
+cp forge-<NEAREST_VERSION>/build.gradle forge-<NEW_VERSION>/build.gradle
 ```
-./gradlew clean
-./gradlew runClient
+
+### 5. Update Source Code
+
+Adapt the source code for API changes. Key differences between version groups:
+- **Forge 56+** (1.21.6+): Uses BusGroup, requires eventbus-validator annotation processor
+- **Forge 53-55** (1.21.3-1.21.5): Uses IEventBus, IceCreamStandRenderState
+- **Forge 52** (1.21.1): Old rendering system, old food system, ModelEvent.RegisterAdditional
+
+### 6. Update Mod Metadata
+
+Update `forge-<NEW_VERSION>/src/main/resources/META-INF/mods.toml`:
+
+1. **loaderVersion**: Match the Forge major version (e.g., `"[59,)"` for Forge 59.x.x)
+2. **Forge dependency versionRange**: Match the Forge major version
+3. **Minecraft dependency versionRange**: Match the target Minecraft version
+
+### 7. Register in Multi-Version Tasks
+
+Add the new version to `supportedVersions` in `gradle/multi-version-tasks.gradle`.
+
+### 8. Build and Test
+
+```bash
+./gradlew clean build -Ptarget_mc_version=<NEW_VERSION>
+./gradlew :forge:runClient -Ptarget_mc_version=<NEW_VERSION>
 ```
 
-Execute runClient and verify that Minecraft starts and performs a functionality check.
-Check the following points and debug if there are issues:
-
+Verify:
 - Minecraft starts properly
 - No mod errors are displayed
 - Create a new Creative Mode world or open an existing world and verify normal operation
@@ -99,7 +85,6 @@ Check the following points and debug if there are issues:
 With Minecraft Forge updates, APIs may change even with minor version updates.
 As needed, update existing code referencing the [Minecraft Forge documentation](https://docs.minecraftforge.net/en/latest/).
 This documentation is separated by version.
-For example, explanations about Items for 1.20.x are written on [this page](https://docs.minecraftforge.net/en/1.20.x/items/).
 
 Also, comparing the implementation of related classes before and after version upgrades can sometimes help find implementation methods.
 For example, the `IceCreamStand` class has many implementations similar to the `ItemFrame` class.

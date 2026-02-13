@@ -1,11 +1,42 @@
 pluginManagement {
     repositories {
+        gradlePluginPortal()
         maven { url = 'https://maven.minecraftforge.net/' }
         maven { url = 'https://maven.parchmentmc.org' }
         mavenCentral()
     }
 }
 
-apply from: "./gradle/props.gradle"
+rootProject.name = 'FancyIceCream'
 
-rootProject.name = "${modId}-${minecraftVersion}"
+def targetMcVersion = providers.gradleProperty('target_mc_version').getOrNull()
+if (targetMcVersion == null) {
+    throw new GradleException("'target_mc_version' property is not defined.")
+}
+
+def propsFile = file("props/${targetMcVersion}.properties")
+if (!propsFile.exists()) {
+    throw new GradleException("props/${targetMcVersion}.properties not found")
+}
+def versionProps = new Properties()
+propsFile.withInputStream { versionProps.load(it) }
+
+// Inject version-specific properties into all projects
+gradle.beforeProject { project ->
+    versionProps.each { key, value ->
+        if (!project.hasProperty(key)) {
+            project.ext.set(key, value)
+        }
+    }
+}
+
+def enabledPlatforms = versionProps.getProperty('enabled_platforms', '').split(',').collect { it.trim() }
+
+// Platform modules
+enabledPlatforms.each { platform ->
+    def platformDir = file("${platform}-${targetMcVersion}")
+    if (platformDir.exists()) {
+        include platform
+        project(":${platform}").projectDir = platformDir
+    }
+}

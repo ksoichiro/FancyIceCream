@@ -1,9 +1,0 @@
-ext {
-    minecraftVersion = '1.21.9'
-    // https://files.minecraftforge.net/net/minecraftforge/forge/index_1.21.9.html
-    forgeVersion = '59.0.1'
-    // https://parchmentmc.org/docs/getting-started
-    // parchmentMCVersion = '' // Not available for 1.21.9 yet
-    modId = 'fancyicecream'
-    modVersion = '0.0.2'
-}

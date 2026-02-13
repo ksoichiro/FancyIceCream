@@ -4,40 +4,59 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-This is a Minecraft Forge mod called "Fancy Ice Cream" that adds various ice cream items and decorative stands to Minecraft. The mod supports multiple Minecraft versions (1.19 - 1.20.2) and uses Minecraft Forge as its modding framework.
+This is a Minecraft Forge mod called "Fancy Ice Cream" that adds various ice cream items and decorative stands to Minecraft. The mod supports multiple Minecraft versions (1.21.1 - 1.21.9) using a multi-version build structure where each version has its own module directory.
 
 ## Build System
 
-- **Build tool**: Gradle with ForgeGradle plugin
-- **Java version**: Java 17 (required for Minecraft 1.18+)
-- **Build configuration**: `build.gradle` with external properties in `gradle/props.gradle`
+- **Build tool**: Gradle with ForgeGradle plugin (multi-project)
+- **Java version**: Java 21
+- **Build configuration**: Root `build.gradle` + per-version `forge-<VERSION>/build.gradle`
+- **Version properties**: `props/<VERSION>.properties` for each supported Minecraft version
 
 ### Key Build Commands
 
 ```bash
-# Build the mod
-./gradlew build
+# Build for a specific version (default: 1.21.9)
+./gradlew build -Ptarget_mc_version=1.21.9
 
-# Clean build directory  
-./gradlew clean
+# Clean and build
+./gradlew clean build -Ptarget_mc_version=1.21.9
 
 # Run Minecraft client with mod for testing
-./gradlew runClient
+./gradlew :forge:runClient -Ptarget_mc_version=1.21.9
 
-# Run Minecraft server with mod for testing
-./gradlew runServer
+# Build all supported versions
+./gradlew buildAll
 
-# Generate data files (recipes, models, etc.)
-./gradlew runData
+# Collect release JARs from all versions
+./gradlew collectJars
 
-# Run game test server
-./gradlew runGameTestServer
+# Clean all versions
+./gradlew cleanAll
 
-# Publish to local maven repository
-./gradlew publish
+# Full release (clean, build all, collect)
+./gradlew release
 ```
 
 ## Project Structure
+
+### Multi-Version Layout
+```
+FancyIceCream/
+├── settings.gradle              # Dynamic module selection based on target_mc_version
+├── build.gradle                 # Root: plugin declarations, subproject common settings
+├── gradle.properties            # Default target, plugin versions, mod info
+├── gradle/multi-version-tasks.gradle  # buildAll, cleanAll, collectJars, release
+├── props/
+│   ├── 1.21.1.properties       # Version-specific: minecraft_version, forge_version, etc.
+│   └── ...
+├── forge-1.21.1/
+│   ├── build.gradle
+│   └── src/main/java/...
+│   └── src/main/resources/...
+├── forge-1.21.3/ ... forge-1.21.9/
+└── mcmodsrepo/                  # Local Maven repository
+```
 
 ### Core Package Structure
 - `com.ksoichiro.mcmod.fancyicecream.main.FancyIceCreamMod` - Main mod class with mod initialization
@@ -46,13 +65,9 @@ This is a Minecraft Forge mod called "Fancy Ice Cream" that adds various ice cre
 - `com.ksoichiro.mcmod.fancyicecream.entity.decoration.*` - Entity renderers for ice cream stands
 
 ### Configuration Files
-- `gradle/props.gradle` - Version configuration (Minecraft, Forge, Parchment mappings)
-- `src/main/resources/META-INF/mods.toml` - Mod metadata and dependencies
-- `gradle.properties` - JVM settings (3GB heap required for decompilation)
-
-### Resource Structure
-- `src/main/resources/assets/fancyicecream/` - Client-side assets (textures, models, lang files)
-- `src/main/resources/data/fancyicecream/` - Server-side data (recipes, tags, advancements)
+- `gradle.properties` - JVM settings, mod info, plugin versions, default target version
+- `props/<VERSION>.properties` - Per-version: minecraft_version, forge_version, forge_major_version, enabled_platforms
+- `forge-<VERSION>/src/main/resources/META-INF/mods.toml` - Mod metadata and dependencies (per-version)
 
 ## Mod Architecture
 
@@ -63,14 +78,17 @@ The mod follows standard Forge patterns:
 3. **Entity System**: Custom decoration entities (IceCreamStand, TripleIceCreamStand) with renderers
 4. **Creative Tab**: Custom creative tab for grouping mod items
 
-### Version Management
-- Current branch supports Minecraft 1.20.2 with Forge 48.1.0
-- Version-specific run configurations in `run/` directory
-- Mod supports multiple Minecraft versions through different branches
+### Version Groups
+- **Group C** (1.21.6-1.21.9): BusGroup, eventbus-validator, latest API
+- **Group B** (1.21.3-1.21.5): IceCreamStandRenderState, IEventBus
+- **Group A** (1.21.1): Old rendering, old food system, ModelEvent.RegisterAdditional
+
+### Key Differences Between Versions
+- Forge 1.21.6+ requires `eventbus-validator` annotation processor (controlled by `forge_major_version >= 56`)
+- ParchmentMC currently disabled for all versions due to compilation issues in multi-project setup
 
 ## Development Notes
 
-- The mod uses ParchmentMC mappings for better parameter names
 - All ice cream items provide food effects using the Effects class
 - Stand entities use custom renderers for 3D display
 - Recipes are auto-generated through data generation
@@ -79,28 +97,22 @@ The mod follows standard Forge patterns:
 ## Testing
 
 Test the mod using the run configurations:
-- `runClient` for client-side testing in development environment
-- `runServer` for server-side testing
-- Game saves are stored in version-specific directories under `run/`
+- `./gradlew :forge:runClient -Ptarget_mc_version=<VERSION>` for client-side testing
+- `./gradlew :forge:runServer -Ptarget_mc_version=<VERSION>` for server-side testing
 
 ## Version Updates
 
 For updating the mod to new Minecraft versions, see the detailed instructions in @UPDATE.md. The update process involves:
 
-1. **Version Configuration Updates**: Update `minecraftVersion`, `forgeVersion`, and `parchmentMCVersion` in `gradle/props.gradle`
-2. **Mod Metadata Updates**: Update `src/main/resources/META-INF/mods.toml` with corresponding version ranges:
-   - `loaderVersion` to match Forge major version (e.g., `"[49,)"` for Forge 49.x.x)
-   - `versionRange` in forge dependency section
-   - `versionRange` in minecraft dependency section
-3. **Build and Test**: Use `./gradlew clean` followed by `./gradlew runClient` to verify the update
-4. **Functionality Testing**: Ensure all mod features work correctly in the new version
-5. **API Compatibility**: Check for and resolve any Forge API changes that may affect the mod
+1. Create `props/<NEW_VERSION>.properties` with appropriate forge_version and forge_major_version
+2. Create `forge-<NEW_VERSION>/` directory with source code adapted from the nearest existing version
+3. Create `forge-<NEW_VERSION>/build.gradle` (copy from existing version)
+4. Update `forge-<NEW_VERSION>/src/main/resources/META-INF/mods.toml` with correct version ranges
+5. Add the new version to `gradle/multi-version-tasks.gradle` supportedVersions list
+6. Build and test: `./gradlew clean build -Ptarget_mc_version=<NEW_VERSION>`
 
 Key points for version updates:
 - Use recommended Forge versions when available
-- **CRITICAL: Verify ParchmentMC mappings availability and get exact version**
-  - The ParchmentMC website displays versions as image badges which makes it difficult to read version information programmatically
-  - Follow the detailed steps in @UPDATE.md for accurate version confirmation via Maven metadata XML
 - Compare with ItemFrame class implementation when fixing IceCreamStand issues
 - Reference version-specific Forge documentation for API changes
 - Compare with MDK build files if build issues occur
