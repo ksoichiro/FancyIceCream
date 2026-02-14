@@ -69,6 +69,57 @@ dependencies {
     }
 }
 
+// Pre-1.19 (Forge < 41): LWJGL 3.2.x lacks Apple Silicon (macOS arm64) natives.
+// Override to LWJGL 3.3.1 and extract arm64 natives, then set org.lwjgl.librarypath
+// so LWJGL loads arm64 dylibs instead of the x64 ones bundled with Forge.
+if (forgeMajor < 41 && System.getProperty('os.arch') == 'aarch64') {
+    def lwjglVersion = '3.3.1'
+    def lwjglNatives = 'natives-macos-arm64'
+    def lwjglModules = ['lwjgl', 'lwjgl-jemalloc', 'lwjgl-openal', 'lwjgl-opengl', 'lwjgl-glfw', 'lwjgl-stb', 'lwjgl-tinyfd']
+
+    configurations.all {
+        resolutionStrategy.eachDependency { details ->
+            if (details.requested.group == 'org.lwjgl') {
+                details.useVersion lwjglVersion
+            }
+        }
+    }
+
+    configurations {
+        lwjglArm64
+    }
+
+    dependencies {
+        lwjglModules.each { mod ->
+            lwjglArm64 "org.lwjgl:${mod}:${lwjglVersion}:${lwjglNatives}"
+        }
+    }
+
+    def lwjglNativesDir = layout.buildDirectory.dir('lwjgl-arm64-natives').get().asFile
+
+    task extractLwjglArm64Natives(type: Copy) {
+        from { configurations.lwjglArm64.collect { zipTree(it) } }
+        into lwjglNativesDir
+        include '**/*.dylib'
+        eachFile { it.path = it.name }
+        includeEmptyDirs = false
+    }
+
+    minecraft {
+        runs {
+            configureEach {
+                property 'org.lwjgl.librarypath', lwjglNativesDir.absolutePath
+            }
+        }
+    }
+
+    afterEvaluate {
+        tasks.matching { it.name.startsWith('run') }.configureEach {
+            dependsOn 'extractLwjglArm64Natives'
+        }
+    }
+}
+
 // 1.20.4+ (Forge 49+): Merge resources and classes into the same directory for proper module support
 if (forgeMajor >= 49) {
     sourceSets.each {

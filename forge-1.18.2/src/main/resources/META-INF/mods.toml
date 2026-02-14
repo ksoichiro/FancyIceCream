@@ -1,0 +1,22 @@
+modLoader="javafml"
+loaderVersion="[40,)"
+license="GNU LGPLv3"
+[[mods]]
+modId="fancyicecream"
+version="${file.jarVersion}"
+displayName="Fancy Ice Cream"
+description='''
+A mod to add some fancy ice cream items.
+'''
+[[dependencies.fancyicecream]]
+    modId="forge"
+    mandatory=true
+    versionRange="[40,)"
+    ordering="NONE"
+    side="BOTH"
+[[dependencies.fancyicecream]]
+    modId="minecraft"
+    mandatory=true
+    versionRange="[1.18.2,)"
+    ordering="NONE"
+    side="BOTH"
