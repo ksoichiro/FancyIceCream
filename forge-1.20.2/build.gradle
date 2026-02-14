@@ -93,8 +93,20 @@ if (forgeMajor >= 49) {
         jar.dependsOn 'copyGeneratedResources'
     }
 } else {
-    // Pre-1.20.4: Include generated resources via srcDir
+    // Pre-1.20.4: Include generated resources via srcDir (for IDE/run support)
     sourceSets.main.resources { srcDir 'src/generated/resources' }
+
+    // Copy generated resources into build output after runData completes.
+    // Cannot use processResources.dependsOn('runData') due to circular dependency
+    // (runData → classes → processResources). Instead, copy before jar is assembled.
+    jar.dependsOn 'runData'
+    jar.doFirst {
+        copy {
+            from 'src/generated/resources'
+            into sourceSets.main.output.resourcesDir
+            exclude '.cache/**'
+        }
+    }
 }
 
 // Pre-1.20.6 (Forge < 50): Reobfuscate the jar

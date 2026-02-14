@@ -8,5 +8,13 @@
   "item.fancyicecream.golden_apple_ice_cream": "Golden Apple Ice Cream",
   "item.fancyicecream.honey_ice_cream": "Honey Ice Cream",
   "item.fancyicecream.ice_cream_stand": "Ice Cream Stand",
-  "item.fancyicecream.triple_ice_cream_stand": "Triple Ice Cream Stand"
+  "item.fancyicecream.triple_ice_cream_stand": "Triple Ice Cream Stand",
+  "advancement.fancyicecream.root.title": "Fancy Ice Cream",
+  "advancement.fancyicecream.root.description": "Craft your first vanilla ice cream",
+  "advancement.fancyicecream.ice_cream_master.title": "Ice Cream Master",
+  "advancement.fancyicecream.ice_cream_master.description": "Collect all types of ice cream",
+  "advancement.fancyicecream.decorator.title": "Sweet Decorator",
+  "advancement.fancyicecream.decorator.description": "Craft an ice cream stand",
+  "advancement.fancyicecream.triple_decorator.title": "Triple Threat",
+  "advancement.fancyicecream.triple_decorator.description": "Craft a triple ice cream stand"
 }
