@@ -23,6 +23,7 @@ A Minecraft mod to add ice cream recipes.
 | ![](src/main/resources/assets/fancyicecream/textures/item/golden_apple_ice_cream.png) | Golden Apple Ice Cream | |
 | ![](src/main/resources/assets/fancyicecream/textures/item/honey_ice_cream.png) | Honey Ice Cream | |
 | ![](src/main/resources/assets/fancyicecream/textures/item/vanilla_ice_cream.png) | Vanilla Ice Cream | |
+| ![](src/main/resources/assets/fancyicecream/textures/item/sweet_berry_ice_cream.png)| Sweet Berry Ice Cream | |
 
 ### Ice Cream Stand
 

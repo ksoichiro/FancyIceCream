@@ -84,6 +84,15 @@ public class FancyIceCreamRecipeProvider extends RecipeProvider {
             .unlockedBy("has_vanilla_ice_cream", has(FancyIceCreamModItems.VANILLA_ICE_CREAM.get()))
             .save(recipeOutput);
 
+        // Sweet berry ice cream recipe
+        ShapedRecipeBuilder.shaped(RecipeCategory.FOOD, FancyIceCreamModItems.SWEET_BERRY_ICE_CREAM.get())
+            .pattern("A")
+            .pattern("B")
+            .define('A', Items.SWEET_BERRIES)
+            .define('B', FancyIceCreamModItems.VANILLA_ICE_CREAM.get())
+            .unlockedBy("has_vanilla_ice_cream", has(FancyIceCreamModItems.VANILLA_ICE_CREAM.get()))
+            .save(recipeOutput);
+
         // Ice cream stand recipe
         ShapedRecipeBuilder.shaped(RecipeCategory.DECORATIONS, FancyIceCreamModItems.ICE_CREAM_STAND.get())
             .pattern("A A")

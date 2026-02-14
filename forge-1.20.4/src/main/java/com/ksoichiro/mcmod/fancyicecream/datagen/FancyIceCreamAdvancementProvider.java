@@ -53,6 +53,7 @@ public class FancyIceCreamAdvancementProvider extends ForgeAdvancementProvider {
                 .addCriterion("has_glow_berry", InventoryChangeTrigger.TriggerInstance.hasItems(FancyIceCreamModItems.GLOW_BERRY_ICE_CREAM.get()))
                 .addCriterion("has_golden_apple", InventoryChangeTrigger.TriggerInstance.hasItems(FancyIceCreamModItems.GOLDEN_APPLE_ICE_CREAM.get()))
                 .addCriterion("has_honey", InventoryChangeTrigger.TriggerInstance.hasItems(FancyIceCreamModItems.HONEY_ICE_CREAM.get()))
+                .addCriterion("has_sweet_berry", InventoryChangeTrigger.TriggerInstance.hasItems(FancyIceCreamModItems.SWEET_BERRY_ICE_CREAM.get()))
                 .save(saver, new ResourceLocation(FancyIceCreamMod.MOD_ID, "ice_cream_master"));
 
             AdvancementHolder decorator = Advancement.Builder.advancement()

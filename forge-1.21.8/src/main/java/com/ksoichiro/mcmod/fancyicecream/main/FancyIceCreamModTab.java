@@ -25,6 +25,7 @@ public class FancyIceCreamModTab {
                     output.accept(FancyIceCreamModItems.GLOW_BERRY_ICE_CREAM.get());
                     output.accept(FancyIceCreamModItems.GOLDEN_APPLE_ICE_CREAM.get());
                     output.accept(FancyIceCreamModItems.HONEY_ICE_CREAM.get());
+                    output.accept(FancyIceCreamModItems.SWEET_BERRY_ICE_CREAM.get());
                     output.accept(FancyIceCreamModItems.ICE_CREAM_STAND.get());
                     output.accept(FancyIceCreamModItems.TRIPLE_ICE_CREAM_STAND.get());
                 })

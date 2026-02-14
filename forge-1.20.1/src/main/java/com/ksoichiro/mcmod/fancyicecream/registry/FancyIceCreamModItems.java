@@ -24,6 +24,7 @@ public class FancyIceCreamModItems {
     public static final RegistryObject<Item> GLOW_BERRY_ICE_CREAM = registerItem("glow_berry_ice_cream", GlowBerryIceCream::new);
     public static final RegistryObject<Item> GOLDEN_APPLE_ICE_CREAM = registerItem("golden_apple_ice_cream", GoldenAppleIceCream::new);
     public static final RegistryObject<Item> HONEY_ICE_CREAM = registerItem("honey_ice_cream", HoneyIceCream::new);
+    public static final RegistryObject<Item> SWEET_BERRY_ICE_CREAM = registerItem("sweet_berry_ice_cream", SweetBerryIceCream::new);
     public static final RegistryObject<Item> ICE_CREAM_STAND = registerItem("ice_cream_stand", IceCreamStandItem::new);
     public static final RegistryObject<Item> TRIPLE_ICE_CREAM_STAND = registerItem("triple_ice_cream_stand", TripleIceCreamStandItem::new);
 
@@ -46,6 +47,7 @@ public class FancyIceCreamModItems {
             event.register(ResourceLocation.fromNamespaceAndPath(FancyIceCreamMod.MOD_ID, "block/glow_berry_ice_cream"));
             event.register(ResourceLocation.fromNamespaceAndPath(FancyIceCreamMod.MOD_ID, "block/golden_apple_ice_cream"));
             event.register(ResourceLocation.fromNamespaceAndPath(FancyIceCreamMod.MOD_ID, "block/honey_ice_cream"));
+            event.register(ResourceLocation.fromNamespaceAndPath(FancyIceCreamMod.MOD_ID, "block/sweet_berry_ice_cream"));
         }
     }
 }
