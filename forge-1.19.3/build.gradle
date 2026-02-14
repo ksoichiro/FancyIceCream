@@ -1,0 +1,147 @@
+apply plugin: 'net.minecraftforge.gradle'
+if (project.hasProperty('parchment_mc_version')) {
+    apply plugin: 'org.parchmentmc.librarian.forgegradle'
+    minecraft {
+        mappings channel: 'parchment', version: parchment_mc_version
+    }
+} else {
+    minecraft {
+        mappings channel: 'official', version: minecraft_version
+    }
+}
+
+def forgeMajor = forge_major_version as int
+
+minecraft {
+    // 1.20.6+ (Forge 50+): No reobfuscation needed
+    if (forgeMajor >= 50) {
+        reobf = false
+    }
+
+    // 1.20.4+ (Forge 49+): Copy IDE resources
+    if (forgeMajor >= 49) {
+        copyIdeResources = true
+    }
+
+    // Access transformer - only if the file exists
+    def atFile = file('src/main/resources/META-INF/accesstransformer.cfg')
+    if (atFile.exists()) {
+        accessTransformer = atFile
+    }
+
+    runs {
+        configureEach {
+            workingDirectory project.file('run')
+            property 'forge.logging.markers', 'REGISTRIES'
+            property 'forge.logging.console.level', 'debug'
+            // 1.21.6+ (Forge 56+): EventBus strict runtime checks
+            if (forgeMajor >= 56) {
+                property 'eventbus.api.strictRuntimeChecks', 'true'
+            }
+        }
+
+        client {
+            property 'forge.enabledGameTestNamespaces', mod_id
+        }
+
+        server {
+            property 'forge.enabledGameTestNamespaces', mod_id
+            args '--nogui'
+        }
+
+        gameTestServer {
+            property 'forge.enabledGameTestNamespaces', mod_id
+        }
+
+        data {
+            workingDirectory project.file('run-data')
+            args '--mod', mod_id, '--all', '--output', file('src/generated/resources/'), '--existing', file('src/main/resources/')
+        }
+    }
+}
+
+dependencies {
+    minecraft "net.minecraftforge:forge:${forge_version}"
+
+    // Forge 1.21.6+ (Forge 56+): EventBus 7 compile-time validation
+    if (forgeMajor >= 56) {
+        annotationProcessor 'net.minecraftforge:eventbus-validator:7.0-beta.10'
+    }
+}
+
+// 1.20.4+ (Forge 49+): Merge resources and classes into the same directory for proper module support
+if (forgeMajor >= 49) {
+    sourceSets.each {
+        def dir = layout.buildDirectory.dir("sourcesSets/$it.name")
+        it.output.resourcesDir = dir
+        it.java.destinationDirectory = dir
+    }
+
+    // Copy generated resources to the build output directory
+    // NOTE: Explicit copy task needed because sourceSets.each overrides standard resource directory settings
+    task copyGeneratedResources(type: Copy) {
+        from 'src/generated/resources'
+        into sourceSets.main.output.resourcesDir
+        exclude '.cache/**'
+        dependsOn 'runData'
+    }
+
+    afterEvaluate {
+        tasks.matching { it.name.startsWith('run') && it.name != 'runData' }.configureEach {
+            dependsOn 'copyGeneratedResources'
+        }
+        jar.dependsOn 'copyGeneratedResources'
+    }
+} else {
+    // Pre-1.20.4: Include generated resources via srcDir (for IDE/run support)
+    sourceSets.main.resources { srcDir 'src/generated/resources' }
+
+    // Copy generated resources into build output after runData completes.
+    // Cannot use processResources.dependsOn('runData') due to circular dependency
+    // (runData → classes → processResources). Instead, copy before jar is assembled.
+    jar.dependsOn 'runData'
+    jar.doFirst {
+        copy {
+            from 'src/generated/resources'
+            into sourceSets.main.output.resourcesDir
+            exclude '.cache/**'
+        }
+    }
+}
+
+// Pre-1.20.6 (Forge < 50): Reobfuscate the jar
+if (forgeMajor < 50) {
+    jar.finalizedBy('reobfJar')
+}
+
+jar {
+    manifest {
+        attributes([
+                "Specification-Title"     : mod_id,
+                "Specification-Vendor"    : mod_id,
+                "Specification-Version"   : "1",
+                "Implementation-Title"    : project.name,
+                "Implementation-Version"  : mod_version,
+                "Implementation-Vendor"   : mod_id,
+                "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ")
+        ])
+    }
+}
+
+publishing {
+    publications {
+        register('mavenJava', MavenPublication) {
+            artifact jar
+        }
+    }
+    repositories {
+        maven {
+            url "file://${rootProject.projectDir}/mcmodsrepo"
+        }
+    }
+}
+
+clean {
+    delete 'src/generated'
+    delete 'run-data'
+}
