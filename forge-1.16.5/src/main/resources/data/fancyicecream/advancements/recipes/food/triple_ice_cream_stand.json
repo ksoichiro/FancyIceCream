@@ -11,17 +11,22 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "fancyicecream:ice_cream_stand"
-            ]
+            "item": "fancyicecream:ice_cream_stand"
           }
         ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "fancyicecream:triple_ice_cream_stand"
       }
     }
   },
   "requirements": [
     [
-      "has_ice_cream_stand"
+      "has_ice_cream_stand",
+      "has_the_recipe"
     ]
   ]
 }

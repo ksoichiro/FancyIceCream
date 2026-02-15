@@ -1,0 +1,35 @@
+{
+  "parent": "fancyicecream:root",
+  "display": {
+    "icon": {
+      "item": "fancyicecream:ice_cream_stand"
+    },
+    "title": {
+      "translate": "advancement.fancyicecream.decorator.title"
+    },
+    "description": {
+      "translate": "advancement.fancyicecream.decorator.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "has_ice_cream_stand": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "fancyicecream:ice_cream_stand"
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_ice_cream_stand"
+    ]
+  ]
+}

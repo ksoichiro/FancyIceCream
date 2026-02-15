@@ -6,22 +6,27 @@
     ]
   },
   "criteria": {
-    "has_cocoa_beans": {
+    "has_vanilla_ice_cream": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
-            "items": [
-              "minecraft:cocoa_beans"
-            ]
+            "item": "fancyicecream:vanilla_ice_cream"
           }
         ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "fancyicecream:choco_chip_ice_cream"
       }
     }
   },
   "requirements": [
     [
-      "has_cocoa_beans"
+      "has_vanilla_ice_cream",
+      "has_the_recipe"
     ]
   ]
 }

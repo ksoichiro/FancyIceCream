@@ -6,22 +6,27 @@
     ]
   },
   "criteria": {
-    "has_golden_apple": {
+    "has_vanilla_ice_cream": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
-            "items": [
-              "minecraft:golden_apple"
-            ]
+            "item": "fancyicecream:vanilla_ice_cream"
           }
         ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "fancyicecream:golden_apple_ice_cream"
       }
     }
   },
   "requirements": [
     [
-      "has_golden_apple"
+      "has_vanilla_ice_cream",
+      "has_the_recipe"
     ]
   ]
 }

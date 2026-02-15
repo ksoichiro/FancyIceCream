@@ -1,0 +1,35 @@
+{
+  "display": {
+    "icon": {
+      "item": "fancyicecream:vanilla_ice_cream"
+    },
+    "title": {
+      "translate": "advancement.fancyicecream.root.title"
+    },
+    "description": {
+      "translate": "advancement.fancyicecream.root.description"
+    },
+    "frame": "task",
+    "show_toast": false,
+    "announce_to_chat": false,
+    "hidden": false,
+    "background": "minecraft:textures/gui/advancements/backgrounds/adventure.png"
+  },
+  "criteria": {
+    "has_vanilla_ice_cream": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "fancyicecream:vanilla_ice_cream"
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_vanilla_ice_cream"
+    ]
+  ]
+}

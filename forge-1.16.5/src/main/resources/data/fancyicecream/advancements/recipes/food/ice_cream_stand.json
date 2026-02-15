@@ -11,17 +11,22 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "minecraft:iron_nugget"
-            ]
+            "item": "minecraft:iron_nugget"
           }
         ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "fancyicecream:ice_cream_stand"
       }
     }
   },
   "requirements": [
     [
-      "has_iron_nugget"
+      "has_iron_nugget",
+      "has_the_recipe"
     ]
   ]
 }

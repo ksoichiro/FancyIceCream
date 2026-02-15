@@ -1,0 +1,35 @@
+{
+  "parent": "fancyicecream:decorator",
+  "display": {
+    "icon": {
+      "item": "fancyicecream:triple_ice_cream_stand"
+    },
+    "title": {
+      "translate": "advancement.fancyicecream.triple_decorator.title"
+    },
+    "description": {
+      "translate": "advancement.fancyicecream.triple_decorator.description"
+    },
+    "frame": "goal",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "has_triple_ice_cream_stand": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "fancyicecream:triple_ice_cream_stand"
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_triple_ice_cream_stand"
+    ]
+  ]
+}
