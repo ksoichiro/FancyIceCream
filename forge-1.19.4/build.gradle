@@ -149,15 +149,19 @@ if (forgeMajor >= 49) {
     // Pre-1.20.4: Include generated resources via srcDir (for IDE/run support)
     sourceSets.main.resources { srcDir 'src/generated/resources' }
 
-    // Copy generated resources into build output after runData completes.
-    // Cannot use processResources.dependsOn('runData') due to circular dependency
-    // (runData → classes → processResources). Instead, copy before jar is assembled.
-    jar.dependsOn 'runData'
-    jar.doFirst {
-        copy {
-            from 'src/generated/resources'
-            into sourceSets.main.output.resourcesDir
-            exclude '.cache/**'
+    // 1.17.1+ (Forge 37+): DataGenerator-based resource generation
+    // Pre-1.17.1 versions keep handwritten JSON resources in src/main/resources
+    if (forgeMajor >= 37) {
+        // Copy generated resources into build output after runData completes.
+        // Cannot use processResources.dependsOn('runData') due to circular dependency
+        // (runData → classes → processResources). Instead, copy before jar is assembled.
+        jar.dependsOn 'runData'
+        jar.doFirst {
+            copy {
+                from 'src/generated/resources'
+                into sourceSets.main.output.resourcesDir
+                exclude '.cache/**'
+            }
         }
     }
 }
