@@ -70,10 +70,12 @@ dependencies {
 }
 
 // Pre-1.19 (Forge < 41): LWJGL 3.2.x lacks Apple Silicon (macOS arm64) natives.
-// Override to LWJGL 3.3.1 and extract arm64 natives, then set org.lwjgl.librarypath
+// Override to LWJGL 3.3.4 and extract arm64 natives, then set org.lwjgl.librarypath
 // so LWJGL loads arm64 dylibs instead of the x64 ones bundled with Forge.
+// NOTE: LWJGL 3.3.4 bundles GLFW 3.4 which fixes macOS window icon error
+// (GLFW_FEATURE_UNAVAILABLE) that crashes Minecraft 1.17.1's Window initialization.
 if (forgeMajor < 41 && System.getProperty('os.arch') == 'aarch64') {
-    def lwjglVersion = '3.3.1'
+    def lwjglVersion = '3.3.4'
     def lwjglNatives = 'natives-macos-arm64'
     def lwjglModules = ['lwjgl', 'lwjgl-jemalloc', 'lwjgl-openal', 'lwjgl-opengl', 'lwjgl-glfw', 'lwjgl-stb', 'lwjgl-tinyfd']
 
