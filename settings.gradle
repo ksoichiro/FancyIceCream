@@ -1,10 +1,20 @@
 pluginManagement {
     repositories {
         gradlePluginPortal()
+        maven { url = 'https://maven.fabricmc.net/' }
+        maven { url = 'https://maven.neoforged.net/releases/' }
         maven { url = 'https://maven.minecraftforge.net/' }
         maven { url = 'https://maven.parchmentmc.org' }
         mavenCentral()
     }
+
+    plugins {
+        id 'fabric-loom' version settings.providers.gradleProperty('fabric_loom_version').get()
+    }
+}
+
+plugins {
+    id 'org.gradle.toolchains.foojay-resolver-convention' version '0.9.0'
 }
 
 rootProject.name = 'FancyIceCream'
@@ -32,10 +42,23 @@ gradle.beforeProject { project ->
 
 def enabledPlatforms = versionProps.getProperty('enabled_platforms', '').split(',').collect { it.trim() }
 
+// Common module (only when common-<VERSION> directory exists)
+def commonDir = file("common-${targetMcVersion}")
+if (commonDir.exists()) {
+    include 'common'
+    project(':common').projectDir = commonDir
+}
+
 // Platform modules
 enabledPlatforms.each { platform ->
     def platformDir = file("${platform}-${targetMcVersion}")
     if (platformDir.exists()) {
+        def baseDir = file("${platform}-base")
+        // Include -base only when it exists and the version-specific module does not have its own Java sources
+        def hasOwnSources = new File(platformDir, "src/main/java").exists()
+        if (baseDir.exists() && !hasOwnSources) {
+            include "${platform}-base"
+        }
         include platform
         project(":${platform}").projectDir = platformDir
     }

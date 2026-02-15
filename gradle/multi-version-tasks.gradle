@@ -170,7 +170,7 @@ tasks.register('collectJars') {
 
                 def modId = project.property('mod_id')
                 def modVersion = project.property('mod_version')
-                def jarName = "${modId}-${modVersion}+${version}.jar"
+                def jarName = "${modId}-${modVersion}+${version}-${platform}.jar"
                 def jarFile = new File(libsDir, jarName)
 
                 if (jarFile.exists()) {

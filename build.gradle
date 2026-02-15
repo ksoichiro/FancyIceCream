@@ -1,4 +1,6 @@
 plugins {
+    // fabric-loom version is declared in settings.gradle
+    id 'net.neoforged.moddev' version "${moddevgradle_version}" apply false
     id 'net.minecraftforge.gradle' version "${forgegradle_version}" apply false
     id 'org.parchmentmc.librarian.forgegradle' version "${parchment_version}" apply false
 }
@@ -45,8 +47,10 @@ subprojects {
     }
 
     afterEvaluate {
-        base {
-            archivesName = "${mod_id}-${mod_version}+${minecraft_version}"
+        if (!project.name.endsWith('-base') && project.name != 'common') {
+            base {
+                archivesName = "${mod_id}-${mod_version}+${minecraft_version}-${project.name}"
+            }
         }
     }
 }
