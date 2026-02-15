@@ -56,7 +56,26 @@ minecraft {
         data {
             workingDirectory project.file('run-data')
             args '--mod', mod_id, '--all', '--output', file('src/generated/resources/'), '--existing', file('src/main/resources/')
+            // Also include common resources for datagen existing file checks
+            def commonResDir = rootProject.file("common-${minecraft_version}/src/main/resources")
+            if (commonResDir.exists()) {
+                args '--existing', commonResDir
+            }
         }
+    }
+}
+
+repositories {
+    maven { url = 'https://maven.minecraftforge.net/' }
+    maven { url = 'https://libraries.minecraft.net/' }
+}
+
+configurations {
+    commonJava {
+        canBeResolved = true
+    }
+    commonResources {
+        canBeResolved = true
     }
 }
 
@@ -66,6 +85,46 @@ dependencies {
     // Forge 1.21.6+ (Forge 56+): EventBus 7 compile-time validation
     if (forgeMajor >= 56) {
         annotationProcessor 'net.minecraftforge:eventbus-validator:7.0-beta.10'
+    }
+
+    if (findProject(':common') != null) {
+        compileOnly project(':common')
+
+        commonJava project(path: ':common', configuration: 'commonJava')
+        commonResources project(path: ':common', configuration: 'commonResources')
+    }
+}
+
+// Include common-shared source in compilation
+def commonSharedDir = rootProject.file('common-shared/src/main/java')
+if (commonSharedDir.exists()) {
+    sourceSets.main {
+        java {
+            srcDir commonSharedDir
+        }
+    }
+}
+
+if (findProject(':common') != null) {
+    tasks.named('compileJava') {
+        dependsOn configurations.commonJava
+        source configurations.commonJava
+    }
+
+    tasks.named('processResources') {
+        dependsOn configurations.commonResources
+        from(configurations.commonResources)
+        duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+    }
+}
+
+tasks.named('processResources') {
+    filesMatching('META-INF/mods.toml') {
+        expand(
+            version: mod_version,
+            minecraft_version: minecraft_version,
+            forge_version: forge_version,
+        )
     }
 }
 
