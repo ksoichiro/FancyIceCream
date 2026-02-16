@@ -2,6 +2,7 @@ package com.ksoichiro.mcmod.fancyicecream.entity.decoration;
 
 import com.ksoichiro.mcmod.fancyicecream.FancyIceCream;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
+import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.resources.ResourceLocation;
 
 public class TripleIceCreamStandRenderer extends IceCreamStandRenderer<TripleIceCreamStand> {
@@ -10,8 +11,8 @@ public class TripleIceCreamStandRenderer extends IceCreamStandRenderer<TripleIce
     }
 
     @Override
-    protected ResourceLocation getModelResourceLoc() {
-        return ResourceLocation.fromNamespaceAndPath(FancyIceCream.MOD_ID, "triple_ice_cream_stand");
+    protected ModelResourceLocation getModelResourceLoc() {
+        return new ModelResourceLocation(ResourceLocation.fromNamespaceAndPath(FancyIceCream.MOD_ID, "triple_ice_cream_stand"), "");
     }
 
     @Override

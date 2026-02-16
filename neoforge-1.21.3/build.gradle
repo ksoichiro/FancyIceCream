@@ -1,0 +1,68 @@
+plugins {
+    id 'net.neoforged.moddev'
+}
+
+neoForge {
+    version = neoforge_version
+
+    runs {
+        client {
+            client()
+        }
+    }
+
+    mods {
+        "${mod_id}" {
+            sourceSet sourceSets.main
+        }
+    }
+
+    accessTransformers {
+        from file('src/main/resources/META-INF/accesstransformer.cfg')
+    }
+}
+
+configurations {
+    commonJava {
+        canBeResolved = true
+    }
+    commonResources {
+        canBeResolved = true
+    }
+}
+
+dependencies {
+    compileOnly project(':common')
+    if (findProject(':neoforge-base') != null) {
+        compileOnly project(':neoforge-base')
+    }
+
+    commonJava project(path: ':common', configuration: 'commonJava')
+    commonResources project(path: ':common', configuration: 'commonResources')
+}
+
+sourceSets.main {
+    java {
+        srcDir rootProject.file('common-shared/src/main/java')
+        srcDir rootProject.file('neoforge-base/src/main/java')
+    }
+}
+
+tasks.named('compileJava') {
+    dependsOn configurations.commonJava
+    source configurations.commonJava
+}
+
+tasks.named('processResources') {
+    dependsOn configurations.commonResources
+    from(configurations.commonResources)
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+
+    filesMatching('META-INF/neoforge.mods.toml') {
+        expand(
+            version: mod_version,
+            minecraft_version: minecraft_version,
+            neoforge_version: neoforge_version,
+        )
+    }
+}
