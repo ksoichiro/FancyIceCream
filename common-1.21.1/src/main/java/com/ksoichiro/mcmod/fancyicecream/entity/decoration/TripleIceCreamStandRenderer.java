@@ -1,0 +1,33 @@
+package com.ksoichiro.mcmod.fancyicecream.entity.decoration;
+
+import com.ksoichiro.mcmod.fancyicecream.FancyIceCream;
+import net.minecraft.client.renderer.entity.EntityRendererProvider;
+import net.minecraft.client.resources.model.ModelResourceLocation;
+import net.minecraft.resources.ResourceLocation;
+
+public class TripleIceCreamStandRenderer<T extends IceCreamStand> extends IceCreamStandRenderer<T> {
+    public static final ResourceLocation STAND_LOCATION = ResourceLocation.fromNamespaceAndPath(FancyIceCream.MOD_ID, "block/triple_ice_cream_stand");
+
+    public TripleIceCreamStandRenderer(EntityRendererProvider.Context context) {
+        super(context);
+    }
+
+    @Override
+    public ResourceLocation getTextureLocation(T iceCreamStand) {
+        return STAND_LOCATION;
+    }
+
+    @Override
+    protected ModelResourceLocation getModelResourceLoc() {
+        return new ModelResourceLocation(ResourceLocation.fromNamespaceAndPath(FancyIceCream.MOD_ID, "triple_ice_cream_stand"), "");
+    }
+
+    @Override
+    protected double[][] getTranslations() {
+        return new double[][]{
+                {-3.0D, 0.1D, -2.5D},
+                {3.0D, 0.1D, -2.5D},
+                {0.0D, 0.1D, 3.0D},
+        };
+    }
+}

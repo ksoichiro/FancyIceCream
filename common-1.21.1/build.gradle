@@ -1,0 +1,27 @@
+plugins {
+    id 'net.neoforged.moddev'
+}
+
+neoForge {
+    neoFormVersion = neoform_version
+
+    accessTransformers {
+        from file('src/main/resources/META-INF/accesstransformer.cfg')
+    }
+}
+
+configurations {
+    commonJava {
+        canBeConsumed = true
+        canBeResolved = false
+    }
+    commonResources {
+        canBeConsumed = true
+        canBeResolved = false
+    }
+}
+
+artifacts {
+    commonJava sourceSets.main.java.srcDirs.first()
+    commonResources sourceSets.main.resources.srcDirs.first()
+}

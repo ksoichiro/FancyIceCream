@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "A": {
+      "item": "minecraft:iron_nugget"
+    }
+  },
+  "pattern": [
+    "A A",
+    " A "
+  ],
+  "result": {
+    "count": 1,
+    "id": "fancyicecream:ice_cream_stand"
+  }
+}
