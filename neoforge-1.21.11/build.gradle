@@ -1,0 +1,60 @@
+plugins {
+    id 'net.neoforged.moddev'
+}
+
+neoForge {
+    version = neoforge_version
+
+    runs {
+        client {
+            client()
+        }
+    }
+
+    mods {
+        "${mod_id}" {
+            sourceSet sourceSets.main
+        }
+    }
+
+    accessTransformers {
+        from file('src/main/resources/META-INF/accesstransformer.cfg')
+    }
+}
+
+configurations {
+    commonJava {
+        canBeResolved = true
+    }
+    commonResources {
+        canBeResolved = true
+    }
+}
+
+dependencies {
+    compileOnly project(':common')
+    commonJava project(path: ':common', configuration: 'commonJava')
+    commonResources project(path: ':common', configuration: 'commonResources')
+}
+
+// MC 1.21.11: common-shared sources are included in the common module directly
+// because ResourceLocation was renamed to Identifier
+
+tasks.named('compileJava') {
+    dependsOn configurations.commonJava
+    source configurations.commonJava
+}
+
+tasks.named('processResources') {
+    dependsOn configurations.commonResources
+    from(configurations.commonResources)
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+
+    filesMatching('META-INF/neoforge.mods.toml') {
+        expand(
+            version: mod_version,
+            minecraft_version: minecraft_version,
+            neoforge_version: neoforge_version,
+        )
+    }
+}
