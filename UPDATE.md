@@ -4,7 +4,7 @@ This document explains the update process for adapting this Mod to new versions 
 
 ## Multi-Version Structure
 
-This project uses a multi-version build structure. Each Minecraft version has its own module directory (`forge-<VERSION>/`) with version-specific source code and resources. Version configuration is stored in `props/<VERSION>.properties`.
+This project uses a multi-version build structure. Each Minecraft version has its own module directory (`forge/<VERSION>/`) with version-specific source code and resources. Version configuration is stored in `props/<VERSION>.properties`.
 
 ## Adding a New Minecraft Version
 
@@ -38,11 +38,11 @@ https://ldtteam.jfrog.io/artifactory/parchmentmc-internal/org/parchmentmc/data/p
 
 ### 4. Create Module Directory
 
-Create `forge-<NEW_VERSION>/` by copying from the nearest existing version:
+Create `forge/<NEW_VERSION>/` by copying from the nearest existing version:
 
 ```bash
-cp -r forge-<NEAREST_VERSION>/src forge-<NEW_VERSION>/src
-cp forge-<NEAREST_VERSION>/build.gradle forge-<NEW_VERSION>/build.gradle
+cp -r forge/<NEAREST_VERSION>/src forge/<NEW_VERSION>/src
+cp forge/<NEAREST_VERSION>/build.gradle forge/<NEW_VERSION>/build.gradle
 ```
 
 ### 5. Update Source Code
@@ -54,7 +54,7 @@ Adapt the source code for API changes. Key differences between version groups:
 
 ### 6. Update Mod Metadata
 
-Update `forge-<NEW_VERSION>/src/main/resources/META-INF/mods.toml`:
+Update `forge/<NEW_VERSION>/src/main/resources/META-INF/mods.toml`:
 
 1. **loaderVersion**: Match the Forge major version (e.g., `"[59,)"` for Forge 59.x.x)
 2. **Forge dependency versionRange**: Match the Forge major version

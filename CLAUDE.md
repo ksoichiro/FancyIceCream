@@ -10,7 +10,7 @@ This is a Minecraft Forge mod called "Fancy Ice Cream" that adds various ice cre
 
 - **Build tool**: Gradle with ForgeGradle plugin (multi-project)
 - **Java version**: Java 21
-- **Build configuration**: Root `build.gradle` + per-version `forge-<VERSION>/build.gradle`
+- **Build configuration**: Root `build.gradle` + per-version `forge/<VERSION>/build.gradle`
 - **Version properties**: `props/<VERSION>.properties` for each supported Minecraft version
 
 ### Key Build Commands
@@ -50,11 +50,17 @@ FancyIceCream/
 ├── props/
 │   ├── 1.21.1.properties       # Version-specific: minecraft_version, forge_version, etc.
 │   └── ...
-├── forge-1.21.1/
-│   ├── build.gradle
-│   └── src/main/java/...
-│   └── src/main/resources/...
-├── forge-1.21.3/ ... forge-1.21.9/
+├── common/
+│   ├── shared/                  # Shared source across versions
+│   ├── 1.21.1/ ... 1.21.11/    # Version-specific common modules
+├── forge/
+│   ├── 1.16.5/ ... 1.21.11/    # Forge loader modules per version
+├── fabric/
+│   ├── base/                    # Shared Fabric base module
+│   ├── 1.21.1/ ... 1.21.11/    # Fabric loader modules per version
+├── neoforge/
+│   ├── base/                    # Shared NeoForge base module
+│   ├── 1.21.1/ ... 1.21.11/    # NeoForge loader modules per version
 └── mcmodsrepo/                  # Local Maven repository
 ```
 
@@ -67,7 +73,7 @@ FancyIceCream/
 ### Configuration Files
 - `gradle.properties` - JVM settings, mod info, plugin versions, default target version
 - `props/<VERSION>.properties` - Per-version: minecraft_version, forge_version, forge_major_version, enabled_platforms
-- `forge-<VERSION>/src/main/resources/META-INF/mods.toml` - Mod metadata and dependencies (per-version)
+- `forge/<VERSION>/src/main/resources/META-INF/mods.toml` - Mod metadata and dependencies (per-version)
 
 ## Mod Architecture
 
@@ -111,9 +117,9 @@ Test the mod using the run configurations:
 For updating the mod to new Minecraft versions, see the detailed instructions in @UPDATE.md. The update process involves:
 
 1. Create `props/<NEW_VERSION>.properties` with appropriate forge_version and forge_major_version
-2. Create `forge-<NEW_VERSION>/` directory with source code adapted from the nearest existing version
-3. Create `forge-<NEW_VERSION>/build.gradle` (copy from existing version)
-4. Update `forge-<NEW_VERSION>/src/main/resources/META-INF/mods.toml` with correct version ranges
+2. Create `forge/<NEW_VERSION>/` directory with source code adapted from the nearest existing version
+3. Create `forge/<NEW_VERSION>/build.gradle` (copy from existing version)
+4. Update `forge/<NEW_VERSION>/src/main/resources/META-INF/mods.toml` with correct version ranges
 5. Add the new version to `gradle/multi-version-tasks.gradle` supportedVersions list
 6. Build and test: `./gradlew clean build -Ptarget_mc_version=<NEW_VERSION>`
 

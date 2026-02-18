@@ -42,8 +42,8 @@ gradle.beforeProject { project ->
 
 def enabledPlatforms = versionProps.getProperty('enabled_platforms', '').split(',').collect { it.trim() }
 
-// Common module (only when common-<VERSION> directory exists)
-def commonDir = file("common-${targetMcVersion}")
+// Common module (only when common/<VERSION> directory exists)
+def commonDir = file("common/${targetMcVersion}")
 if (commonDir.exists()) {
     include 'common'
     project(':common').projectDir = commonDir
@@ -51,13 +51,14 @@ if (commonDir.exists()) {
 
 // Platform modules
 enabledPlatforms.each { platform ->
-    def platformDir = file("${platform}-${targetMcVersion}")
+    def platformDir = file("${platform}/${targetMcVersion}")
     if (platformDir.exists()) {
-        def baseDir = file("${platform}-base")
+        def baseDir = file("${platform}/base")
         // Include -base only when it exists and the version-specific module does not have its own Java sources
         def hasOwnSources = new File(platformDir, "src/main/java").exists()
         if (baseDir.exists() && !hasOwnSources) {
             include "${platform}-base"
+            project(":${platform}-base").projectDir = baseDir
         }
         include platform
         project(":${platform}").projectDir = platformDir

@@ -16,7 +16,7 @@ This mod supports the following Minecraft versions (all managed in a single `mai
 
 1.16.5, 1.17.1, 1.18, 1.18.2, 1.19, 1.19.3, 1.19.4, 1.20.1, 1.20.2, 1.20.4, 1.20.6, 1.21.1, 1.21.3, 1.21.4, 1.21.5, 1.21.6, 1.21.7, 1.21.8, 1.21.9
 
-Each version has its own module directory (`forge-<VERSION>/`) with version-specific source code and resources. The build system dynamically selects the appropriate module based on the `target_mc_version` property.
+Each version has its own module directory (`forge/<VERSION>/`) with version-specific source code and resources. The build system dynamically selects the appropriate module based on the `target_mc_version` property.
 
 ## Build
 
@@ -34,19 +34,19 @@ Each version has its own module directory (`forge-<VERSION>/`) with version-spec
 
 | Item | Name | Description |
 | --- |--- | --- |
-| ![](forge-1.21.9/src/main/resources/assets/fancyicecream/textures/item/apple_ice_cream.png)| Apple Ice Cream | |
-| ![](forge-1.21.9/src/main/resources/assets/fancyicecream/textures/item/choco_chip_ice_cream.png) | Choco Chip Ice Cream | |
-| ![](forge-1.21.9/src/main/resources/assets/fancyicecream/textures/item/chocolate_ice_cream.png) | Chocolate Ice Cream | |
-| ![](forge-1.21.9/src/main/resources/assets/fancyicecream/textures/item/glow_berry_ice_cream.png) | Glow Berry Ice Cream | Available from Minecraft 1.17 |
-| ![](forge-1.21.9/src/main/resources/assets/fancyicecream/textures/item/golden_apple_ice_cream.png) | Golden Apple Ice Cream | |
-| ![](forge-1.21.9/src/main/resources/assets/fancyicecream/textures/item/honey_ice_cream.png) | Honey Ice Cream | |
-| ![](forge-1.21.9/src/main/resources/assets/fancyicecream/textures/item/vanilla_ice_cream.png) | Vanilla Ice Cream | |
-| ![](forge-1.21.9/src/main/resources/assets/fancyicecream/textures/item/sweet_berry_ice_cream.png)| Sweet Berry Ice Cream | |
+| ![](forge/1.21.9/src/main/resources/assets/fancyicecream/textures/item/apple_ice_cream.png)| Apple Ice Cream | |
+| ![](forge/1.21.9/src/main/resources/assets/fancyicecream/textures/item/choco_chip_ice_cream.png) | Choco Chip Ice Cream | |
+| ![](forge/1.21.9/src/main/resources/assets/fancyicecream/textures/item/chocolate_ice_cream.png) | Chocolate Ice Cream | |
+| ![](forge/1.21.9/src/main/resources/assets/fancyicecream/textures/item/glow_berry_ice_cream.png) | Glow Berry Ice Cream | Available from Minecraft 1.17 |
+| ![](forge/1.21.9/src/main/resources/assets/fancyicecream/textures/item/golden_apple_ice_cream.png) | Golden Apple Ice Cream | |
+| ![](forge/1.21.9/src/main/resources/assets/fancyicecream/textures/item/honey_ice_cream.png) | Honey Ice Cream | |
+| ![](forge/1.21.9/src/main/resources/assets/fancyicecream/textures/item/vanilla_ice_cream.png) | Vanilla Ice Cream | |
+| ![](forge/1.21.9/src/main/resources/assets/fancyicecream/textures/item/sweet_berry_ice_cream.png)| Sweet Berry Ice Cream | |
 
 ### Ice Cream Stand
 
 | Item | Name | Description |
 | --- | --- | --- |
-| ![](forge-1.21.9/src/main/resources/assets/fancyicecream/textures/item/ice_cream_stand.png) | Ice Cream Stand | It can hold one ice cream. |
-| ![](forge-1.21.9/src/main/resources/assets/fancyicecream/textures/item/triple_ice_cream_stand.png)| Triple Ice Cream Stand | It can hold 3 ice creams. |
+| ![](forge/1.21.9/src/main/resources/assets/fancyicecream/textures/item/ice_cream_stand.png) | Ice Cream Stand | It can hold one ice cream. |
+| ![](forge/1.21.9/src/main/resources/assets/fancyicecream/textures/item/triple_ice_cream_stand.png)| Triple Ice Cream Stand | It can hold 3 ice creams. |
 
