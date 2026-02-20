@@ -31,3 +31,6 @@ mcmodsrepo/
 **/run-data/
 
 .envrc
+
+# Fabric Loom
+mappings/
