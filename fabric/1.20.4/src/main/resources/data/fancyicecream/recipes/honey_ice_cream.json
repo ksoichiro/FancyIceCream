@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "A": {
+      "item": "minecraft:honey_bottle"
+    },
+    "B": {
+      "item": "fancyicecream:vanilla_ice_cream"
+    }
+  },
+  "pattern": [
+    "A",
+    "B"
+  ],
+  "result": {
+    "item": "fancyicecream:honey_ice_cream"
+  }
+}

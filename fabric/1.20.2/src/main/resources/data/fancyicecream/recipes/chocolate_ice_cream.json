@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "A": {
+      "item": "minecraft:cocoa_beans"
+    },
+    "B": {
+      "item": "fancyicecream:vanilla_ice_cream"
+    }
+  },
+  "pattern": [
+    "AA",
+    "B "
+  ],
+  "result": {
+    "item": "fancyicecream:chocolate_ice_cream"
+  }
+}
