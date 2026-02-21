@@ -9,7 +9,7 @@ A Minecraft mod to add ice cream recipes and decorative ice cream stands.
 ## Supported Loaders
 
 - [Minecraft Forge](https://files.minecraftforge.net/net/minecraftforge/forge/) (all versions)
-- [Fabric](https://fabricmc.net/) (1.20.6+)
+- [Fabric](https://fabricmc.net/) (1.20.4+)
 - [NeoForge](https://neoforged.net/) (1.21.1+)
 
 ## Supported Minecraft Versions
@@ -29,7 +29,7 @@ This mod supports the following Minecraft versions (all managed in a single bran
 | 1.21.3 | Yes | Yes | Yes |
 | 1.21.1 | Yes | Yes | Yes |
 | 1.20.6 | Yes | Yes | - |
-| 1.20.4 | Yes | - | - |
+| 1.20.4 | Yes | Yes | - |
 | 1.20.2 | Yes | - | - |
 | 1.20.1 | Yes | - | - |
 | 1.19.4 | Yes | - | - |
