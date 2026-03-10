@@ -5,6 +5,17 @@ plugins {
 neoForge {
     version = neoforge_version
 
+    runs {
+        client {
+            client()
+            gameDirectory = file("run/client")
+        }
+        server {
+            server()
+            gameDirectory = file("run/server")
+        }
+    }
+
     accessTransformers {
         from file('src/main/resources/META-INF/accesstransformer.cfg')
     }

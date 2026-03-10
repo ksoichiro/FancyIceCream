@@ -6,8 +6,13 @@ neoForge {
     version = neoforge_version
 
     runs {
+        server {
+            server()
+            gameDirectory = file("run/server")
+        }
         client {
             client()
+            gameDirectory = file("run/client")
         }
     }
 

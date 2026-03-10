@@ -8,6 +8,11 @@ neoForge {
     runs {
         client {
             client()
+            gameDirectory = file("run/client")
+        }
+        server {
+            server()
+            gameDirectory = file("run/server")
         }
     }
 

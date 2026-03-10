@@ -2,10 +2,7 @@ package com.ksoichiro.mcmod.fancyicecream.fabric;
 
 import com.ksoichiro.mcmod.fancyicecream.FancyIceCream;
 import com.ksoichiro.mcmod.fancyicecream.entity.decoration.IceCreamStand;
-import com.ksoichiro.mcmod.fancyicecream.entity.decoration.IceCreamStandRenderer;
 import com.ksoichiro.mcmod.fancyicecream.entity.decoration.TripleIceCreamStand;
-import com.ksoichiro.mcmod.fancyicecream.entity.decoration.TripleIceCreamStandRenderer;
-import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
@@ -37,7 +34,12 @@ public class FancyIceCreamFabricEntityType {
                         .updateInterval(Integer.MAX_VALUE)
                         .build(ResourceKey.create(Registries.ENTITY_TYPE, ResourceLocation.fromNamespaceAndPath(FancyIceCream.MOD_ID, "triple_ice_cream_stand"))));
 
-        EntityRendererRegistry.register(ICE_CREAM_STAND, IceCreamStandRenderer::new);
-        EntityRendererRegistry.register(TRIPLE_ICE_CREAM_STAND, TripleIceCreamStandRenderer::new);
+    }
+
+    public static void registerRenderers() {
+        net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry.register(ICE_CREAM_STAND,
+                com.ksoichiro.mcmod.fancyicecream.entity.decoration.IceCreamStandRenderer::new);
+        net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry.register(TRIPLE_ICE_CREAM_STAND,
+                com.ksoichiro.mcmod.fancyicecream.entity.decoration.TripleIceCreamStandRenderer::new);
     }
 }
