@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.1.1] - 2026-03-11
+
+### Fixed
+- Fix dedicated server crash caused by client-only class loading on all loaders (Forge, NeoForge, Fabric)
+
 ## [0.1.0] - 2026-02-22
 
 ### Added
@@ -32,5 +37,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Restructured project from single-version to multi-version, multi-loader architecture
 - Restructured loader directories into hierarchical layout (`forge/1.21.9/` instead of `forge-1.21.9/`)
 
-[Unreleased]: https://github.com/ksoichiro/FancyIceCream/compare/v0.1.0...HEAD
+[Unreleased]: https://github.com/ksoichiro/FancyIceCream/compare/v0.1.1...HEAD
+[0.1.1]: https://github.com/ksoichiro/FancyIceCream/compare/v0.1.0...v0.1.1
 [0.1.0]: https://github.com/ksoichiro/FancyIceCream/compare/1.21.9-0.0.2...v0.1.0
