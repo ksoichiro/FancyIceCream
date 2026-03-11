@@ -2,8 +2,6 @@ package com.ksoichiro.mcmod.fancyicecream.neoforge;
 
 import com.ksoichiro.mcmod.fancyicecream.FancyIceCream;
 import com.ksoichiro.mcmod.fancyicecream.item.ModelRegistrar;
-import net.neoforged.fml.loading.FMLEnvironment;
-import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.common.Mod;
 
@@ -13,8 +11,10 @@ public class FancyIceCreamNeoForge {
         FancyIceCreamNeoForgeItems.register(modEventBus);
         FancyIceCreamNeoForgeEntityType.register(modEventBus);
         FancyIceCreamNeoForgeTab.register(modEventBus);
-        if (FMLEnvironment.dist == Dist.CLIENT) {
+        try {
             ModelRegistrar.registerModels();
+        } catch (NoClassDefFoundError e) {
+            // Client-only classes not available on dedicated server
         }
     }
 }
