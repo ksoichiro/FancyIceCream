@@ -34,3 +34,6 @@ mcmodsrepo/
 
 # Fabric Loom
 mappings/
+
+# Logs
+**/logs/

@@ -82,6 +82,10 @@ configurations {
 dependencies {
     minecraft "net.minecraftforge:forge:${forge_version}"
 
+    testImplementation 'org.junit.jupiter:junit-jupiter:5.10.2'
+    testImplementation 'org.mockito:mockito-core:5.11.0'
+    testImplementation 'org.mockito:mockito-junit-jupiter:5.11.0'
+
     // Forge 1.21.6+ (Forge 56+): EventBus 7 compile-time validation
     if (forgeMajor >= 56) {
         annotationProcessor 'net.minecraftforge:eventbus-validator:7.0-beta.10'
@@ -228,6 +232,10 @@ if (forgeMajor >= 49) {
 // Pre-1.20.6 (Forge < 50): Reobfuscate the jar
 if (forgeMajor < 50) {
     jar.finalizedBy('reobfJar')
+}
+
+test {
+    useJUnitPlatform()
 }
 
 jar {
