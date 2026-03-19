@@ -109,5 +109,14 @@ public class FancyIceCreamRecipeProvider extends RecipeProvider {
             .define('B', FancyIceCreamModItems.ICE_CREAM_STAND.get())
             .unlockedBy("has_ice_cream_stand", has(FancyIceCreamModItems.ICE_CREAM_STAND.get()))
             .save(recipeOutput);
+
+        // Ice cream cup recipe
+        ShapedRecipeBuilder.shaped(RecipeCategory.DECORATIONS, FancyIceCreamModItems.ICE_CREAM_CUP.get())
+            .pattern("A A")
+            .pattern(" A ")
+            .define('A', Items.PAPER)
+            .unlockedBy("has_paper", has(Items.PAPER))
+            .unlockedBy("has_ice_cream_cup", has(FancyIceCreamModItems.ICE_CREAM_CUP.get()))
+            .save(recipeOutput);
     }
 }

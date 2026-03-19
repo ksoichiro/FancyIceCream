@@ -27,6 +27,7 @@ public class FancyIceCreamModItems {
     public static final RegistryObject<Item> SWEET_BERRY_ICE_CREAM = registerItem("sweet_berry_ice_cream", SweetBerryIceCream::new);
     public static final RegistryObject<Item> ICE_CREAM_STAND = registerItem("ice_cream_stand", IceCreamStandItem::new);
     public static final RegistryObject<Item> TRIPLE_ICE_CREAM_STAND = registerItem("triple_ice_cream_stand", TripleIceCreamStandItem::new);
+    public static final RegistryObject<Item> ICE_CREAM_CUP = registerItem("ice_cream_cup", IceCreamCupItem::new);
 
     public static void register(IEventBus eventBus) {
         ITEMS.register(eventBus);
@@ -48,6 +49,15 @@ public class FancyIceCreamModItems {
             ModelLoader.addSpecialModel(new ResourceLocation(FancyIceCreamMod.MOD_ID, "block/golden_apple_ice_cream"));
             ModelLoader.addSpecialModel(new ResourceLocation(FancyIceCreamMod.MOD_ID, "block/honey_ice_cream"));
             ModelLoader.addSpecialModel(new ResourceLocation(FancyIceCreamMod.MOD_ID, "block/sweet_berry_ice_cream"));
+            ModelLoader.addSpecialModel(new ResourceLocation(FancyIceCreamMod.MOD_ID, "block/ice_cream_cup"));
+            ModelLoader.addSpecialModel(new ResourceLocation(FancyIceCreamMod.MOD_ID, "block/ice_cream_scoop"));
+            ModelLoader.addSpecialModel(new ResourceLocation(FancyIceCreamMod.MOD_ID, "block/vanilla_ice_cream_scoop"));
+            ModelLoader.addSpecialModel(new ResourceLocation(FancyIceCreamMod.MOD_ID, "block/apple_ice_cream_scoop"));
+            ModelLoader.addSpecialModel(new ResourceLocation(FancyIceCreamMod.MOD_ID, "block/choco_chip_ice_cream_scoop"));
+            ModelLoader.addSpecialModel(new ResourceLocation(FancyIceCreamMod.MOD_ID, "block/chocolate_ice_cream_scoop"));
+            ModelLoader.addSpecialModel(new ResourceLocation(FancyIceCreamMod.MOD_ID, "block/golden_apple_ice_cream_scoop"));
+            ModelLoader.addSpecialModel(new ResourceLocation(FancyIceCreamMod.MOD_ID, "block/honey_ice_cream_scoop"));
+            ModelLoader.addSpecialModel(new ResourceLocation(FancyIceCreamMod.MOD_ID, "block/sweet_berry_ice_cream_scoop"));
         }
     }
 }

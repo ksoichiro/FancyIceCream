@@ -27,6 +27,16 @@ public class ModelRegistrar {
         registerModel(tmp, "sweet_berry_ice_cream");
         registerModel(tmp, "ice_cream_stand");
         registerModel(tmp, "triple_ice_cream_stand");
+        registerModel(tmp, "ice_cream_cup");
+        registerModel(tmp, "vanilla_ice_cream_scoop");
+        registerModel(tmp, "apple_ice_cream_scoop");
+        registerModel(tmp, "choco_chip_ice_cream_scoop");
+        registerModel(tmp, "chocolate_ice_cream_scoop");
+        registerModel(tmp, "glow_berry_ice_cream_scoop");
+        registerModel(tmp, "golden_apple_ice_cream_scoop");
+        registerModel(tmp, "honey_ice_cream_scoop");
+        registerModel(tmp, "sweet_berry_ice_cream_scoop");
+        registerModel(tmp, "ice_cream_scoop");
         ModelBakery.STATIC_DEFINITIONS = tmp;
     }
 

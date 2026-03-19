@@ -22,6 +22,7 @@ public class FancyIceCreamNeoForgeItems {
     public static final Supplier<Item> SWEET_BERRY_ICE_CREAM = ITEMS.register("sweet_berry_ice_cream", SweetBerryIceCream::new);
     public static final Supplier<Item> ICE_CREAM_STAND = ITEMS.register("ice_cream_stand", IceCreamStandItem::new);
     public static final Supplier<Item> TRIPLE_ICE_CREAM_STAND = ITEMS.register("triple_ice_cream_stand", TripleIceCreamStandItem::new);
+    public static final Supplier<Item> ICE_CREAM_CUP = ITEMS.register("ice_cream_cup", IceCreamCupItem::new);
 
     public static void register(IEventBus modEventBus) {
         ITEMS.register(modEventBus);

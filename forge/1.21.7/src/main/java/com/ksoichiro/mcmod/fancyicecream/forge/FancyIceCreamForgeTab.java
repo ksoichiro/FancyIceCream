@@ -28,6 +28,7 @@ public class FancyIceCreamForgeTab {
                     output.accept(FancyIceCreamForgeItems.SWEET_BERRY_ICE_CREAM.get());
                     output.accept(FancyIceCreamForgeItems.ICE_CREAM_STAND.get());
                     output.accept(FancyIceCreamForgeItems.TRIPLE_ICE_CREAM_STAND.get());
+                    output.accept(FancyIceCreamForgeItems.ICE_CREAM_CUP.get());
                 })
                 .build());
 

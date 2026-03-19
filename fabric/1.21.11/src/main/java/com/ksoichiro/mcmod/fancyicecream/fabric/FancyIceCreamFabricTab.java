@@ -24,6 +24,7 @@ public class FancyIceCreamFabricTab {
                     output.accept(FancyIceCreamFabricItems.SWEET_BERRY_ICE_CREAM);
                     output.accept(FancyIceCreamFabricItems.ICE_CREAM_STAND);
                     output.accept(FancyIceCreamFabricItems.TRIPLE_ICE_CREAM_STAND);
+                    output.accept(FancyIceCreamFabricItems.ICE_CREAM_CUP);
                 })
                 .build();
 

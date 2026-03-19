@@ -29,6 +29,7 @@ public class FancyIceCreamNeoForgeTab {
                     output.accept(FancyIceCreamNeoForgeItems.SWEET_BERRY_ICE_CREAM.get());
                     output.accept(FancyIceCreamNeoForgeItems.ICE_CREAM_STAND.get());
                     output.accept(FancyIceCreamNeoForgeItems.TRIPLE_ICE_CREAM_STAND.get());
+                    output.accept(FancyIceCreamNeoForgeItems.ICE_CREAM_CUP.get());
                 })
                 .build());
 

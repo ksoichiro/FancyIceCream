@@ -80,5 +80,18 @@ public class FancyIceCreamAdvancementProvider extends AdvancementProvider {
                 false)
             .addCriterion("has_triple_ice_cream_stand", InventoryChangeTrigger.TriggerInstance.hasItems(FancyIceCreamModItems.TRIPLE_ICE_CREAM_STAND.get()))
             .save(saver, FancyIceCreamMod.MOD_ID + ":triple_decorator");
+
+        Advancement.Builder.advancement()
+            .parent(decorator)
+            .display(FancyIceCreamModItems.ICE_CREAM_CUP.get(),
+                Component.translatable("advancement.fancyicecream.cup_decorator.title"),
+                Component.translatable("advancement.fancyicecream.cup_decorator.description"),
+                null,
+                FrameType.TASK,
+                true,
+                true,
+                false)
+            .addCriterion("has_ice_cream_cup", InventoryChangeTrigger.TriggerInstance.hasItems(FancyIceCreamModItems.ICE_CREAM_CUP.get()))
+            .save(saver, FancyIceCreamMod.MOD_ID + ":cup_decorator");
     }
 }

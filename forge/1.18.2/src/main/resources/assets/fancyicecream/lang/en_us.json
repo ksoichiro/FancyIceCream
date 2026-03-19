@@ -10,6 +10,7 @@
   "item.fancyicecream.sweet_berry_ice_cream": "Sweet Berry Ice Cream",
   "item.fancyicecream.ice_cream_stand": "Ice Cream Stand",
   "item.fancyicecream.triple_ice_cream_stand": "Triple Ice Cream Stand",
+  "item.fancyicecream.ice_cream_cup": "Ice Cream Cup",
   "advancement.fancyicecream.root.title": "Fancy Ice Cream",
   "advancement.fancyicecream.root.description": "Craft your first vanilla ice cream",
   "advancement.fancyicecream.ice_cream_master.title": "Ice Cream Master",
@@ -17,5 +18,7 @@
   "advancement.fancyicecream.decorator.title": "Sweet Decorator",
   "advancement.fancyicecream.decorator.description": "Craft an ice cream stand",
   "advancement.fancyicecream.triple_decorator.title": "Triple Threat",
-  "advancement.fancyicecream.triple_decorator.description": "Craft a triple ice cream stand"
+  "advancement.fancyicecream.triple_decorator.description": "Craft a triple ice cream stand",
+  "advancement.fancyicecream.cup_decorator.title": "Cup Collector",
+  "advancement.fancyicecream.cup_decorator.description": "Craft an ice cream cup"
 }

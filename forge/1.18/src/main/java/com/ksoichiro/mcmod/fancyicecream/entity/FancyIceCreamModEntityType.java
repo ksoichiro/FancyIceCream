@@ -1,5 +1,7 @@
 package com.ksoichiro.mcmod.fancyicecream.entity;
 
+import com.ksoichiro.mcmod.fancyicecream.entity.decoration.IceCreamCup;
+import com.ksoichiro.mcmod.fancyicecream.entity.decoration.IceCreamCupRenderer;
 import com.ksoichiro.mcmod.fancyicecream.entity.decoration.IceCreamStand;
 import com.ksoichiro.mcmod.fancyicecream.entity.decoration.IceCreamStandRenderer;
 import com.ksoichiro.mcmod.fancyicecream.entity.decoration.TripleIceCreamStand;
@@ -36,6 +38,14 @@ public class FancyIceCreamModEntityType {
             .updateInterval(Integer.MAX_VALUE)
             .build("triple_ice_cream_stand"));
 
+    public static final RegistryObject<EntityType<IceCreamCup>> ICE_CREAM_CUP = ENTITY_TYPE.register("ice_cream_cup", () ->
+        EntityType.Builder
+            .<IceCreamCup>of(IceCreamCup::new, MobCategory.MISC)
+            .sized(0.5F, 0.5F)
+            .clientTrackingRange(10)
+            .updateInterval(Integer.MAX_VALUE)
+            .build("ice_cream_cup"));
+
     public static void register(IEventBus eventBus) {
         ENTITY_TYPE.register(eventBus);
     }
@@ -46,11 +56,13 @@ public class FancyIceCreamModEntityType {
         public static void registerModel(final ModelRegistryEvent event) {
             ForgeModelBakery.addSpecialModel(IceCreamStandRenderer.STAND_LOCATION);
             ForgeModelBakery.addSpecialModel(TripleIceCreamStandRenderer.STAND_LOCATION);
+            ForgeModelBakery.addSpecialModel(IceCreamCupRenderer.STAND_LOCATION);
         }
         @SubscribeEvent
         public static void registerRenderer(final EntityRenderersEvent.RegisterRenderers event) {
             event.registerEntityRenderer(ICE_CREAM_STAND.get(), IceCreamStandRenderer::new);
             event.registerEntityRenderer(TRIPLE_ICE_CREAM_STAND.get(), TripleIceCreamStandRenderer::new);
+            event.registerEntityRenderer(ICE_CREAM_CUP.get(), IceCreamCupRenderer::new);
         }
     }
 }

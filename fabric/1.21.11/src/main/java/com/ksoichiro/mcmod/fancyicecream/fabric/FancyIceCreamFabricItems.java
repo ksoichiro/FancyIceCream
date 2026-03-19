@@ -20,6 +20,7 @@ public class FancyIceCreamFabricItems {
     public static Item SWEET_BERRY_ICE_CREAM;
     public static Item ICE_CREAM_STAND;
     public static Item TRIPLE_ICE_CREAM_STAND;
+    public static Item ICE_CREAM_CUP;
 
     public static void register() {
         VANILLA_ICE_CREAM = registerItem("vanilla_ice_cream", VanillaIceCream::new);
@@ -32,6 +33,7 @@ public class FancyIceCreamFabricItems {
         SWEET_BERRY_ICE_CREAM = registerItem("sweet_berry_ice_cream", SweetBerryIceCream::new);
         ICE_CREAM_STAND = registerItem("ice_cream_stand", IceCreamStandItem::new);
         TRIPLE_ICE_CREAM_STAND = registerItem("triple_ice_cream_stand", TripleIceCreamStandItem::new);
+        ICE_CREAM_CUP = registerItem("ice_cream_cup", IceCreamCupItem::new);
     }
 
     private static Item registerItem(String name, Function<String, Item> factory) {

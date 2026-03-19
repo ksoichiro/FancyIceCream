@@ -1,0 +1,35 @@
+{
+  "parent": "fancyicecream:decorator",
+  "display": {
+    "icon": {
+      "item": "fancyicecream:ice_cream_cup"
+    },
+    "title": {
+      "translate": "advancement.fancyicecream.cup_decorator.title"
+    },
+    "description": {
+      "translate": "advancement.fancyicecream.cup_decorator.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "has_ice_cream_cup": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "fancyicecream:ice_cream_cup"
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_ice_cream_cup"
+    ]
+  ]
+}

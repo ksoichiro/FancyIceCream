@@ -1,6 +1,7 @@
 package com.ksoichiro.mcmod.fancyicecream.fabric;
 
 import com.ksoichiro.mcmod.fancyicecream.FancyIceCream;
+import com.ksoichiro.mcmod.fancyicecream.entity.decoration.IceCreamCup;
 import com.ksoichiro.mcmod.fancyicecream.entity.decoration.IceCreamStand;
 import com.ksoichiro.mcmod.fancyicecream.entity.decoration.TripleIceCreamStand;
 import net.minecraft.core.Registry;
@@ -12,6 +13,7 @@ import net.minecraft.world.entity.MobCategory;
 public class FancyIceCreamFabricEntityType {
     public static EntityType<IceCreamStand> ICE_CREAM_STAND;
     public static EntityType<TripleIceCreamStand> TRIPLE_ICE_CREAM_STAND;
+    public static EntityType<IceCreamCup> ICE_CREAM_CUP;
 
     public static void register() {
         ICE_CREAM_STAND = Registry.register(BuiltInRegistries.ENTITY_TYPE,
@@ -32,6 +34,15 @@ public class FancyIceCreamFabricEntityType {
                         .updateInterval(Integer.MAX_VALUE)
                         .build("triple_ice_cream_stand"));
 
+        ICE_CREAM_CUP = Registry.register(BuiltInRegistries.ENTITY_TYPE,
+                new ResourceLocation(FancyIceCream.MOD_ID, "ice_cream_cup"),
+                EntityType.Builder
+                        .<IceCreamCup>of(IceCreamCup::new, MobCategory.MISC)
+                        .sized(0.5F, 0.5F)
+                        .clientTrackingRange(10)
+                        .updateInterval(Integer.MAX_VALUE)
+                        .build("ice_cream_cup"));
+
     }
 
     public static void registerRenderers() {
@@ -39,5 +50,7 @@ public class FancyIceCreamFabricEntityType {
                 com.ksoichiro.mcmod.fancyicecream.entity.decoration.IceCreamStandRenderer::new);
         net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry.register(TRIPLE_ICE_CREAM_STAND,
                 com.ksoichiro.mcmod.fancyicecream.entity.decoration.TripleIceCreamStandRenderer::new);
+        net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry.register(ICE_CREAM_CUP,
+                com.ksoichiro.mcmod.fancyicecream.entity.decoration.IceCreamCupRenderer::new);
     }
 }

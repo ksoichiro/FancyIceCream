@@ -1,6 +1,8 @@
 package com.ksoichiro.mcmod.fancyicecream.neoforge;
 
 import com.ksoichiro.mcmod.fancyicecream.FancyIceCream;
+import com.ksoichiro.mcmod.fancyicecream.entity.decoration.IceCreamCup;
+import com.ksoichiro.mcmod.fancyicecream.entity.decoration.IceCreamCupRenderer;
 import com.ksoichiro.mcmod.fancyicecream.entity.decoration.IceCreamStand;
 import com.ksoichiro.mcmod.fancyicecream.entity.decoration.IceCreamStandRenderer;
 import com.ksoichiro.mcmod.fancyicecream.entity.decoration.TripleIceCreamStand;
@@ -35,6 +37,14 @@ public class FancyIceCreamNeoForgeEntityType {
             .updateInterval(Integer.MAX_VALUE)
             .build(ResourceKey.create(Registries.ENTITY_TYPE, ResourceLocation.fromNamespaceAndPath(FancyIceCream.MOD_ID, "triple_ice_cream_stand"))));
 
+    public static final Supplier<EntityType<IceCreamCup>> ICE_CREAM_CUP = ENTITY_TYPE.register("ice_cream_cup", () ->
+        EntityType.Builder
+            .<IceCreamCup>of(IceCreamCup::new, MobCategory.MISC)
+            .sized(0.5F, 0.5F)
+            .clientTrackingRange(10)
+            .updateInterval(Integer.MAX_VALUE)
+            .build(ResourceKey.create(Registries.ENTITY_TYPE, ResourceLocation.fromNamespaceAndPath(FancyIceCream.MOD_ID, "ice_cream_cup"))));
+
     public static void register(IEventBus modEventBus) {
         ENTITY_TYPE.register(modEventBus);
         modEventBus.addListener(FancyIceCreamNeoForgeEntityType::registerRenderer);
@@ -43,5 +53,6 @@ public class FancyIceCreamNeoForgeEntityType {
     private static void registerRenderer(final EntityRenderersEvent.RegisterRenderers event) {
         event.registerEntityRenderer(ICE_CREAM_STAND.get(), IceCreamStandRenderer::new);
         event.registerEntityRenderer(TRIPLE_ICE_CREAM_STAND.get(), TripleIceCreamStandRenderer::new);
+        event.registerEntityRenderer(ICE_CREAM_CUP.get(), IceCreamCupRenderer::new);
     }
 }

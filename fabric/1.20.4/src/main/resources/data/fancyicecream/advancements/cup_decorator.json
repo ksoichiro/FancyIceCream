@@ -1,0 +1,34 @@
+{
+  "parent": "fancyicecream:root",
+  "criteria": {
+    "has_ice_cream_cup": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "fancyicecream:ice_cream_cup"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancement.fancyicecream.cup_decorator.description"
+    },
+    "icon": {
+      "item": "fancyicecream:ice_cream_cup"
+    },
+    "title": {
+      "translate": "advancement.fancyicecream.cup_decorator.title"
+    }
+  },
+  "requirements": [
+    [
+      "has_ice_cream_cup"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

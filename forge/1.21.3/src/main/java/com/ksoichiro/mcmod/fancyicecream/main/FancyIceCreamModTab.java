@@ -28,6 +28,7 @@ public class FancyIceCreamModTab {
                     output.accept(FancyIceCreamModItems.SWEET_BERRY_ICE_CREAM.get());
                     output.accept(FancyIceCreamModItems.ICE_CREAM_STAND.get());
                     output.accept(FancyIceCreamModItems.TRIPLE_ICE_CREAM_STAND.get());
+                    output.accept(FancyIceCreamModItems.ICE_CREAM_CUP.get());
                 })
                 .build());
 

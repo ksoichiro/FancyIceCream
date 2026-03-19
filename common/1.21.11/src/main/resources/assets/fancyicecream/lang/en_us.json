@@ -17,5 +17,8 @@
   "advancement.fancyicecream.decorator.title": "Sweet Decorator",
   "advancement.fancyicecream.decorator.description": "Craft an ice cream stand",
   "advancement.fancyicecream.triple_decorator.title": "Triple Threat",
-  "advancement.fancyicecream.triple_decorator.description": "Craft a triple ice cream stand"
+  "advancement.fancyicecream.triple_decorator.description": "Craft a triple ice cream stand",
+  "item.fancyicecream.ice_cream_cup": "Ice Cream Cup",
+  "advancement.fancyicecream.cup_decorator.title": "Cup Collector",
+  "advancement.fancyicecream.cup_decorator.description": "Craft an ice cream cup"
 }

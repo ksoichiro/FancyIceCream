@@ -23,6 +23,7 @@ public class FancyIceCreamForgeItems {
     public static final RegistryObject<Item> SWEET_BERRY_ICE_CREAM = registerItem("sweet_berry_ice_cream", SweetBerryIceCream::new);
     public static final RegistryObject<Item> ICE_CREAM_STAND = registerItem("ice_cream_stand", IceCreamStandItem::new);
     public static final RegistryObject<Item> TRIPLE_ICE_CREAM_STAND = registerItem("triple_ice_cream_stand", TripleIceCreamStandItem::new);
+    public static final RegistryObject<Item> ICE_CREAM_CUP = registerItem("ice_cream_cup", IceCreamCupItem::new);
 
     public static void register(BusGroup busGroup) {
         ITEMS.register(busGroup);

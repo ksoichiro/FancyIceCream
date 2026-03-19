@@ -32,6 +32,7 @@ public class FancyIceCreamModItems {
     public static final RegistryObject<Item> SWEET_BERRY_ICE_CREAM = registerItem("sweet_berry_ice_cream", SweetBerryIceCream::new);
     public static final RegistryObject<Item> ICE_CREAM_STAND = registerItem("ice_cream_stand", IceCreamStandItem::new);
     public static final RegistryObject<Item> TRIPLE_ICE_CREAM_STAND = registerItem("triple_ice_cream_stand", TripleIceCreamStandItem::new);
+    public static final RegistryObject<Item> ICE_CREAM_CUP = registerItem("ice_cream_cup", IceCreamCupItem::new);
 
     public static void register(IEventBus eventBus) {
         ITEMS.register(eventBus);
@@ -58,6 +59,15 @@ public class FancyIceCreamModItems {
             registerModel(tmp, "sweet_berry_ice_cream");
             registerModel(tmp, "ice_cream_stand");
             registerModel(tmp, "triple_ice_cream_stand");
+            registerModel(tmp, "ice_cream_cup");
+            registerModel(tmp, "vanilla_ice_cream_scoop");
+            registerModel(tmp, "apple_ice_cream_scoop");
+            registerModel(tmp, "choco_chip_ice_cream_scoop");
+            registerModel(tmp, "chocolate_ice_cream_scoop");
+            registerModel(tmp, "glow_berry_ice_cream_scoop");
+            registerModel(tmp, "golden_apple_ice_cream_scoop");
+            registerModel(tmp, "honey_ice_cream_scoop");
+            registerModel(tmp, "sweet_berry_ice_cream_scoop");
             BlockStateModelLoader.STATIC_DEFINITIONS = tmp;
         }
 
