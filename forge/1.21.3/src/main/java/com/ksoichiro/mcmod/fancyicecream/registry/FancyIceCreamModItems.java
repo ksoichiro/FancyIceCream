@@ -60,14 +60,14 @@ public class FancyIceCreamModItems {
             registerModel(tmp, "ice_cream_stand");
             registerModel(tmp, "triple_ice_cream_stand");
             registerModel(tmp, "ice_cream_cup");
-            registerModel(tmp, "vanilla_ice_cream_scoop");
-            registerModel(tmp, "apple_ice_cream_scoop");
-            registerModel(tmp, "choco_chip_ice_cream_scoop");
-            registerModel(tmp, "chocolate_ice_cream_scoop");
-            registerModel(tmp, "glow_berry_ice_cream_scoop");
-            registerModel(tmp, "golden_apple_ice_cream_scoop");
-            registerModel(tmp, "honey_ice_cream_scoop");
-            registerModel(tmp, "sweet_berry_ice_cream_scoop");
+            registerModel(tmp, "vanilla_ice_cream_ball");
+            registerModel(tmp, "apple_ice_cream_ball");
+            registerModel(tmp, "choco_chip_ice_cream_ball");
+            registerModel(tmp, "chocolate_ice_cream_ball");
+            registerModel(tmp, "glow_berry_ice_cream_ball");
+            registerModel(tmp, "golden_apple_ice_cream_ball");
+            registerModel(tmp, "honey_ice_cream_ball");
+            registerModel(tmp, "sweet_berry_ice_cream_ball");
             BlockStateModelLoader.STATIC_DEFINITIONS = tmp;
         }
 

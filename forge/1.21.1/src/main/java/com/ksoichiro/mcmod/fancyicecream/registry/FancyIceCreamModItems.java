@@ -50,14 +50,14 @@ public class FancyIceCreamModItems {
             event.register(new ModelResourceLocation(ResourceLocation.fromNamespaceAndPath(FancyIceCreamMod.MOD_ID, "block/golden_apple_ice_cream"), "inventory"));
             event.register(new ModelResourceLocation(ResourceLocation.fromNamespaceAndPath(FancyIceCreamMod.MOD_ID, "block/honey_ice_cream"), "inventory"));
             event.register(new ModelResourceLocation(ResourceLocation.fromNamespaceAndPath(FancyIceCreamMod.MOD_ID, "block/sweet_berry_ice_cream"), "inventory"));
-            event.register(new ModelResourceLocation(ResourceLocation.fromNamespaceAndPath(FancyIceCreamMod.MOD_ID, "block/vanilla_ice_cream_scoop"), "inventory"));
-            event.register(new ModelResourceLocation(ResourceLocation.fromNamespaceAndPath(FancyIceCreamMod.MOD_ID, "block/apple_ice_cream_scoop"), "inventory"));
-            event.register(new ModelResourceLocation(ResourceLocation.fromNamespaceAndPath(FancyIceCreamMod.MOD_ID, "block/choco_chip_ice_cream_scoop"), "inventory"));
-            event.register(new ModelResourceLocation(ResourceLocation.fromNamespaceAndPath(FancyIceCreamMod.MOD_ID, "block/chocolate_ice_cream_scoop"), "inventory"));
-            event.register(new ModelResourceLocation(ResourceLocation.fromNamespaceAndPath(FancyIceCreamMod.MOD_ID, "block/glow_berry_ice_cream_scoop"), "inventory"));
-            event.register(new ModelResourceLocation(ResourceLocation.fromNamespaceAndPath(FancyIceCreamMod.MOD_ID, "block/golden_apple_ice_cream_scoop"), "inventory"));
-            event.register(new ModelResourceLocation(ResourceLocation.fromNamespaceAndPath(FancyIceCreamMod.MOD_ID, "block/honey_ice_cream_scoop"), "inventory"));
-            event.register(new ModelResourceLocation(ResourceLocation.fromNamespaceAndPath(FancyIceCreamMod.MOD_ID, "block/sweet_berry_ice_cream_scoop"), "inventory"));
+            event.register(new ModelResourceLocation(ResourceLocation.fromNamespaceAndPath(FancyIceCreamMod.MOD_ID, "block/vanilla_ice_cream_ball"), "inventory"));
+            event.register(new ModelResourceLocation(ResourceLocation.fromNamespaceAndPath(FancyIceCreamMod.MOD_ID, "block/apple_ice_cream_ball"), "inventory"));
+            event.register(new ModelResourceLocation(ResourceLocation.fromNamespaceAndPath(FancyIceCreamMod.MOD_ID, "block/choco_chip_ice_cream_ball"), "inventory"));
+            event.register(new ModelResourceLocation(ResourceLocation.fromNamespaceAndPath(FancyIceCreamMod.MOD_ID, "block/chocolate_ice_cream_ball"), "inventory"));
+            event.register(new ModelResourceLocation(ResourceLocation.fromNamespaceAndPath(FancyIceCreamMod.MOD_ID, "block/glow_berry_ice_cream_ball"), "inventory"));
+            event.register(new ModelResourceLocation(ResourceLocation.fromNamespaceAndPath(FancyIceCreamMod.MOD_ID, "block/golden_apple_ice_cream_ball"), "inventory"));
+            event.register(new ModelResourceLocation(ResourceLocation.fromNamespaceAndPath(FancyIceCreamMod.MOD_ID, "block/honey_ice_cream_ball"), "inventory"));
+            event.register(new ModelResourceLocation(ResourceLocation.fromNamespaceAndPath(FancyIceCreamMod.MOD_ID, "block/sweet_berry_ice_cream_ball"), "inventory"));
         }
     }
 }

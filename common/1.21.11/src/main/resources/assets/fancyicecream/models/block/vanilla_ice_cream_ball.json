@@ -1,0 +1,7 @@
+{
+  "parent": "fancyicecream:block/ice_cream_ball",
+  "textures": {
+    "0": "fancyicecream:block/vanilla_ice_cream",
+    "particle": "fancyicecream:block/vanilla_ice_cream"
+  }
+}

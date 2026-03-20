@@ -50,15 +50,15 @@ public class FancyIceCreamModItems {
             event.register(new ResourceLocation(FancyIceCreamMod.MOD_ID, "block/honey_ice_cream"));
             event.register(new ResourceLocation(FancyIceCreamMod.MOD_ID, "block/sweet_berry_ice_cream"));
             event.register(new ResourceLocation(FancyIceCreamMod.MOD_ID, "block/ice_cream_cup"));
-            event.register(new ResourceLocation(FancyIceCreamMod.MOD_ID, "block/ice_cream_scoop"));
-            event.register(new ResourceLocation(FancyIceCreamMod.MOD_ID, "block/vanilla_ice_cream_scoop"));
-            event.register(new ResourceLocation(FancyIceCreamMod.MOD_ID, "block/apple_ice_cream_scoop"));
-            event.register(new ResourceLocation(FancyIceCreamMod.MOD_ID, "block/choco_chip_ice_cream_scoop"));
-            event.register(new ResourceLocation(FancyIceCreamMod.MOD_ID, "block/chocolate_ice_cream_scoop"));
-            event.register(new ResourceLocation(FancyIceCreamMod.MOD_ID, "block/glow_berry_ice_cream_scoop"));
-            event.register(new ResourceLocation(FancyIceCreamMod.MOD_ID, "block/golden_apple_ice_cream_scoop"));
-            event.register(new ResourceLocation(FancyIceCreamMod.MOD_ID, "block/honey_ice_cream_scoop"));
-            event.register(new ResourceLocation(FancyIceCreamMod.MOD_ID, "block/sweet_berry_ice_cream_scoop"));
+            event.register(new ResourceLocation(FancyIceCreamMod.MOD_ID, "block/ice_cream_ball"));
+            event.register(new ResourceLocation(FancyIceCreamMod.MOD_ID, "block/vanilla_ice_cream_ball"));
+            event.register(new ResourceLocation(FancyIceCreamMod.MOD_ID, "block/apple_ice_cream_ball"));
+            event.register(new ResourceLocation(FancyIceCreamMod.MOD_ID, "block/choco_chip_ice_cream_ball"));
+            event.register(new ResourceLocation(FancyIceCreamMod.MOD_ID, "block/chocolate_ice_cream_ball"));
+            event.register(new ResourceLocation(FancyIceCreamMod.MOD_ID, "block/glow_berry_ice_cream_ball"));
+            event.register(new ResourceLocation(FancyIceCreamMod.MOD_ID, "block/golden_apple_ice_cream_ball"));
+            event.register(new ResourceLocation(FancyIceCreamMod.MOD_ID, "block/honey_ice_cream_ball"));
+            event.register(new ResourceLocation(FancyIceCreamMod.MOD_ID, "block/sweet_berry_ice_cream_ball"));
         }
     }
 }
