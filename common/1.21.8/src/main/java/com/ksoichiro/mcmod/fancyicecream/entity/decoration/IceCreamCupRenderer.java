@@ -34,10 +34,10 @@ public class IceCreamCupRenderer extends IceCreamStandRenderer<IceCreamCup> {
         Item item = itemStack.getItem();
         ResourceLocation itemResource = BuiltInRegistries.ITEM.getKey(item);
         if (itemResource != null) {
-            // Use scoop-only model (without cone) for cup display
-            ResourceLocation scoopResource = ResourceLocation.fromNamespaceAndPath(
-                    itemResource.getNamespace(), itemResource.getPath() + "_scoop");
-            var definition = BlockStateDefinitions.STATIC_DEFINITIONS.get(scoopResource);
+            // Use ball-only model (without cone) for cup display
+            ResourceLocation ballResource = ResourceLocation.fromNamespaceAndPath(
+                    itemResource.getNamespace(), itemResource.getPath() + "_ball");
+            var definition = BlockStateDefinitions.STATIC_DEFINITIONS.get(ballResource);
             if (definition != null) {
                 BlockState blockstate = definition.any();
                 return this.blockRenderer.getBlockModel(blockstate);

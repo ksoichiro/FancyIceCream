@@ -16,6 +16,16 @@
         ]
       }
     },
+    "has_ice_cream_stand": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "fancyicecream:ice_cream_stand"
+          }
+        ]
+      }
+    },
     "has_the_recipe": {
       "trigger": "minecraft:recipe_unlocked",
       "conditions": {
@@ -26,6 +36,7 @@
   "requirements": [
     [
       "has_iron_nugget",
+      "has_ice_cream_stand",
       "has_the_recipe"
     ]
   ]

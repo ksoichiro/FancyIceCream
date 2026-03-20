@@ -35,7 +35,7 @@ public class IceCreamCupRenderer<T extends IceCreamStand> extends IceCreamStandR
         Item item = itemStack.getItem();
         ResourceLocation itemResource = BuiltInRegistries.ITEM.getKey(item);
         if (itemResource != null) {
-            ResourceLocation modelResource = new ResourceLocation(itemResource.getNamespace(), itemResource.getPath() + "_scoop");
+            ResourceLocation modelResource = new ResourceLocation(itemResource.getNamespace(), itemResource.getPath() + "_ball");
             ModelResourceLocation modelLocation = new ModelResourceLocation(modelResource, "");
             BakedModel model = modelmanager.getModel(modelLocation);
             if (!model.equals(modelmanager.getMissingModel())) {

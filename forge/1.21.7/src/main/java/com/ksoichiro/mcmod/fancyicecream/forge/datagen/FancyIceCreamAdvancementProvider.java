@@ -81,6 +81,19 @@ public class FancyIceCreamAdvancementProvider extends ForgeAdvancementProvider {
                     false)
                 .addCriterion("has_triple_ice_cream_stand", InventoryChangeTrigger.TriggerInstance.hasItems(FancyIceCreamForgeItems.TRIPLE_ICE_CREAM_STAND.get()))
                 .save(saver, ResourceLocation.fromNamespaceAndPath(FancyIceCream.MOD_ID, "triple_decorator"));
+
+            Advancement.Builder.advancement()
+                .parent(root)
+                .display(FancyIceCreamForgeItems.ICE_CREAM_CUP.get(),
+                    Component.translatable("advancement.fancyicecream.cup_decorator.title"),
+                    Component.translatable("advancement.fancyicecream.cup_decorator.description"),
+                    null,
+                    AdvancementType.TASK,
+                    true,
+                    true,
+                    false)
+                .addCriterion("has_ice_cream_cup", InventoryChangeTrigger.TriggerInstance.hasItems(FancyIceCreamForgeItems.ICE_CREAM_CUP.get()))
+                .save(saver, ResourceLocation.fromNamespaceAndPath(FancyIceCream.MOD_ID, "cup_decorator"));
         }
     }
 }

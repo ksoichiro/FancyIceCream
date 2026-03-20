@@ -16,6 +16,16 @@
         ]
       }
     },
+    "has_triple_ice_cream_stand": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "fancyicecream:triple_ice_cream_stand"
+          }
+        ]
+      }
+    },
     "has_the_recipe": {
       "trigger": "minecraft:recipe_unlocked",
       "conditions": {
@@ -26,6 +36,7 @@
   "requirements": [
     [
       "has_ice_cream_stand",
+      "has_triple_ice_cream_stand",
       "has_the_recipe"
     ]
   ]

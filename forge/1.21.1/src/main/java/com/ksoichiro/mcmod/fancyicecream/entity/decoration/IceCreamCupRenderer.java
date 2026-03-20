@@ -36,7 +36,7 @@ public class IceCreamCupRenderer<T extends IceCreamStand> extends IceCreamStandR
         ResourceLocation itemResource = ForgeRegistries.ITEMS.getKey(item);
         if (itemResource != null) {
             ResourceLocation modelResource = ResourceLocation.fromNamespaceAndPath(
-                    itemResource.getNamespace(), "block/" + itemResource.getPath() + "_scoop");
+                    itemResource.getNamespace(), "block/" + itemResource.getPath() + "_ball");
             ModelResourceLocation modelLocation = new ModelResourceLocation(modelResource, "inventory");
             BakedModel model = modelmanager.getModel(modelLocation);
             if (!model.equals(modelmanager.getMissingModel())) {
