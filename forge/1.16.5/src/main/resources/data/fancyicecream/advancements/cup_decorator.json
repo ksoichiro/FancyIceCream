@@ -1,5 +1,5 @@
 {
-  "parent": "fancyicecream:decorator",
+  "parent": "fancyicecream:root",
   "display": {
     "icon": {
       "item": "fancyicecream:ice_cream_cup"

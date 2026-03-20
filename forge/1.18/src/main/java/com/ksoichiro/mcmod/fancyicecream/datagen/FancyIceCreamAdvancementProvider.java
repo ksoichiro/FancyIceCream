@@ -82,7 +82,7 @@ public class FancyIceCreamAdvancementProvider extends AdvancementProvider {
             .save(saver, FancyIceCreamMod.MOD_ID + ":triple_decorator");
 
         Advancement.Builder.advancement()
-            .parent(decorator)
+            .parent(root)
             .display(FancyIceCreamModItems.ICE_CREAM_CUP.get(),
                 new TranslatableComponent("advancement.fancyicecream.cup_decorator.title"),
                 new TranslatableComponent("advancement.fancyicecream.cup_decorator.description"),
