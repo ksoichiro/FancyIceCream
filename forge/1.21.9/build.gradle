@@ -207,6 +207,7 @@ if (forgeMajor >= 49) {
             dependsOn 'copyGeneratedResources'
         }
         jar.dependsOn 'copyGeneratedResources'
+        compileTestJava.dependsOn 'copyGeneratedResources'
     }
 } else {
     // Pre-1.20.4: Include generated resources via srcDir (for IDE/run support)
