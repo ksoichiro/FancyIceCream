@@ -24,6 +24,11 @@ public class IceCreamCupRenderer<T extends IceCreamStand> extends IceCreamStandR
     }
 
     @Override
+    protected ModelResourceLocation getModelResourceLoc() {
+        return new ModelResourceLocation(new ResourceLocation(FancyIceCream.MOD_ID, "ice_cream_cup"), "");
+    }
+
+    @Override
     protected double[][] getTranslations() {
         return new double[][]{
                 {0.0D, -5.0D, 0.0D},

@@ -1,73 +1,65 @@
-apply plugin: 'net.minecraftforge.gradle'
-if (project.hasProperty('parchment_mc_version')) {
-    apply plugin: 'org.parchmentmc.librarian.forgegradle'
-    minecraft {
-        mappings channel: 'parchment', version: parchment_mc_version
-    }
-} else {
-    minecraft {
-        mappings channel: 'official', version: minecraft_version
-    }
+plugins {
+    id 'net.minecraftforge.gradle'
 }
 
 def forgeMajor = forge_major_version as int
 
+def atFile = file('src/main/resources/META-INF/accesstransformer.cfg')
+
 minecraft {
-    // 1.20.6+ (Forge 50+): No reobfuscation needed
-    if (forgeMajor >= 50) {
-        reobf = false
-    }
-
-    // 1.20.4+ (Forge 49+): Copy IDE resources
-    if (forgeMajor >= 49) {
-        copyIdeResources = true
-    }
-
-    // Access transformer - only if the file exists
-    def atFile = file('src/main/resources/META-INF/accesstransformer.cfg')
     if (atFile.exists()) {
-        accessTransformer = atFile
+        accessTransformers.from(atFile)
     }
 
     runs {
         configureEach {
-            workingDirectory project.file('run')
-            property 'forge.logging.markers', 'REGISTRIES'
-            property 'forge.logging.console.level', 'debug'
+            workingDir = layout.projectDirectory.dir('run')
+            systemProperty 'forge.logging.markers', 'REGISTRIES'
+            systemProperty 'forge.logging.console.level', 'debug'
             // 1.21.6+ (Forge 56+): EventBus strict runtime checks
             if (forgeMajor >= 56) {
-                property 'eventbus.api.strictRuntimeChecks', 'true'
+                systemProperty 'eventbus.api.strictRuntimeChecks', 'true'
+            }
+            mods {
+                "${mod_id}" {
+                    source sourceSets.main
+                }
             }
         }
 
-        client {
-            property 'forge.enabledGameTestNamespaces', mod_id
+        register('client') {
+            systemProperty 'forge.enabledGameTestNamespaces', mod_id
+            if (System.getProperty('os.name').toLowerCase().contains('mac')) {
+                jvmArgs '-XstartOnFirstThread'
+            }
         }
 
-        server {
-            property 'forge.enabledGameTestNamespaces', mod_id
+        register('server') {
+            systemProperty 'forge.enabledGameTestNamespaces', mod_id
             args '--nogui'
         }
 
-        gameTestServer {
-            property 'forge.enabledGameTestNamespaces', mod_id
+        register('gameTestServer') {
+            systemProperty 'forge.enabledGameTestNamespaces', mod_id
         }
 
-        data {
-            workingDirectory project.file('run-data')
-            args '--mod', mod_id, '--all', '--output', file('src/generated/resources/'), '--existing', file('src/main/resources/')
-            // Also include common resources for datagen existing file checks
+        register('data') {
+            workingDir = layout.projectDirectory.dir('run-data')
+            args '--mod', mod_id, '--all',
+                '--output', file('src/generated/resources/').absolutePath,
+                '--existing', file('src/main/resources/').absolutePath
             def commonResDir = rootProject.file("common/${minecraft_version}/src/main/resources")
             if (commonResDir.exists()) {
-                args '--existing', commonResDir
+                args '--existing', commonResDir.absolutePath
             }
         }
     }
 }
 
 repositories {
-    maven { url = 'https://maven.minecraftforge.net/' }
-    maven { url = 'https://libraries.minecraft.net/' }
+    minecraft.mavenizer(it)
+    maven fg.forgeMaven
+    maven fg.minecraftLibsMaven
 }
 
 configurations {
@@ -80,7 +72,15 @@ configurations {
 }
 
 dependencies {
-    minecraft "net.minecraftforge:forge:${forge_version}"
+    implementation minecraft.dependency("net.minecraftforge:forge:${forge_version}") {
+        if (atFile.exists()) {
+            setAccessTransformer(true)
+        }
+    }
+
+    testImplementation 'org.junit.jupiter:junit-jupiter:5.10.2'
+    testImplementation 'org.mockito:mockito-core:5.11.0'
+    testImplementation 'org.mockito:mockito-junit-jupiter:5.11.0'
 
     // Forge 1.21.6+ (Forge 56+): EventBus 7 compile-time validation
     if (forgeMajor >= 56) {
@@ -95,11 +95,18 @@ dependencies {
     }
 }
 
-// MC 1.21.11+ (Forge 61+): common-shared sources are included in the common module directly
-// because ResourceLocation was renamed to Identifier, requiring version-specific copies
-if (forgeMajor < 61) {
-    def commonSharedDir = rootProject.file('common/shared/src/main/java')
-    if (commonSharedDir.exists()) {
+// Include common-shared source in compilation, but only if the version-specific
+// common module doesn't already contain those files (e.g., 1.21.11 copies all
+// shared files into common/<version> because of API renames like ResourceLocation → Identifier)
+def commonSharedDir = rootProject.file('common/shared/src/main/java')
+if (commonSharedDir.exists()) {
+    def commonVersionJava = rootProject.file("common/${minecraft_version}/src/main/java")
+    def overlap = commonVersionJava.exists() &&
+        fileTree(commonSharedDir).files.any { f ->
+            def rel = commonSharedDir.toPath().relativize(f.toPath()).toString()
+            new File(commonVersionJava, rel).exists()
+        }
+    if (!overlap) {
         sourceSets.main {
             java {
                 srcDir commonSharedDir
@@ -131,106 +138,32 @@ tasks.named('processResources') {
     }
 }
 
-// Pre-1.19 (Forge < 41): LWJGL 3.2.x lacks Apple Silicon (macOS arm64) natives.
-// Override to LWJGL 3.3.4 and extract arm64 natives, then set org.lwjgl.librarypath
-// so LWJGL loads arm64 dylibs instead of the x64 ones bundled with Forge.
-// NOTE: LWJGL 3.3.4 bundles GLFW 3.4 which fixes macOS window icon error
-// (GLFW_FEATURE_UNAVAILABLE) that crashes Minecraft 1.17.1's Window initialization.
-if (forgeMajor < 41 && System.getProperty('os.arch') == 'aarch64') {
-    def lwjglVersion = '3.3.4'
-    def lwjglNatives = 'natives-macos-arm64'
-    def lwjglModules = ['lwjgl', 'lwjgl-jemalloc', 'lwjgl-openal', 'lwjgl-opengl', 'lwjgl-glfw', 'lwjgl-stb', 'lwjgl-tinyfd']
-
-    configurations.all {
-        resolutionStrategy.eachDependency { details ->
-            if (details.requested.group == 'org.lwjgl') {
-                details.useVersion lwjglVersion
-            }
-        }
-    }
-
-    configurations {
-        lwjglArm64
-    }
-
-    dependencies {
-        lwjglModules.each { mod ->
-            lwjglArm64 "org.lwjgl:${mod}:${lwjglVersion}:${lwjglNatives}"
-        }
-    }
-
-    def lwjglNativesDir = layout.buildDirectory.dir('lwjgl-arm64-natives').get().asFile
-
-    task extractLwjglArm64Natives(type: Copy) {
-        from { configurations.lwjglArm64.collect { zipTree(it) } }
-        into lwjglNativesDir
-        include '**/*.dylib'
-        eachFile { it.path = it.name }
-        includeEmptyDirs = false
-    }
-
-    minecraft {
-        runs {
-            configureEach {
-                property 'org.lwjgl.librarypath', lwjglNativesDir.absolutePath
-            }
-        }
-    }
-
-    afterEvaluate {
-        tasks.matching { it.name.startsWith('run') }.configureEach {
-            dependsOn 'extractLwjglArm64Natives'
-        }
-    }
+// Merge resources and classes into the same directory for proper module support
+sourceSets.each {
+    def dir = layout.buildDirectory.dir("sourcesSets/$it.name")
+    it.output.resourcesDir = dir
+    it.java.destinationDirectory = dir
 }
 
-// 1.20.4+ (Forge 49+): Merge resources and classes into the same directory for proper module support
-if (forgeMajor >= 49) {
-    sourceSets.each {
-        def dir = layout.buildDirectory.dir("sourcesSets/$it.name")
-        it.output.resourcesDir = dir
-        it.java.destinationDirectory = dir
-    }
-
-    // Copy generated resources to the build output directory
-    // NOTE: Explicit copy task needed because sourceSets.each overrides standard resource directory settings
-    task copyGeneratedResources(type: Copy) {
-        from 'src/generated/resources'
-        into sourceSets.main.output.resourcesDir
-        exclude '.cache/**'
-        dependsOn 'runData'
-    }
-
-    afterEvaluate {
-        tasks.matching { it.name.startsWith('run') && it.name != 'runData' }.configureEach {
-            dependsOn 'copyGeneratedResources'
-        }
-        jar.dependsOn 'copyGeneratedResources'
-    }
-} else {
-    // Pre-1.20.4: Include generated resources via srcDir (for IDE/run support)
-    sourceSets.main.resources { srcDir 'src/generated/resources' }
-
-    // 1.17.1+ (Forge 37+): DataGenerator-based resource generation
-    // Pre-1.17.1 versions keep handwritten JSON resources in src/main/resources
-    if (forgeMajor >= 37) {
-        // Copy generated resources into build output after runData completes.
-        // Cannot use processResources.dependsOn('runData') due to circular dependency
-        // (runData → classes → processResources). Instead, copy before jar is assembled.
-        jar.dependsOn 'runData'
-        jar.doFirst {
-            copy {
-                from 'src/generated/resources'
-                into sourceSets.main.output.resourcesDir
-                exclude '.cache/**'
-            }
-        }
-    }
+// Copy generated resources to the build output directory
+// NOTE: Explicit copy task needed because sourceSets.each overrides standard resource directory settings
+task copyGeneratedResources(type: Copy) {
+    from 'src/generated/resources'
+    into sourceSets.main.output.resourcesDir
+    exclude '.cache/**'
+    dependsOn 'runData'
 }
 
-// Pre-1.20.6 (Forge < 50): Reobfuscate the jar
-if (forgeMajor < 50) {
-    jar.finalizedBy('reobfJar')
+afterEvaluate {
+    tasks.matching { it.name.startsWith('run') && it.name != 'runData' }.configureEach {
+        dependsOn 'copyGeneratedResources'
+    }
+    jar.dependsOn 'copyGeneratedResources'
+    compileTestJava.dependsOn 'copyGeneratedResources'
+}
+
+test {
+    useJUnitPlatform()
 }
 
 jar {

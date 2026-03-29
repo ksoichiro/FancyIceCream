@@ -1,8 +1,8 @@
 plugins {
-    // fabric-loom version is declared in settings.gradle
+    // fabric-loom / dev.architectury.loom version is declared in settings.gradle
+    // net.minecraftforge.gradle version is declared in settings.gradle (conditional on MC version)
     id 'net.neoforged.moddev' version "${moddevgradle_version}" apply false
-    id 'net.minecraftforge.gradle' version "${forgegradle_version}" apply false
-    id 'org.parchmentmc.librarian.forgegradle' version "${parchment_version}" apply false
+    id 'net.neoforged.moddev.legacyforge' version "${moddevgradle_version}" apply false
 }
 
 subprojects {
@@ -10,13 +10,16 @@ subprojects {
     apply plugin: 'maven-publish'
 
     java {
-        toolchain {
-            languageVersion = JavaLanguageVersion.of(java_version as int)
+        if ((java_version as int) >= 9) {
+            toolchain {
+                languageVersion = JavaLanguageVersion.of(java_version as int)
+            }
         }
     }
 
     tasks.withType(JavaCompile).configureEach {
         options.encoding = 'UTF-8'
+        options.release = java_version as int
         options.compilerArgs += ['-Xlint:deprecation']
     }
 
@@ -29,21 +32,6 @@ subprojects {
             }
         }
         mavenCentral()
-        maven {
-            name = 'Forge'
-            url = 'https://maven.minecraftforge.net'
-        }
-        exclusiveContent {
-            forRepository {
-                maven {
-                    name = 'Sponge'
-                    url = 'https://repo.spongepowered.org/repository/maven-public'
-                }
-            }
-            filter {
-                includeGroupAndSubgroups('org.spongepowered')
-            }
-        }
     }
 
     afterEvaluate {

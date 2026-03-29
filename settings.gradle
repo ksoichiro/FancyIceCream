@@ -1,20 +1,36 @@
 pluginManagement {
     repositories {
+        mavenLocal()
         gradlePluginPortal()
         maven { url = 'https://maven.fabricmc.net/' }
         maven { url = 'https://maven.neoforged.net/releases/' }
         maven { url = 'https://maven.minecraftforge.net/' }
-        maven { url = 'https://maven.parchmentmc.org' }
+        maven { url = 'https://maven.architectury.dev/' }
         mavenCentral()
     }
 
+    // Plugin declarations by MC version:
+    // - MC 1.16.5: FG6 only (Gradle 8 required, no Fabric/Loom)
+    // - MC 1.17.1-1.20.6: Fabric Loom + FG7 (legacyforge uses FG7 declaration)
+    // - MC 1.21.x: Fabric Loom + FG7
+    // - MC 26.x+: Fabric Loom 1.15+ + FG7
+    def targetVer = settings.providers.gradleProperty('target_mc_version').getOrNull()
     plugins {
-        id 'fabric-loom' version settings.providers.gradleProperty('fabric_loom_version').get()
+        if (targetVer == '1.16.5') {
+            // 1.16.5: Gradle 8 + FG6 (FG7 cannot reobfuscate for production)
+            id 'net.minecraftforge.gradle' version settings.providers.gradleProperty('forgegradle6_version').get()
+        } else if (targetVer.startsWith('1.')) {
+            id 'fabric-loom' version settings.providers.gradleProperty('fabric_loom_version').get()
+            id 'net.minecraftforge.gradle' version settings.providers.gradleProperty('forgegradle_version').get()
+        } else {
+            id 'net.fabricmc.fabric-loom' version settings.providers.gradleProperty('fabric_loom_26_version').get()
+            id 'net.minecraftforge.gradle' version settings.providers.gradleProperty('forgegradle_version').get()
+        }
     }
 }
 
 plugins {
-    id 'org.gradle.toolchains.foojay-resolver-convention' version '0.9.0'
+    id 'org.gradle.toolchains.foojay-resolver-convention' version '1.0.0'
 }
 
 rootProject.name = 'FancyIceCream'

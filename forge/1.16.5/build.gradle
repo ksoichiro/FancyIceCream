@@ -1,13 +1,9 @@
-apply plugin: 'net.minecraftforge.gradle'
-if (project.hasProperty('parchment_mc_version')) {
-    apply plugin: 'org.parchmentmc.librarian.forgegradle'
-    minecraft {
-        mappings channel: 'parchment', version: parchment_mc_version
-    }
-} else {
-    minecraft {
-        mappings channel: 'official', version: minecraft_version
-    }
+plugins {
+    id 'net.minecraftforge.gradle'
+}
+
+minecraft {
+    mappings channel: 'official', version: minecraft_version
 }
 
 def forgeMajor = forge_major_version as int

@@ -3,7 +3,7 @@ loaderVersion="[40,)"
 license="GNU LGPLv3"
 [[mods]]
 modId="fancyicecream"
-version="${file.jarVersion}"
+version="${version}"
 displayName="Fancy Ice Cream"
 description='''
 A mod to add some fancy ice cream items.
