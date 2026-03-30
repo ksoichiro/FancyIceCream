@@ -45,11 +45,11 @@ subprojects {
 
 apply from: 'gradle/multi-version-tasks.gradle'
 
-// Production run support (Fabric, NeoForge)
+// Production run support (Fabric, NeoForge, Forge)
 // Applied via gradle.afterProject to ensure version-specific properties
 // (injected by settings.gradle beforeProject) are available.
 gradle.afterProject { proj ->
-    if (proj.name in ['fabric', 'neoforge'] && proj.hasProperty('minecraft_version')) {
+    if (proj.name in ['fabric', 'neoforge', 'forge'] && proj.hasProperty('minecraft_version')) {
         proj.apply from: rootProject.file('gradle/shared/prod-run.gradle')
         if (proj.name == 'fabric') {
             proj.dependencies {
