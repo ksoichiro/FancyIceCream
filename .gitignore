@@ -40,3 +40,4 @@ mappings/
 
 # Production run
 run-prod/
+*-installer.jar.log
