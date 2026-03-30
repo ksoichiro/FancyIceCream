@@ -37,3 +37,6 @@ mappings/
 
 # Logs
 **/logs/
+
+# Production run
+run-prod/
