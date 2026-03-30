@@ -50,15 +50,6 @@ apply from: 'gradle/multi-version-tasks.gradle'
 // (injected by settings.gradle beforeProject) are available.
 gradle.afterProject { proj ->
     if (proj.name in ['fabric', 'neoforge'] && proj.hasProperty('minecraft_version')) {
-        // prod-run.gradle accesses properties via project.ext, but
-        // settings.gradle's beforeProject may not populate ext in all
-        // Gradle versions. Copy needed properties to ext if missing.
-        ['minecraft_version', 'fabric_loader_version', 'fabric_api_version',
-         'neoforge_version', 'java_version'].each { key ->
-            if (!proj.ext.has(key) && proj.hasProperty(key)) {
-                proj.ext.set(key, proj.findProperty(key))
-            }
-        }
         proj.apply from: rootProject.file('gradle/shared/prod-run.gradle')
         if (proj.name == 'fabric') {
             proj.dependencies {
