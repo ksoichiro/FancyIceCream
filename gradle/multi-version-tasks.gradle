@@ -1,9 +1,24 @@
 // Multi-version build tasks
 // Defines custom Gradle tasks for building the mod across multiple Minecraft versions.
 
-// 1.16.5 is excluded: requires Gradle 8 + FG6 (FG7 cannot reobfuscate for production)
-def supportedVersions = ['1.17.1', '1.18', '1.18.2', '1.19', '1.19.3', '1.19.4', '1.20.1', '1.20.2', '1.20.4', '1.20.6', '1.21.1', '1.21.3', '1.21.4', '1.21.5', '1.21.6', '1.21.7', '1.21.8', '1.21.9', '1.21.10', '1.21.11', '26.1']
+def supportedVersions = ['1.16.5', '1.17.1', '1.18', '1.18.2', '1.19', '1.19.3', '1.19.4', '1.20.1', '1.20.2', '1.20.4', '1.20.6', '1.21.1', '1.21.3', '1.21.4', '1.21.5', '1.21.6', '1.21.7', '1.21.8', '1.21.9', '1.21.10', '1.21.11', '26.1']
 def taskGroup = 'fancy ice cream build'
+
+// 1.16.5 requires Gradle 8 + FG6 (official names = MCP names for this version, FG7 has no reobfJar).
+// Use external gradle command via scripts/build-1.16.5.sh instead of the project wrapper (Gradle 9).
+def legacyVersions = ['1.16.5'] as Set
+
+// Run an external command and fail if exit code is non-zero
+def runCommand = { List<String> cmd, workDir ->
+    def pb = new ProcessBuilder(cmd as String[])
+    pb.directory(workDir)
+    pb.inheritIO()
+    def proc = pb.start()
+    def exitCode = proc.waitFor()
+    if (exitCode != 0) {
+        throw new GradleException("Command failed with exit code ${exitCode}: ${cmd.join(' ')}")
+    }
+}
 
 // ============================================================
 // Clean Tasks
@@ -17,8 +32,10 @@ supportedVersions.each { version ->
         description = "Clean build outputs for Minecraft ${version}"
 
         doLast {
-            project.exec {
-                commandLine './gradlew', 'clean', "-Ptarget_mc_version=${version}"
+            if (legacyVersions.contains(version)) {
+                runCommand(['bash', "${rootDir}/scripts/build-1.16.5.sh", 'clean'], rootDir)
+            } else {
+                runCommand(['./gradlew', 'clean', "-Ptarget_mc_version=${version}"], rootDir)
             }
         }
     }
@@ -32,8 +49,10 @@ tasks.register('cleanAll') {
         supportedVersions.each { version ->
             logger.lifecycle(">>> Cleaning for Minecraft ${version}...")
 
-            project.exec {
-                commandLine './gradlew', 'clean', "-Ptarget_mc_version=${version}"
+            if (legacyVersions.contains(version)) {
+                runCommand(['bash', "${rootDir}/scripts/build-1.16.5.sh", 'clean'], rootDir)
+            } else {
+                runCommand(['./gradlew', 'clean', "-Ptarget_mc_version=${version}"], rootDir)
             }
         }
 
@@ -56,14 +75,16 @@ supportedVersions.each { version ->
         doFirst {
             logger.lifecycle('')
             logger.lifecycle('====================================')
-            logger.lifecycle("Building for Minecraft ${version}...")
+            logger.lifecycle("Building for Minecraft ${version}..." + (legacyVersions.contains(version) ? ' (Gradle 8 + FG6)' : ''))
             logger.lifecycle('====================================')
             logger.lifecycle('')
         }
 
         doLast {
-            project.exec {
-                commandLine './gradlew', 'clean', 'build', "-Ptarget_mc_version=${version}", '-x', 'test'
+            if (legacyVersions.contains(version)) {
+                runCommand(['bash', "${rootDir}/scripts/build-1.16.5.sh"], rootDir)
+            } else {
+                runCommand(['./gradlew', 'clean', 'build', "-Ptarget_mc_version=${version}", '-x', 'test'], rootDir)
             }
         }
     }
@@ -87,13 +108,14 @@ tasks.register('buildAll') {
 
         supportedVersions.each { version ->
             logger.lifecycle('')
-            logger.lifecycle(">>> Building for Minecraft ${version}...")
+            logger.lifecycle(">>> Building for Minecraft ${version}..." + (legacyVersions.contains(version) ? ' (Gradle 8 + FG6)' : ''))
             logger.lifecycle('')
 
             try {
-                project.exec {
-                    commandLine './gradlew', 'clean', 'build', "-Ptarget_mc_version=${version}", '-x', 'test'
-                    errorOutput = System.err
+                if (legacyVersions.contains(version)) {
+                    runCommand(['bash', "${rootDir}/scripts/build-1.16.5.sh"], rootDir)
+                } else {
+                    runCommand(['./gradlew', 'clean', 'build', "-Ptarget_mc_version=${version}", '-x', 'test'], rootDir)
                 }
                 logger.lifecycle("SUCCESS: Minecraft ${version}")
             } catch (Exception e) {
@@ -135,9 +157,7 @@ tasks.register('release') {
 
     doLast {
         ['cleanAll', 'buildAll', 'collectJars'].each { taskName ->
-            project.exec {
-                commandLine './gradlew', taskName
-            }
+            runCommand(['./gradlew', taskName], rootDir)
         }
     }
 }

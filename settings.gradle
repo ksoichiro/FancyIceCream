@@ -17,7 +17,7 @@ pluginManagement {
     def targetVer = settings.providers.gradleProperty('target_mc_version').getOrNull()
     plugins {
         if (targetVer == '1.16.5') {
-            // 1.16.5: Gradle 8 + FG6 (FG7 cannot reobfuscate for production)
+            // 1.16.5: Gradle 8 + FG6 (official names = MCP names for this version)
             id 'net.minecraftforge.gradle' version settings.providers.gradleProperty('forgegradle6_version').get()
         } else if (targetVer.startsWith('1.')) {
             id 'fabric-loom' version settings.providers.gradleProperty('fabric_loom_version').get()
