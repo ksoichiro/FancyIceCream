@@ -1,0 +1,30 @@
+plugins {
+    id 'net.neoforged.moddev'
+}
+
+neoForge {
+    neoFormVersion = neoform_version
+
+    accessTransformers {
+        from file('src/main/resources/META-INF/accesstransformer.cfg')
+    }
+}
+
+// MC 1.21.11: All common-shared sources are copied to this module
+// because ResourceLocation was renamed to Identifier, requiring version-specific overrides
+
+configurations {
+    commonJava {
+        canBeConsumed = true
+        canBeResolved = false
+    }
+    commonResources {
+        canBeConsumed = true
+        canBeResolved = false
+    }
+}
+
+artifacts {
+    commonJava sourceSets.main.java.srcDirs.first()
+    commonResources sourceSets.main.resources.srcDirs.first()
+}

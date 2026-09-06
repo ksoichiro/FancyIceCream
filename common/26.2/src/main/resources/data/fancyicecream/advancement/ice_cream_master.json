@@ -1,0 +1,125 @@
+{
+  "parent": "fancyicecream:root",
+  "criteria": {
+    "has_apple": {
+      "conditions": {
+        "items": [
+          {
+            "items": "fancyicecream:apple_ice_cream"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_choco_chip": {
+      "conditions": {
+        "items": [
+          {
+            "items": "fancyicecream:choco_chip_ice_cream"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_chocolate": {
+      "conditions": {
+        "items": [
+          {
+            "items": "fancyicecream:chocolate_ice_cream"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_glow_berry": {
+      "conditions": {
+        "items": [
+          {
+            "items": "fancyicecream:glow_berry_ice_cream"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_golden_apple": {
+      "conditions": {
+        "items": [
+          {
+            "items": "fancyicecream:golden_apple_ice_cream"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_honey": {
+      "conditions": {
+        "items": [
+          {
+            "items": "fancyicecream:honey_ice_cream"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_sweet_berry": {
+      "conditions": {
+        "items": [
+          {
+            "items": "fancyicecream:sweet_berry_ice_cream"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_vanilla": {
+      "conditions": {
+        "items": [
+          {
+            "items": "fancyicecream:vanilla_ice_cream"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancement.fancyicecream.ice_cream_master.description"
+    },
+    "frame": "challenge",
+    "icon": {
+      "count": 1,
+      "id": "fancyicecream:golden_apple_ice_cream"
+    },
+    "title": {
+      "translate": "advancement.fancyicecream.ice_cream_master.title"
+    }
+  },
+  "requirements": [
+    [
+      "has_vanilla"
+    ],
+    [
+      "has_apple"
+    ],
+    [
+      "has_choco_chip"
+    ],
+    [
+      "has_chocolate"
+    ],
+    [
+      "has_glow_berry"
+    ],
+    [
+      "has_golden_apple"
+    ],
+    [
+      "has_honey"
+    ],
+    [
+      "has_sweet_berry"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

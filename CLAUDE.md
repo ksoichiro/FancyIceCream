@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-This is a Minecraft Forge mod called "Fancy Ice Cream" that adds various ice cream items and decorative stands to Minecraft. The mod supports multiple Minecraft versions (1.20.1 - 1.21.9) using a multi-version build structure where each version has its own module directory.
+This is a Minecraft Forge mod called "Fancy Ice Cream" that adds various ice cream items and decorative stands to Minecraft. The mod supports multiple Minecraft versions (1.16.5 - 26.2) using a multi-version build structure where each version has its own module directory.
 
 ## Build System
 
@@ -52,15 +52,15 @@ FancyIceCream/
 │   └── ...
 ├── common/
 │   ├── shared/                  # Shared source across versions
-│   ├── 1.21.1/ ... 1.21.11/    # Version-specific common modules
+│   ├── 1.21.1/ ... 26.2/       # Version-specific common modules
 ├── forge/
-│   ├── 1.16.5/ ... 1.21.11/    # Forge loader modules per version
+│   ├── 1.16.5/ ... 26.2/       # Forge loader modules per version
 ├── fabric/
 │   ├── base/                    # Shared Fabric base module
-│   ├── 1.21.1/ ... 1.21.11/    # Fabric loader modules per version
+│   ├── 1.21.1/ ... 26.2/       # Fabric loader modules per version
 ├── neoforge/
 │   ├── base/                    # Shared NeoForge base module
-│   ├── 1.21.1/ ... 1.21.11/    # NeoForge loader modules per version
+│   ├── 1.21.1/ ... 26.2/       # NeoForge loader modules per version
 └── mcmodsrepo/                  # Local Maven repository
 ```
 

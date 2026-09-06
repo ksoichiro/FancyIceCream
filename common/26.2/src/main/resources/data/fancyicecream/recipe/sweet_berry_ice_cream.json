@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "A": "minecraft:sweet_berries",
+    "B": "fancyicecream:vanilla_ice_cream"
+  },
+  "pattern": [
+    "A",
+    "B"
+  ],
+  "result": {
+    "count": 1,
+    "id": "fancyicecream:sweet_berry_ice_cream"
+  }
+}

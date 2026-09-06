@@ -34,7 +34,7 @@ All ice cream items are craftable and provide food effects when eaten. Recipes a
 
 ### Multi-Loader Support
 This mod supports **Forge**, **Fabric**, and **NeoForge**!
-- **Forge**: All supported Minecraft versions (1.16.5 - 1.21.11)
+- **Forge**: All supported Minecraft versions (1.16.5 - 26.2)
 - **Fabric / NeoForge**: Minecraft 1.21.1 and later
 
 Download the correct version for your mod loader.

@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "A": "minecraft:milk_bucket",
+    "B": "minecraft:egg",
+    "C": "minecraft:sugar",
+    "D": "minecraft:wheat"
+  },
+  "pattern": [
+    "ABA",
+    "CBC",
+    " D "
+  ],
+  "result": {
+    "count": 3,
+    "id": "fancyicecream:vanilla_ice_cream"
+  }
+}
