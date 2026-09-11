@@ -25,6 +25,7 @@ Fancy Ice Cream is a lightweight content mod that adds 8 flavors of ice cream wi
 ### 🏪 Decorative Stands
 - **Ice Cream Stand** - Display a single ice cream
 - **Triple Ice Cream Stand** - Display up to 3 ice creams at once
+- **Ice Cream Cup** - Display an ice cream scoop without the cone
 
 All ice cream items are craftable and provide food effects when eaten. Recipes are included for all items.
 

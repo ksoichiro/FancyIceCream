@@ -101,6 +101,7 @@ The build system dynamically selects the appropriate modules based on the `targe
 | --- | --- | --- |
 | ![](common/1.21.9/src/main/resources/assets/fancyicecream/textures/item/ice_cream_stand.png) | Ice Cream Stand | It can hold one ice cream. |
 | ![](common/1.21.9/src/main/resources/assets/fancyicecream/textures/item/triple_ice_cream_stand.png)| Triple Ice Cream Stand | It can hold 3 ice creams. |
+| ![](common/1.21.9/src/main/resources/assets/fancyicecream/textures/item/ice_cream_cup.png)| Ice Cream Cup | Displays an ice cream scoop without the cone. |
 
 ## License
 

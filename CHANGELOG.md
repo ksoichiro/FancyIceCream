@@ -7,7 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.2.0] - 2026-09-11
+
 ### Added
+- **Ice Cream Cup**: New decoration entity displaying ice cream scoops without the cone model, available across all supported versions (1.16.5-1.21.11) and loaders (Forge, Fabric, NeoForge)
 - Minecraft 26.1.2, 26.2 support (Forge, Fabric, NeoForge)
 - Forge support for Minecraft 26.1 (was previously Fabric/NeoForge only)
 
@@ -41,6 +44,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Restructured project from single-version to multi-version, multi-loader architecture
 - Restructured loader directories into hierarchical layout (`forge/1.21.9/` instead of `forge-1.21.9/`)
 
-[Unreleased]: https://github.com/ksoichiro/FancyIceCream/compare/v0.1.1...HEAD
+[Unreleased]: https://github.com/ksoichiro/FancyIceCream/compare/v0.2.0...HEAD
+[0.2.0]: https://github.com/ksoichiro/FancyIceCream/compare/v0.1.1...v0.2.0
 [0.1.1]: https://github.com/ksoichiro/FancyIceCream/compare/v0.1.0...v0.1.1
 [0.1.0]: https://github.com/ksoichiro/FancyIceCream/compare/1.21.9-0.0.2...v0.1.0
