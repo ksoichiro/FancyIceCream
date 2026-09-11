@@ -45,6 +45,10 @@ subprojects {
 
 apply from: 'gradle/multi-version-tasks.gradle'
 
+// Release tasks (optional, require CURSEFORGE_TOKEN / MODRINTH_TOKEN env vars)
+apply from: 'gradle/shared/release-modrinth.gradle'
+apply from: 'gradle/shared/release-curseforge.gradle'
+
 // Production run support (Fabric, NeoForge, Forge)
 // Applied via gradle.afterProject to ensure version-specific properties
 // (injected by settings.gradle beforeProject) are available.
