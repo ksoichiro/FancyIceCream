@@ -18,6 +18,7 @@ This mod supports the following Minecraft versions (all managed in a single bran
 
 | Minecraft Version | Forge | Fabric | NeoForge |
 | --- | :---: | :---: | :---: |
+| 26.3 | Yes | Yes | Yes |
 | 26.2 | Yes | Yes | Yes |
 | 26.1.2 | Yes | Yes | Yes |
 | 26.1 | Yes | Yes | Yes |
